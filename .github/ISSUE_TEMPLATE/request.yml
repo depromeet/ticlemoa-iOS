@@ -1,0 +1,7 @@
+name: Request
+description: 요청 템플릿
+labels: 💽 Request
+body:
+- type: textarea
+  attributes:
+    label: 요청 사항
