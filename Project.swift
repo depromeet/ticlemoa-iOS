@@ -70,9 +70,11 @@ func makeModule(_ module: Ticlemoa,
 // MARK: - Module
 
 let shareInfoPlist: InfoPlist = .extendingDefault(with: [
+		"CFBundleDisplayName": "\(Ticlemoa.productName)",
+		"CFBundleShortVersionString": "1.0.0",
 		"NSExtension": [
 			"NSExtensionAttributes": [
-				"NSExtensionActivationRule": "TRUEPREDICATE"
+				"NSExtensionActivationSupportsText": true
 			],
 			"NSExtensionMainStoryboard": "MainInterface",
 			"NSExtensionPointIdentifier": "com.apple.share-services"
