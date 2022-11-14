@@ -111,7 +111,6 @@ let mainAppTarget = [
 		dependencies: [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
-			.target(name: Ticlemoa.network.name),
 			.target(name: Ticlemoa.share.name)
 //			.swinject
 		]
