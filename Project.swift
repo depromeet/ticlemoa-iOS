@@ -16,7 +16,7 @@ enum Ticlemoa: String {
 	
 	case userInterface = "UserInterface"
 	case domain = "Domain"
-	case network = "Network"
+	case api = "API"
 	case share = "ShareExtension"
 	
 	var name: String { self.rawValue }
@@ -24,7 +24,7 @@ enum Ticlemoa: String {
 		switch self {
 		case .userInterface:	return .framework
 		case .domain:			return .framework
-		case .network:			return .framework
+		case .api:			return .framework
 		case .share:			return .appExtension
 		}
 	}
@@ -83,8 +83,8 @@ let shareInfoPlist: InfoPlist = .extendingDefault(with: [
 )
 
 let userInterface = makeModule(.userInterface, dependencies: [], hasTest: true)
-let network = makeModule(.network, dependencies: [], hasTest: true)
-let domain = makeModule(.domain, dependencies: [.network], hasTest: true)
+let api = makeModule(.api, dependencies: [], hasTest: true)
+let domain = makeModule(.domain, dependencies: [.api], hasTest: true)
 let share = makeModule(.share, infoPlist: shareInfoPlist, dependencies: [], hasTest: false)
 
 
@@ -147,7 +147,7 @@ let project = Project.init(
 		mainAppTarget,
 		userInterface,
 		domain,
-		network,
+		api,
 		share
 	].flatMap { $0 }
 )
