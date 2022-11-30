@@ -7,8 +7,8 @@
 //
 
 import XCTest
-@testable import Network
+@testable import API
 
-final class NetworkTests: XCTestCase {
+final class APITests: XCTestCase {
 
 }
