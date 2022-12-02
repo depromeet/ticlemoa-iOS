@@ -12,7 +12,7 @@ enum Ticlemoa: String {
 	static let organizationName = "nyongnyong"
 	static let bundleId = "com.nyongnyong"
 	static let deploymentTarget = DeploymentTarget
-		.iOS(targetVersion: "15.0", devices: [.iphone])
+		.iOS(targetVersion: "16.0", devices: [.iphone])
 	
 	case userInterface = "UserInterface"
 	case domain = "Domain"
