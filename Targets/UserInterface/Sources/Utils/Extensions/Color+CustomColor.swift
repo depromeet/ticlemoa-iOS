@@ -17,4 +17,5 @@ extension Color {
     static var grey4: Color { return Color("grey4") }
     static var primary: Color { return Color("primary") }
     static var white: Color { return Color("white") }
+    static var secondaryRed: Color { return Color("secondaryRed")}
 }
