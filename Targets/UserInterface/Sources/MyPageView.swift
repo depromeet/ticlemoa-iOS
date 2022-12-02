@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct MyPageView: View {
+    @State private var isAccountDeleteButtonTouched: Bool = false
+    
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink {
@@ -72,7 +74,7 @@ struct MyPageView: View {
             .padding(.horizontal, 13)
 
             Button(role: .destructive) {
-                Void()
+                isAccountDeleteButtonTouched = true
             } label: {
                 HStack {
                     Text("계정삭제")
@@ -86,10 +88,14 @@ struct MyPageView: View {
         }
         .navigationTitle("마이페이지")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isAccountDeleteButtonTouched) {
+            MyPageAccountDeletingView()
+                .presentationDetents([.medium])
+        }
     }
 }
 
-struct MyPageNavigationView: View {
+fileprivate struct MyPageNavigationView: View {
     let imageName: String
     let title: String
     
@@ -112,7 +118,85 @@ struct MyPageNavigationView: View {
     }
 }
 
-struct MyPage_Previews: PreviewProvider {
+fileprivate struct MyPageAccountDeletingView: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            Capsule()
+                .foregroundColor(.black)
+                .frame(width: 42, height: 4)
+                .padding(18)
+            Text("계정삭제")
+                .font(.system(size: 18))
+                .fontWeight(.bold)
+                .padding(.top, 6.5)
+                .padding(.bottom, 30.5)
+            Spacer()
+                .background(Rectangle())
+                .padding(.horizontal, 36)
+            VStack(spacing: 0) {
+                HStack {
+                    Text("정말로 계정을 삭제하시겠어요?")
+                        .font(.system(size: 18))
+                        .fontWeight(.semibold)
+                    Spacer()
+                }
+                .padding(.vertical, 4.5)
+                .padding(.bottom, 4)
+                
+                HStack {
+                    Text("N개의 콘텐츠가 모두 삭제되고, 계정은 복구할 수 없어요")
+                        .font(.system(size: 14))
+                        .fontWeight(.medium)
+                        .foregroundColor(.grey4)
+                    Spacer()
+                }
+                .padding(.vertical, 3.5)
+            }
+            .padding(.vertical, 24)
+            .padding(.horizontal, 36)
+            HStack(spacing: 11) {
+                Button {
+                    Void()
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("취소")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16))
+                            .fontWeight(.bold)
+                        Spacer()
+                    }
+                    .padding(20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 6)
+                            .foregroundColor(.grey2Line)
+                    )
+                }
+                Button {
+                    Void()
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("삭제")
+                            .foregroundColor(.white)
+                            .font(.system(size: 16))
+                            .fontWeight(.bold)
+                        Spacer()
+                    }
+                    .padding(20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 6)
+                            .foregroundColor(.secondaryRed)
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 16)
+        }
+    }
+}
+
+struct MyPageView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             NavigationLink {
