@@ -14,7 +14,7 @@ struct TiclemoaApp: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
+            MainTabView()
 		}
 	}
 }

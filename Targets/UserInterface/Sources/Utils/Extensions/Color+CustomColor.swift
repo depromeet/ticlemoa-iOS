@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-extension Color {
+public extension Color {
     static var black: Color { return Color("black") }
     static var grey1: Color { return Color("grey1") }
     static var grey2: Color { return Color("grey2") }
@@ -17,4 +17,22 @@ extension Color {
     static var grey4: Color { return Color("grey4") }
     static var primary: Color { return Color("primary") }
     static var white: Color { return Color("white") }
+}
+
+
+// MARK: - BackgroundColor
+struct SetupBackground: ViewModifier {
+    func body(content: Content) -> some View {
+        ZStack {
+            Color.grey1
+                .ignoresSafeArea(.all)
+            content
+        }
+    }
+}
+
+public extension View {
+    func setupBackground() -> some View {
+        modifier(SetupBackground())
+    }
 }
