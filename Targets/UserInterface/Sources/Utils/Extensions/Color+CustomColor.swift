@@ -18,3 +18,21 @@ extension Color {
     static var ticlemoaPrimary: Color { return Color("ticlemoaPrimary") }
     static var ticlemoaWhite: Color { return Color("ticlemoaWhite") }
 }
+
+
+// MARK: - BackgroundColor
+struct SetupBackground: ViewModifier {
+    func body(content: Content) -> some View {
+        ZStack {
+            Color.grey1
+                .ignoresSafeArea(.all)
+            content
+        }
+    }
+}
+
+public extension View {
+    func setupBackground() -> some View {
+        modifier(SetupBackground())
+    }
+}
