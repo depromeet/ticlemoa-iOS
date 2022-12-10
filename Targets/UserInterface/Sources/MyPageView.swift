@@ -11,17 +11,29 @@ import SwiftUI
 struct MyPageView: View {
     var body: some View {
         VStack(spacing: 0) {
-            Circle()
-                .frame(width: 75, height: 75)
-                .padding(.top, 40)
-            HStack(spacing: 0) {
-                Text("가나다라마바사")
-                Image(systemName: "highlighter")
+            NavigationLink {
+                ProfileSettingView()
+            } label: {
+                VStack(spacing: 0) {
+                    Circle()
+                        .frame(width: 59, height: 59)
+                        .padding(.top, 18)
+                        .padding(.bottom, 12)
+                    HStack(spacing: 0) {
+                        Text("가나다라마바사")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16))
+                            .fontWeight(.semibold)
+                        Image(systemName: "highlighter")
+                    }
+                    Text("asdf12345@gmail.com")
+                        .tint(.grey3)
+                        .padding(.top, 2)
+                        .padding(.bottom, 14)
+                }
             }
-            .padding(6)
-            Text("asdf12345@gmail.com")
-                .accentColor(.gray)
-                .padding(.bottom, 32)
+            .padding(.vertical, 6)
+            .padding(.horizontal, 81)
             
             VStack(spacing: 0) {
                 MyPageNavigationView(imageName: "bell", title: "알림")
