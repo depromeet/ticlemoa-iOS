@@ -9,18 +9,19 @@
 import SwiftUI
 
 struct ArticleRow: View {
+    let title: String
     
     var body: some View {
-        HStack {
-            
+        HStack(alignment: .center) {
             Color.grey2
                 .frame(maxWidth: 88, maxHeight: 88)
                 .padding(.leading, 20)
-            Spacer()
+                .padding(.trailing, 12)
             VStack(alignment:.leading) {
-                Text("아티클 제목제목제목제목제목제목제목제목제목제목")
+                Text(title)
                     .pretendFont(.subhead3)
-                
+                    .padding(.top, 14)
+                Spacer()
                 Text("태그들")
                     .pretendFont(.body1)
                     .foregroundColor(Color.grey4)
@@ -30,6 +31,7 @@ struct ArticleRow: View {
                         RoundedRectangle(cornerRadius: 5,style: .continuous)
                             .foregroundColor(Color.grey1)
                     )
+                    .padding(.bottom, 14)
             }
             Spacer()
             VStack {
@@ -49,7 +51,7 @@ struct ArticleRow: View {
 
 struct ArticleRow_Previews: PreviewProvider {
     static var previews: some View {
-        ArticleRow()
+        ArticleRow(title: "프리뷰 타이틀...")
     }
 }
 
