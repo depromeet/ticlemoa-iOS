@@ -9,18 +9,15 @@ import SwiftUI
 
 struct HomeView: View {
     
-    init() {
-//        UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Pretendard-Bold", size: 14)!]
-    }
-    
     var body: some View {
         NavigationView {
             mainBody()
                 .toolbar(content: {
                     // 네비게이션 제목
                     ToolbarItemGroup(placement: .navigationBarLeading) {
+                        // TODO: 이미지로 변경 필요
                         Text("TICLEMOA")
-                            .customFont(14, .bold)
+                            .pretendFont(.title3)
                     }
                     
                     // 종모양 & 마이프로필
@@ -32,7 +29,6 @@ struct HomeView: View {
                             })
                         NavigationLink(destination: ProfileView(), label: {
                             Image("defaultProfile")
-                            
                         })
                     }
                 })
