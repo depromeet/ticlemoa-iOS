@@ -16,9 +16,11 @@ final class LinkAddViewModel: ObservableObject {
     @Published var memo: String = ""
     @Published var isPublicSetting: Bool = false
     @Published var tags: [String] = ["태그명"]
+    private let fromWhichButton: FromWhichButton
     
-    init() {
-        if let copiedlink = UIPasteboard.general.string {
+    init(fromWhichButton: FromWhichButton) {
+        self.fromWhichButton = fromWhichButton
+        if let copiedlink = UIPasteboard.general.string, fromWhichButton == .snackBar {
             self.link = copiedlink
         }
     }

@@ -27,7 +27,7 @@ struct LinkAddView: View {
     
     init(fromWhere fromWhichButton: FromWhichButton) {
         self.fromWhichButton = fromWhichButton
-        self.viewModel = LinkAddViewModel()
+        self.viewModel = LinkAddViewModel(fromWhichButton: fromWhichButton)
     }
     
     var body: some View {
