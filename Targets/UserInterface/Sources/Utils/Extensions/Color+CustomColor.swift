@@ -17,6 +17,7 @@ extension Color {
     static var ticlemoaBlack: Color { return Color("ticlemoaBlack") }
     static var ticlemoaPrimary: Color { return Color("ticlemoaPrimary") }
     static var ticlemoaWhite: Color { return Color("ticlemoaWhite") }
+    static var secondaryRed: Color { return Color("secondaryRed")}
 }
 
 
