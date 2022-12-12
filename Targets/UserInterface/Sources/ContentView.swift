@@ -9,12 +9,21 @@
 import SwiftUI
 
 public struct ContentView: View {
-	
+    @State private  var isLoggedIn: Bool = false
+    
 	public init() { }
 	
 	public var body: some View {
-//		Text("Hello World")
-        MainTabView()
+        Group {
+            if isLoggedIn {
+                MainTabView()
+                    .transition(.scale)
+            } else {
+                LoginView(isLoggedIn: $isLoggedIn)
+                    .transition(.scale)
+                    
+            }
+        }
 	}
 	
 }

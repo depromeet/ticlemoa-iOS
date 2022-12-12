@@ -26,7 +26,11 @@ struct HomeView: View {
                         NavigationLink(
                             destination: AlarmView(),
                             label: {
-                                Image("alarm")
+                                // TODO: 이미지 에셋 추가 시, 등록
+//                                Image("alarm")
+                                Image(systemName: "bell.badge")
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundColor(.primary)
                             })
                         NavigationLink(destination: ProfileView(), label: {
                             Image("defaultProfile")

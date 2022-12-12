@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ArticleRow: View {
     let title: String
+    let tags: [String] = ["tag1"]
+    let imageURLString: String
     
     var body: some View {
         HStack(alignment: .center) {
@@ -17,12 +19,20 @@ struct ArticleRow: View {
                 .frame(maxWidth: 88, maxHeight: 88)
                 .padding(.leading, 20)
                 .padding(.trailing, 12)
+                .overlay {
+                    Image(systemName: "t.square")
+                    
+                    // TODO: 이미지 전달 로직 구현 필요
+//                    AsyncImage(url: URL(string: imageURLString)!, scale: 1.0)
+                        .font(.largeTitle)
+                        .foregroundColor(Color.grey3)
+                }
             VStack(alignment:.leading) {
                 Text(title)
                     .pretendFont(.subhead3)
                     .padding(.top, 14)
                 Spacer()
-                Text("태그들")
+                Text(tags.first!)
                     .pretendFont(.body1)
                     .foregroundColor(Color.grey4)
                     .padding(5)
@@ -51,7 +61,7 @@ struct ArticleRow: View {
 
 struct ArticleRow_Previews: PreviewProvider {
     static var previews: some View {
-        ArticleRow(title: "프리뷰 타이틀...")
+        ArticleRow(title: "프리뷰 타이틀...", imageURLString: "")
     }
 }
 

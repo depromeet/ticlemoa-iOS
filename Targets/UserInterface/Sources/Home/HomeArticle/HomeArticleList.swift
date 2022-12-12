@@ -17,7 +17,12 @@ struct HomeArticleList: View {
                 Array(viewModel.groupArticlesByMonth(articles: Article.allArticles)).reversed(),id: \.key) { month, articles in
                     Section {
                         ForEach(articles) { article in
-                            ArticleRow(title: article.title)
+                            ArticleRow(title: article.title, imageURLString: article.imageURLString)
+                                .onTapGesture {
+                                    if let url = URL(string: article.urlString) {
+                                        UIApplication.shared.open(url, options: [:])
+                                    }
+                                }
                         }
                     } header: {
                         Text(month)

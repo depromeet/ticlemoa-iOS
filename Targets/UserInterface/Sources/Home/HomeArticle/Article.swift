@@ -8,6 +8,8 @@
 
 import Foundation
 import Collections
+import UIKit
+import SwiftUI
 
 typealias ArticleGroup = OrderedDictionary<String, [Article]>
 
@@ -16,11 +18,58 @@ struct Article: Identifiable, Hashable {
     let date: String
     let title: String
     let content: String
+    let urlString: String
     
     var dateParsed: Date { date.dateParsed() }
     
     var month: String {
         dateParsed.formatted(.dateTime.year().month(.wide))
+    }
+    
+    // TODO: 2. 이미지 추출해서 이미지 URL 혹은 Image 전달
+    var imageURLString: String {
+        guard let url = URL(string: urlString) else { return "" }
+        Task {
+            if let imageURLString = try await findThumnail(url: url) {
+                if let resultString = stringParsing(text: imageURLString) {
+                    print("IMAGE: ", resultString.1)
+                    return resultString.1
+                }
+                
+            }
+            return ""
+        }
+        return ""
+    }
+    
+    func stringParsing(text:String) -> (String,String,String)? {
+        let index0 = text.startIndex
+        let indexE = text.endIndex
+        let result = text[index0 ..< indexE]
+        
+        guard text.contains("http") else { return nil }
+        
+        if let range0 = text.range(of: "content=") {
+            let startWord = text.index(text[range0].endIndex, offsetBy: 1)
+            let endWord = text.endIndex
+            let w0 = text[text.startIndex ..< startWord]
+            let w1 = text[startWord ..< text.index(text.endIndex, offsetBy: -3)]
+            let w2 = text[endWord ..< text.endIndex]
+            
+            return (String(w0),String(w1),String(w2))
+        } else {
+         return nil
+        }
+    }
+    
+    // TODO: 1. 썸네일 추출 하는 방법 조사 필요
+    func findThumnail(url: URL) async throws ->  String? {
+        for try await line in url.lines {
+            if line.contains("og:image") {
+                return line.trimmingCharacters(in: .whitespaces)
+            }
+        }
+        return nil
     }
 }
 
@@ -32,21 +81,21 @@ struct Category {
 
 /* Dummy Data */
 extension Article {
-    static let article01 = Article(id: 1, date: "02/16/2022", title: "링크01", content: "링크01 내용")
-    static let article02 = Article(id: 2, date: "03/16/2022", title: "링크02", content: "링크02 내용")
-    static let article03 = Article(id: 3, date: "04/16/2022", title: "링크03", content: "링크03 내용")
-    static let article04 = Article(id: 4, date: "05/16/2022", title: "링크04", content: "링크04 내용")
-    static let article05 = Article(id: 5, date: "06/16/2022", title: "링크05", content: "링크05 내용")
-    static let article06 = Article(id: 6, date: "07/16/2022", title: "링크06", content: "링크06 내용")
-    static let article07 = Article(id: 7, date: "08/16/2022", title: "링크07", content: "링크07 내용")
-    static let article08 = Article(id: 8, date: "09/16/2022", title: "링크08", content: "링크08 내용")
-    static let article09 = Article(id: 9, date: "10/16/2022", title: "링크09", content: "링크09 내용")
-    static let article10 = Article(id: 10, date: "11/16/2022", title: "링크10", content: "링크10 내용")
-    static let article11 = Article(id: 11, date: "12/16/2022", title: "링크11", content: "링크11 내용")
-    static let article12 = Article(id: 12, date: "01/16/2023", title: "링크12", content: "링크12 내용")
-    static let article13 = Article(id: 13, date: "02/16/2023", title: "링크13", content: "링크13 내용")
-    static let article14 = Article(id: 14, date: "03/16/2023", title: "링크14", content: "링크14 내용")
-    static let article15 = Article(id: 15, date: "04/16/2023", title: "링크15", content: "링크15 내용")
+    static let article01 = Article(id: 1, date: "02/16/2022", title: "우육면관", content: "링크01 내용", urlString: "https://m.blog.naver.com/hjy6005/222428005687")
+    static let article02 = Article(id: 2, date: "03/16/2022", title: "홍대삭", content: "링크02 내용", urlString: "https://zazak.tistory.com/3035")
+    static let article03 = Article(id: 3, date: "04/16/2022", title: "자가제면홍제우동", content: "링크03 내용", urlString: "https://m.blog.naver.com/ye_onny/222671614005")
+    static let article04 = Article(id: 4, date: "05/16/2022", title: "우동가조쿠", content: "링크04 내용", urlString: "https://m.blog.naver.com/ock9ock9/221319743409")
+    static let article05 = Article(id: 5, date: "06/16/2022", title: "시장맥주", content: "링크05 내용", urlString: "https://m.blog.naver.com/yuuun__is/221381716835")
+    static let article06 = Article(id: 6, date: "07/16/2022", title: "버거인뉴욕", content: "링크06 내용", urlString: "https://m.blog.naver.com/ekwjd3011/221482432534")
+    static let article07 = Article(id: 7, date: "08/16/2022", title: "동화가든", content: "링크07 내용", urlString: "https://blog.naver.com/PostView.naver?blogId=inileunji&logNo=222382494928&redirect=Dlog&widgetTypeCall=true&topReferer=https%3A%2F%2Fwww.google.com%2F&directAccess=false")
+    static let article08 = Article(id: 8, date: "09/16/2022", title: "사대부집 곳간", content: "링크08 내용", urlString: "https://m.blog.naver.com/reve8612/222860100908")
+    static let article09 = Article(id: 9, date: "10/16/2022", title: "창고43", content: "링크09 내용", urlString: "https://pinksoap.tistory.com/507")
+    static let article10 = Article(id: 10, date: "11/16/2022", title: "연어롭다", content: "링크10 내용", urlString: "https://m.blog.naver.com/icecream0514/222694311739")
+    static let article11 = Article(id: 11, date: "12/16/2022", title: "라이카 시네마", content: "링크11 내용", urlString: "http://laikacinema.com/about")
+    static let article12 = Article(id: 12, date: "01/16/2023", title: "히츠지야", content: "링크12 내용",urlString: "https://m.blog.naver.com/shinemrk/221646591105")
+    static let article13 = Article(id: 13, date: "02/16/2023", title: "신촌 여수집", content: "링크13 내용", urlString: "https://m.blog.naver.com/sielle83/221491184817")
+    static let article14 = Article(id: 14, date: "03/16/2023", title: "애플", content: "링크14 내용",urlString: "https://www.apple.com")
+    static let article15 = Article(id: 15, date: "04/16/2023", title: "디자이너오 프로그래머가 만났을 때", content: "링크15 내용", urlString: "https://www.depromeet.com")
     
     static var allArticles: [Article] {
         [
