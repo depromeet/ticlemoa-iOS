@@ -14,30 +14,8 @@ struct HomeView: View {
     }
     
     var body: some View {
-        NavigationView {
-            mainBody()
-                .toolbar(content: {
-                    // 네비게이션 제목
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        Text("TICLEMOA")
-                            .customFont(14, .bold)
-                    }
-                    
-                    // 종모양 & 마이프로필
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        NavigationLink(
-                            destination: AlarmView(),
-                            label: {
-                                Image("alarm")
-                            })
-                        NavigationLink(destination: ProfileView(), label: {
-                            Image("defaultProfile")
-                            
-                        })
-                    }
-                })
-                .setupBackground()
-        }
+        mainBody()
+            .setupBackground()
     }
 }
 
