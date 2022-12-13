@@ -32,7 +32,28 @@ struct AddingLinkView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            CommonTextFieldView(type: .link, textFieldText: $viewModel.link)
+            linkSetting
+            articleSetting
+            tagSetting
+            memoSetting
+            publicSetting
+            Spacer()
+            AddingButton
+        }
+        .hideKeyboard()
+        .padding(.horizontal, 20)
+        .navigationTitle("링크 추가")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+extension AddingLinkView {
+    var linkSetting: some View {
+        CommonTextFieldView(type: .link, textFieldText: $viewModel.link)
+    }
+    
+    var articleSetting: some View {
+        VStack(spacing: 0) {
             if !viewModel.link.isEmpty {
                 HStack(spacing: 12) {
                     Image(viewModel.articleThumbNail)
@@ -80,6 +101,11 @@ struct AddingLinkView: View {
                     }
                 }
             }
+        }
+    }
+
+    var tagSetting: some View {
+        VStack(spacing: 0) {
             HStack {
                 Text("태그")
                     .foregroundColor(.grey4)
@@ -112,7 +138,15 @@ struct AddingLinkView: View {
             }
             .padding(.top, 8)
             .padding(.bottom, 36)
-            CommonTextFieldView(type: .memo, textFieldText: $viewModel.memo)
+        }
+    }
+    
+    var memoSetting: some View {
+        CommonTextFieldView(type: .memo, textFieldText: $viewModel.memo)
+    }
+    
+    var publicSetting: some View {
+        VStack(spacing: 0) {
             HStack(spacing: 0) {
                 Text("공개설정")
                     .font(.system(size: 14))
@@ -155,23 +189,21 @@ struct AddingLinkView: View {
                 }
                 .padding(.trailing, 32)
             }
-            Spacer()
-            Button {
-                print("추가하기 버튼!")
-            } label: {
-                Text("추가하기")
-                    .tint(viewModel.link.isEmpty ? .grey3 : .ticlemoaWhite)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 56)
-            .background(viewModel.link.isEmpty ?  Color.grey2Line : Color.ticlemoaBlack)
-            .cornerRadius(6.0)
-            .padding(.bottom, 16)
         }
-        .hideKeyboard()
-        .padding(.horizontal, 20)
-        .navigationTitle("링크 추가")
-        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    var AddingButton: some View {
+        Button {
+            print("추가하기 버튼!")
+        } label: {
+            Text("추가하기")
+                .tint(viewModel.link.isEmpty ? .grey3 : .ticlemoaWhite)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 56)
+        .background(viewModel.link.isEmpty ?  Color.grey2Line : Color.ticlemoaBlack)
+        .cornerRadius(6.0)
+        .padding(.bottom, 16)
     }
 }
 
