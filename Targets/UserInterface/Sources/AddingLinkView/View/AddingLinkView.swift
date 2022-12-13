@@ -1,5 +1,5 @@
 //
-//  LinkAddView.swift
+//  AddingLinkView.swift
 //  UserInterface
 //
 //  Created by Joseph Cha on 2022/12/06.
@@ -19,15 +19,15 @@ private enum TextFieldType: String {
     case memo = "메모"
 }
 
-struct LinkAddView: View {
+struct AddingLinkView: View {
     let fromWhichButton: FromWhichButton
-    @ObservedObject private var viewModel: LinkAddViewModel
+    @ObservedObject private var viewModel: AddingLinkViewModel
     @FocusState private var isArticleTitleFocused: Bool // 간혹 preview에서 동작 잘안됨, 시뮬레이터에선 잘됨
     @State private var isPublicSettingsHelpClicked: Bool = false
     
     init(fromWhere fromWhichButton: FromWhichButton) {
         self.fromWhichButton = fromWhichButton
-        self.viewModel = LinkAddViewModel(fromWhichButton: fromWhichButton)
+        self.viewModel = AddingLinkViewModel(fromWhichButton: fromWhichButton)
     }
     
     var body: some View {
@@ -247,19 +247,19 @@ struct LinkAddingView_Previews: PreviewProvider {
         NavigationView {
             VStack(spacing: 100) {
                 NavigationLink {
-                    LinkAddView(fromWhere: .snackBar)
+                    AddingLinkView(fromWhere: .snackBar)
                 } label: {
                     Text("snackBar")
                 }
                 NavigationLink {
-                    LinkAddView(fromWhere: .naviBar)
+                    AddingLinkView(fromWhere: .naviBar)
                 } label: {
                     Text("naviBar")
                 }
             }
         }
         
-        LinkAddView(fromWhere: .naviBar)
-        LinkAddView(fromWhere: .snackBar)
+        AddingLinkView(fromWhere: .naviBar)
+        AddingLinkView(fromWhere: .snackBar)
     }
 }
