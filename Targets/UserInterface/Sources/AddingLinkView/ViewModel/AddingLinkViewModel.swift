@@ -1,5 +1,5 @@
 //
-//  LinkAddViewModel.swift
+//  AddingLinkViewModel.swift
 //  Ticlemoa
 //
 //  Created by Joseph Cha on 2022/12/09.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-final class LinkAddViewModel: ObservableObject {
+final class AddingLinkViewModel: ObservableObject {
     @Published var link: String = ""
     @Published var articleTitle: String = "아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목아티클제목"
     @Published var articleThumbNail: String = "ArticlePlaceholder"
