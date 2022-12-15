@@ -7,18 +7,25 @@
 //
 
 import SwiftUI
-
+import KakaoSDKUser
+import KakaoSDKAuth
+import KakaoSDKCommon
 
 struct LoginView: View {
     
     @Binding var isLoggedIn: Bool
     
     var body: some View {
-        mainBody()
+        mainBody
+            .onOpenURL { url in
+                if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                    _ = AuthController.handleOpenUrl(url: url)
+                }
+            }
             .setupBackground()
     }
-    
-    func mainBody() -> some View {
+
+    var mainBody: some View {
         VStack {
             Spacer()
                 .frame(maxHeight: 61)
@@ -52,13 +59,25 @@ private extension LoginView {
     var socialLoginButtons: some View {
         VStack {
             borderLineButton("카카오톡으로 로그인", .yellow, action: {
-                withAnimation { isLoggedIn = true }
+                if (UserApi.isKakaoTalkLoginAvailable()) {
+                    UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                        print(oauthToken)
+                        print(error)
+                        withAnimation { isLoggedIn = true }
+                    }
+                } else {
+                    UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                        print(oauthToken)
+                        print(error)
+                        withAnimation { isLoggedIn = true }
+                    }
+                }
             })
-                .buttonStyle(ScaleButtonStyle())
+            .buttonStyle(ScaleButtonStyle())
             borderLineButton("Apple으로 로그인", .white, action: {
                 withAnimation { isLoggedIn = true }
             })
-                .buttonStyle(ScaleButtonStyle())
+            .buttonStyle(ScaleButtonStyle())
         }
         .padding(.horizontal, 20)
     }
@@ -93,7 +112,7 @@ private extension LoginView {
 
 struct LoginView_Previews: PreviewProvider {
     @State static  var isLoggedIn: Bool = false
-
+    
     static var previews: some View {
         LoginView(isLoggedIn: $isLoggedIn)
     }

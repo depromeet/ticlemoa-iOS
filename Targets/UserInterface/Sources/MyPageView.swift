@@ -14,7 +14,7 @@ struct MyPageView: View {
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink {
-                ProfileSettingView()
+//                ProfileSettingView()
             } label: {
                 VStack(spacing: 0) {
                     Circle()
@@ -89,8 +89,12 @@ struct MyPageView: View {
         .navigationTitle("마이페이지")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isAccountDeleteButtonTouched) {
-            MyPageAccountDeletingView()
-                .presentationDetents([.medium])
+            if #available(iOS 16.0, *) {
+                MyPageAccountDeletingView()
+                    .presentationDetents([.medium])
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
 }
