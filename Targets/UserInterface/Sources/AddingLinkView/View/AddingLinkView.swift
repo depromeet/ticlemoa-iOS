@@ -233,6 +233,7 @@ private struct CommonTextFieldView: View {
                     .foregroundColor(.ticlemoaBlack)
                     .focused($isFocused, equals: true)
                     .lineLimit(type == .memo ? 2 : 1)
+                    .submitLabel(.done)
                 if type == .link && !textFieldText.isEmpty {
                     Button {
                         textFieldText = ""
