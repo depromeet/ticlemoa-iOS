@@ -96,6 +96,7 @@ let infoPlist: InfoPlist = .extendingDefault(with: [
 		"UIMainStoryboardFile": "",
 		"UISupportedInterfaceOrientations" : ["UIInterfaceOrientationPortrait"],
 		"UILaunchStoryboardName": "LaunchScreen",
+        "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true]
 	]
 )
 
