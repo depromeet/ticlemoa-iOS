@@ -7,14 +7,20 @@
 //
 
 import SwiftUI
+import Domain
 import UserInterface
 
 @main
 struct TiclemoaApp: App {
+    
+    private let articleModel = ArticleModel()
+    private let tagModel = TagModel()
 	
 	var body: some Scene {
 		WindowGroup {
             ContentView()
+                .environmentObject(articleModel)
+                .environmentObject(tagModel)
 		}
 	}
 }
