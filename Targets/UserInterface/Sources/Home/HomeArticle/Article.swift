@@ -20,10 +20,14 @@ struct Article: Identifiable, Hashable {
     let content: String
     let urlString: String
     
-    var dateParsed: Date { date.dateParsed() }
+    var dateParsed: Date {
+        return date.dateParsed()
+    }
     
     var month: String {
-        dateParsed.formatted(.dateTime.year().month(.wide))
+        let year = dateParsed.formatted(.dateTime.year())
+        let month = dateParsed.formatted(.dateTime.month(.twoDigits))
+        return year + "." + month
     }
     
     // TODO: 2. 이미지 추출해서 이미지 URL 혹은 Image 전달
@@ -32,7 +36,6 @@ struct Article: Identifiable, Hashable {
         Task {
             if let imageURLString = try await findThumnail(url: url) {
                 if let resultString = stringParsing(text: imageURLString) {
-                    print("IMAGE: ", resultString.1)
                     return resultString.1
                 }
                 
@@ -95,7 +98,8 @@ extension Article {
     static let article12 = Article(id: 12, date: "01/16/2023", title: "히츠지야", content: "링크12 내용",urlString: "https://m.blog.naver.com/shinemrk/221646591105")
     static let article13 = Article(id: 13, date: "02/16/2023", title: "신촌 여수집", content: "링크13 내용", urlString: "https://m.blog.naver.com/sielle83/221491184817")
     static let article14 = Article(id: 14, date: "03/16/2023", title: "애플", content: "링크14 내용",urlString: "https://www.apple.com")
-    static let article15 = Article(id: 15, date: "04/16/2023", title: "디자이너오 프로그래머가 만났을 때", content: "링크15 내용", urlString: "https://www.depromeet.com")
+    static let article15 = Article(id: 15, date: "04/16/2023", title: "디자이너와 프로그래머가 만났을 때", content: "링크15 내용", urlString: "https://www.depromeet.com")
+    static let article16 = Article(id: 16, date: "04/16/2023", title: "F-rame 편집샵", content: "링크15 내용", urlString: "https://f-rame.com")
     
     static var allArticles: [Article] {
         [
@@ -113,7 +117,8 @@ extension Article {
             Article.article12,
             Article.article13,
             Article.article14,
-            Article.article15
+            Article.article15,
+            Article.article16
         ]
     }
 }
