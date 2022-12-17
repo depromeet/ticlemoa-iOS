@@ -9,37 +9,41 @@
 import SwiftUI
 
 struct Collapsible<Content: View>: View {
-    @State var label: () -> Text
+//    @State var label: () -> Text
     @State var content: () -> Content
     
     @State private var collapsed: Bool = true
     
     var body: some View {
         VStack {
-            Button(
-                action: { self.collapsed.toggle() },
-                label: {
-                    HStack {
-                        self.label()
-                            .padding(.leading, 16)
-                        Spacer()
-                        Image(systemName: self.collapsed ? "chevron.down" : "chevron.up")
-                            .padding(.trailing, 16)
-                    }
-                    .padding(.bottom, 1)
-                    .background(Color.white.opacity(0.01))
-                }
-            )
-            .buttonStyle(PlainButtonStyle())
-            
             VStack {
                 self.content()
-//                    .setupBackground()
             }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: collapsed ? 0 : .none)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: collapsed ? CGFloat(tagHeight) : 500)
             .clipped()
-//            .animation(.easeIn)
+            .animation(.easeIn)
             .transition(.slide)
+            .background {
+                VStack {
+                    Button(
+                        action: { self.collapsed.toggle() },
+                        label: {
+                            HStack {
+        //                        self.label()
+        //                            .padding(.leading, 16)
+                                Spacer()
+                                Image(systemName: self.collapsed ? "chevron.down" : "chevron.up")
+                                    .padding(.trailing, 16)
+                                    .background { Color.red }
+                            }
+                            .padding(.bottom, 1)
+                            .background(Color.white.opacity(0.01))
+                        }
+                    )
+                    Spacer()
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
         }
     }
 }
