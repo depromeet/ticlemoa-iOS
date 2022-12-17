@@ -39,7 +39,7 @@ struct MyPageView: View {
             
             VStack(spacing: 0) {
                 MyPageNavigationView(imageName: "bell", title: "알림") {
-                    EmptyView()
+                    AlertSettingView()
                 }
                 MyPageNavigationView(imageName: "info.circle", title: "서비스 정보") {
                     ServiceInformationView()
