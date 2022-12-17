@@ -32,16 +32,37 @@ public enum PretendardFontWeight: String {
 }
 
 public enum FontSystem {
+    /// size: 18,  lineHeight: 27,  Weight: 700
     case title3
+    
+    /// size: 16,  lineHeight: 24,  Weight: 700
     case title2
+    
+    /// size: 14,  lineHeight: 21,  Weight: 700
     case title1
+    
+    /// size: 18,  lineHeight: 27,  Weight: 600
     case subhead4
+    
+    /// size: 16,  lineHeight: 24,  Weight: 600
     case subhead3
+    
+    /// size: 14,  lineHeight: 21,  Weight: 600
     case subhead2
+    
+    /// size: 12,  lineHeight: 18,  Weight: 600
     case subhead1
+    
+    /// size: 18,  lineHeight: 27,  Weight: 500
     case body4
+    
+    /// size: 16,  lineHeight: 24,  Weight: 500
     case body3
+    
+    /// size: 14,  lineHeight: 21,  Weight: 500
     case body2
+    
+    /// size: 12,  lineHeight: 18,  Weight: 500
     case body1
     
     var weight: PretendardFontWeight {
