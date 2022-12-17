@@ -83,6 +83,7 @@ private extension HomeView {
                     HStack(spacing: 10){
                         ForEach(Array(rows.enumerated()), id: \.offset){ rowIndex, row in
                             Button(action: {
+                                HapticManager.instance.impact(style: .light)
                                 viewModel.selectedTag = row
                             }, label: {
                                 Text(row.name)

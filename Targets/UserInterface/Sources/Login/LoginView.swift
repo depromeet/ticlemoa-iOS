@@ -24,7 +24,7 @@ struct LoginView: View {
             }
             .setupBackground()
     }
-
+    
     var mainBody: some View {
         VStack {
             Spacer()
@@ -58,25 +58,34 @@ private extension LoginView {
     
     var socialLoginButtons: some View {
         VStack {
-            borderLineButton("카카오톡으로 로그인", .yellow, action: {
-                if (UserApi.isKakaoTalkLoginAvailable()) {
-                    UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                        print(oauthToken)
-                        print(error)
-                        withAnimation { isLoggedIn = true }
+            borderLineButton(
+                "카카오톡으로 로그인",
+                .yellow,
+                action: {
+                    HapticManager.instance.impact(style: .medium)
+                    
+                    if (UserApi.isKakaoTalkLoginAvailable()) {
+                        UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                            print(oauthToken)
+                            print(error)
+                            withAnimation { isLoggedIn = true }
+                        }
+                    } else {
+                        UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                            print(oauthToken)
+                            print(error)
+                            withAnimation { isLoggedIn = true }
+                        }
                     }
-                } else {
-                    UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                        print(oauthToken)
-                        print(error)
-                        withAnimation { isLoggedIn = true }
-                    }
-                }
-            })
+                })
             .buttonStyle(ScaleButtonStyle())
-            borderLineButton("Apple으로 로그인", .white, action: {
-                withAnimation { isLoggedIn = true }
-            })
+            borderLineButton(
+                "Apple으로 로그인",
+                .white,
+                action: {
+                    HapticManager.instance.impact(style: .medium)
+                    withAnimation { isLoggedIn = true }
+                })
             .buttonStyle(ScaleButtonStyle())
         }
         .padding(.horizontal, 20)
