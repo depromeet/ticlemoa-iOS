@@ -38,9 +38,15 @@ struct MyPageView: View {
             .padding(.horizontal, 81)
             
             VStack(spacing: 0) {
-                MyPageNavigationView(imageName: "bell", title: "알림")
-                MyPageNavigationView(imageName: "info.circle", title: "서비스 정보")
-                MyPageNavigationView(imageName: "questionmark.circle", title: "문의하기")
+                MyPageNavigationView(imageName: "bell", title: "알림") {
+                    EmptyView()
+                }
+                MyPageNavigationView(imageName: "info.circle", title: "서비스 정보") {
+                    ServiceInformationView()
+                }
+                MyPageNavigationView(imageName: "questionmark.circle", title: "문의하기") {
+                    EmptyView()
+                }
             }
             .padding()
             
@@ -99,13 +105,20 @@ struct MyPageView: View {
     }
 }
 
-fileprivate struct MyPageNavigationView: View {
+fileprivate struct MyPageNavigationView<Destination: View>: View {
     let imageName: String
     let title: String
+    let destination: () -> Destination
+    
+    init(imageName: String, title: String, destination: @escaping () -> Destination) {
+        self.imageName = imageName
+        self.title = title
+        self.destination = destination
+    }
     
     var body: some View {
         NavigationLink {
-            EmptyView()
+            destination()
         } label: {
             VStack(spacing: 0) {
                 HStack {
