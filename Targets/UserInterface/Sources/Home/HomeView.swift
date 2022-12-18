@@ -17,34 +17,6 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             mainBody
-                .toolbar(content: {
-                    // 네비게이션 제목
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        // TODO: 이미지로 변경 필요
-                        Text("TICLEMOA")
-                            .pretendFont(.title3)
-                    }
-                    
-                    // 종모양 & 마이프로필
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        NavigationLink(
-                            destination: AlarmView(),
-                            label: {
-                                // TODO: 이미지 에셋 추가 시, 등록
-                                //                                Image("alarm")
-                                Image(systemName: "bell.badge")
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundColor(.primary)
-                                
-                            })
-                        NavigationLink(destination: ProfileView(), label: {
-                            //                            Image("defaultProfile")
-                            Image(systemName: "person.crop.circle")
-                                .foregroundColor(Color.grey4)
-                                .font(.title3)
-                        })
-                    }
-                })
                 .setupBackground()
         }
     }
