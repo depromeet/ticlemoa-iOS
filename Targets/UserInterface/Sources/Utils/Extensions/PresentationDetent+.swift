@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 extension PresentationDetent {
     
     static func heightByCell(height: CGFloat, count: Int) -> Self {
@@ -20,5 +21,4 @@ extension PresentationDetent {
         }
         return .height(modalHeight)
     }
-    
 }

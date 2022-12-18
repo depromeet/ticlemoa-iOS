@@ -59,7 +59,8 @@ extension AddingLinkView {
                     Image(viewModel.articleThumbNail)
                         .frame(width: 57, height: 57)
                     HStack(spacing: 6.75) {
-                        TextField("", text: $viewModel.articleTitle, axis: .vertical)
+                        //                        TextField("", text: $viewModel.articleTitle, axis: .vertical)
+                        TextField("", text: $viewModel.articleTitle)
                             .focused($isArticleTitleFocused, equals: true)
                             .font(.system(size: 14))
                             .lineLimit(2)
@@ -87,8 +88,9 @@ extension AddingLinkView {
                         } label: {
                             HStack(spacing: 2) {
                                 Text("복사한 링크 붙여넣기")
-                                    .font(.system(size: 12))
+                                    .pretendFont(.body1)
                                     .tint(.ticlemoaWhite)
+                                
                                 Image("WhiteAdd")
                                     .frame(width: 10.67, height: 10.67)
                             }
@@ -222,7 +224,8 @@ private struct CommonTextFieldView: View {
                 Spacer()
             }
             HStack(spacing: 8.75) {
-                TextField("", text: $textFieldText, axis: type == .memo ? .vertical : .horizontal)
+//                TextField("", text: $textFieldText, axis: type == .memo ? .vertical : .horizontal)
+                TextField("", text: $textFieldText)
                     .placeholder("\(type.rawValue)를 입력해주세요", when: textFieldText.isEmpty, color: .grey3)
                     .onReceive(Just(textFieldText), perform: { _ in
                         if textFieldText.count > 50 && type == .memo {

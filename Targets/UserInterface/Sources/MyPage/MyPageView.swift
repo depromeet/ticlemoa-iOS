@@ -97,7 +97,7 @@ struct MyPageView: View {
         .sheet(isPresented: $isAccountDeleteButtonTouched) {
             if #available(iOS 16.0, *) {
                 MyPageAccountDeletingView()
-                    .presentationDetents([.medium])
+//                    .presentationDetents([.medium])
             } else {
                 // Fallback on earlier versions
             }
