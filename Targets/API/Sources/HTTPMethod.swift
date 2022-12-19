@@ -21,12 +21,12 @@ struct TiclemoaURL {
     let path: String
     let queries: [String: String]
     
-    func makeURL() -> URL {
-        return {
-            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
-            urlComponents?.queryItems = queries.map({ URLQueryItem(name: $0, value: $1) })
-            return urlComponents?.url ?? URL(fileURLWithPath: "FailureURL")
-        }()
+    func makeURL() -> URL? {
+        guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+        urlComponents.queryItems = queries.map({ URLQueryItem(name: $0, value: $1) })
+        return urlComponents.url
     }
     
 }

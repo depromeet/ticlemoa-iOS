@@ -16,8 +16,11 @@ public struct NetworkRequest {
     
     let urlRequest: URLRequest
     
-    init(bundle: TiclemoaURL) {
-        self.urlRequest = URLRequest(url: bundle.makeURL())
+    init?(bundle: TiclemoaURL) {
+        guard let url = bundle.makeURL() else {
+            return nil
+        }
+        self.urlRequest = URLRequest(url: url)
     }
     
     init(bundle: TiclemoaURLRequest) {
