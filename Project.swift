@@ -15,6 +15,7 @@ enum Ticlemoa: String {
 		.iOS(targetVersion: "15.0", devices: [.iphone])
 	
 	case userInterface = "UserInterface"
+    case domainInterface = "DomainInterface"
 	case domain = "Domain"
 	case api = "API"
 	case share = "ShareExtension"
@@ -22,15 +23,31 @@ enum Ticlemoa: String {
 	var name: String { self.rawValue }
 	var product: Product {
 		switch self {
-		case .userInterface:	return .framework
-		case .domain:			return .framework
-		case .api:			return .framework
-		case .share:			return .appExtension
-		}
+            case .share:	return .appExtension
+            default:        return .framework
+        }
 	}
 }
 
 // MARK: - Module
+func interface(_ module: Ticlemoa,
+               infoPlist: InfoPlist? = nil,
+               dependencies: [Ticlemoa]
+) -> [Target] {
+    return [
+        Target(
+            name: module.name,
+            platform: .iOS,
+            product: module.product,
+            bundleId: "\(Ticlemoa.bundleId).\(Ticlemoa.projectName).\(module.name)",
+            deploymentTarget: Ticlemoa.deploymentTarget,
+            infoPlist: infoPlist ?? .default,
+            sources: ["Targets/\(module.name)/Sources/**"],
+            dependencies: dependencies.map { .target(name: $0.name) }
+        )
+    ]
+}
+    
 func makeModule(_ module: Ticlemoa,
 				infoPlist: InfoPlist? = nil,
 				dependencies: [Ticlemoa],
@@ -82,10 +99,13 @@ let shareInfoPlist: InfoPlist = .extendingDefault(with: [
 	]
 )
 
-let userInterface = makeModule(.userInterface, dependencies: [], hasTest: true)
+let userInterface = makeModule(.userInterface, dependencies: [.domainInterface], hasTest: true)
 let api = makeModule(.api, dependencies: [], hasTest: true)
-let domain = makeModule(.domain, dependencies: [.api], hasTest: true)
-let share = makeModule(.share, infoPlist: shareInfoPlist, dependencies: [], hasTest: false)
+
+let domainInterface = interface(.domainInterface, dependencies: [])
+let domain = makeModule(.domain, dependencies: [.api, .domainInterface], hasTest: true)
+
+let share = makeModule(.share, infoPlist: shareInfoPlist, dependencies: [.userInterface], hasTest: false)
 
 
 // MARK: - Project
@@ -114,7 +134,8 @@ let mainAppTarget = [
 		dependencies: [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
-			.target(name: Ticlemoa.share.name)
+			.target(name: Ticlemoa.share.name),
+            .target(name: Ticlemoa.domainInterface.name)
 //			.swinject
 		]
 	),
@@ -147,6 +168,7 @@ let project = Project.init(
 	targets: [
 		mainAppTarget,
 		userInterface,
+        domainInterface,
 		domain,
 		api,
 		share
