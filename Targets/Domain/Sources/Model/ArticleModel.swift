@@ -7,12 +7,14 @@
 //
 
 import API
-import Combine
+import DomainInterface
 
-public final class ArticleModel {
+import Foundation
+
+public final class ArticleModel: ArticleModelProtocol {
     
-    @Published private var _items: [Article] = []
-    public var items: Published<[Article]>.Publisher { $_items }
+    @Published public var items: [Article] = []
+    private let api: APIDetails = TiclemoaAPI()
     
     public init() {
         
@@ -20,7 +22,7 @@ public final class ArticleModel {
     
 }
 
-extension ArticleModel: Model {
+extension ArticleModel {
     
     public func fetch() {
         

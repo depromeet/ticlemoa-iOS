@@ -6,13 +6,14 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
-import API
-import Combine
+import Foundation
 
-public final class TagModel {
+import API
+import DomainInterface
+
+public final class TagModel: TagModelProtocol {
     
-    @Published private var _items: [Tag] = []
-    public var items: Published<[Tag]>.Publisher { $_items }
+    @Published public var items: [Tag] = []
     
     public init() {
         
@@ -20,7 +21,7 @@ public final class TagModel {
     
 }
 
-extension TagModel: Model {
+extension TagModel {
     
     public func fetch() {
         
