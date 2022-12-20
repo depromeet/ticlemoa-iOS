@@ -130,9 +130,8 @@ struct MyPageView: View {
         .setupBackground()
         .navigationTitle("마이페이지")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isAccountDeleteButtonTouched) {
+        .ticlmoaBottomSheet(isPresented: $isAccountDeleteButtonTouched) {
             MyPageAccountDeletingView()
-                .presentationDetents([.medium])
         }
     }
 }
@@ -173,18 +172,18 @@ fileprivate struct MyPageNavigationView<Destination: View>: View {
 fileprivate struct MyPageAccountDeletingView: View {
     var body: some View {
         VStack(spacing: 0) {
-            Capsule()
-                .foregroundColor(.ticlemoaBlack)
-                .frame(width: 42, height: 4)
-                .padding(18)
             Text("계정삭제")
                 .font(.system(size: 18))
                 .fontWeight(.bold)
-                .padding(.top, 6.5)
+                .padding(.top, 20.5)
                 .padding(.bottom, 30.5)
-            Spacer()
-                .background(Rectangle())
+            
+            Rectangle()
+                .border(.red)
+                .foregroundColor(.secondaryRed)
+                .frame(height: 133)
                 .padding(.horizontal, 36)
+            
             VStack(spacing: 0) {
                 HStack {
                     Text("정말로 계정을 삭제하시겠어요?")
