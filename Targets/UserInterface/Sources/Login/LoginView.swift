@@ -39,6 +39,16 @@ struct LoginView: View {
             Spacer()
                 .frame(maxHeight: 58)
         }
+        .task {
+            do {
+                let response = try await LoginAPI().kakaoLogin()
+                
+                print("DEBUG: Response \(response!.accessToken)")
+            } catch {
+                print(error)
+            }
+            
+        }
     }
 }
 
