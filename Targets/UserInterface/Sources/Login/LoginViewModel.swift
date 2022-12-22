@@ -35,7 +35,7 @@ class LoginViewModel: ObservableObject {
             }
         }
         
-        guard kakaoLoginerror != nil else { return false }
+        guard kakaoLoginerror == nil else { return false }
         guard let token = kakaoToken?.accessToken else { return false }
         let body = KakaoLoginRequest(accessToken: token, vendor: "kakao")
         let repsonse = try await network.kakaoLogin(body: body)
