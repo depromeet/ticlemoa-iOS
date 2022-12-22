@@ -14,6 +14,7 @@ import KakaoSDKCommon
 
 class LoginViewModel: ObservableObject {
     let network = LoginAPI()
+    var userInfo = UserInfoService.shared
     
     public func kakaoButtonDidTap() async throws -> Bool {
         var kakaoLoginerror: Error?
@@ -38,7 +39,9 @@ class LoginViewModel: ObservableObject {
         guard let token = kakaoToken?.accessToken else { return false }
         let body = KakaoLoginRequest(accessToken: token, vendor: "kakao")
         let repsonse = try await network.kakaoLogin(body: body)
-        return (repsonse != nil)
+        guard (repsonse != nil) else { return false }
+        userInfo.accessToken = repsonse?.accessToken
+        return true
     }
 }
 

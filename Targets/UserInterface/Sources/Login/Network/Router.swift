@@ -12,6 +12,9 @@ enum Router {
     /// 카카오톡 로그인
     case kakaoLogin(body: KakaoLoginRequest)
     
+    /// 아티클 업로드
+    case upoloadArticle(body: UploadArticleRequest)
+    
     private static let baseURLString = "http://ticlemoa-env-1.eba-6qebrvxf.ap-northeast-2.elasticbeanstalk.com"
     
     private enum HTTPMethod {
@@ -33,6 +36,7 @@ enum Router {
     private var method: HTTPMethod {
         switch self {
         case .kakaoLogin: return .post
+        case .upoloadArticle: return .post
         }
     }
     
@@ -40,7 +44,10 @@ enum Router {
         switch self {
         case .kakaoLogin:
             return "/auth/kakao/login"
+        case .upoloadArticle:
+            return "/article"
         }
+        
     }
     
     func request() throws -> URLRequest {
@@ -60,6 +67,20 @@ enum Router {
                 "accessToken": "\(body.accessToken)",
                 "vendor": "\(body.vendor)"
             ]
+            request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            return request
+            
+        case .upoloadArticle(let body):
+            let json: [String: Any] = [
+                "content": body.content,
+                "userId" : body.userId,
+                "title"  : body.title,
+                "url"  : body.url,
+                "isPublic"  : body.isPublic,
+                "tagIds"  : body.tagIds,
+            ]
+            guard UserInfoService.shared.accessToken != nil else { return request }
+            request.addValue("Bearer \(UserInfoService.shared.accessToken!)", forHTTPHeaderField: "Authorization")
             request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
             return request
         }
