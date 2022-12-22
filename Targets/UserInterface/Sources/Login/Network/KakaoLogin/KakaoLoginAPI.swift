@@ -7,13 +7,11 @@
 //
 
 import Foundation
-// Error 를 String 으로 편리하게 사용하기 위해 추가
-extension String: Error {}
+
 
 class LoginAPI {
 
-    func kakaoLogin() async throws -> KakaoLoginResponse? {
-        let body = KakaoLoginRequest(accessToken: "5KE8rCqmO4rAMHkOMHjCYOioEGx5JGOMnJtJoZmmCinJXwAAAYU0ODxM", vendor: "kakao")
+    func kakaoLogin(body: KakaoLoginRequest) async throws -> KakaoLoginResponse? {
         let request = try Router.kakaoLogin(body: body).request()
         
         let (data, response) = try await URLSession.shared.data(for: request)

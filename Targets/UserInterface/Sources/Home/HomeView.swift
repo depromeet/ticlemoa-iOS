@@ -11,7 +11,7 @@ let tagHeight = 32
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
-    @State var isFolding = false;
+    @State var isFolding = false
     @State var isPushSearchView = false
     
     var body: some View {

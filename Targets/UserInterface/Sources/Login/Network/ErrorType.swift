@@ -7,6 +7,10 @@
 //
 
 import Foundation
+
+// Error 를 String 으로 편리하게 사용하기 위해 추가
+extension String: Error {}
+
 enum ErrorType: LocalizedError {
     case parseUrlFail
     case notFound

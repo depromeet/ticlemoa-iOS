@@ -12,7 +12,7 @@ import KakaoSDKAuth
 import KakaoSDKCommon
 
 struct LoginView: View {
-    
+    @StateObject private var viewModel = LoginViewModel()
     @Binding var isLoggedIn: Bool
     
     var body: some View {
@@ -39,16 +39,6 @@ struct LoginView: View {
             Spacer()
                 .frame(maxHeight: 58)
         }
-        .task {
-            do {
-                let response = try await LoginAPI().kakaoLogin()
-                
-                print("DEBUG: Response \(response!.accessToken)")
-            } catch {
-                print(error)
-            }
-            
-        }
     }
 }
 
@@ -74,18 +64,9 @@ private extension LoginView {
                 action: {
                     HapticManager.instance.impact(style: .medium)
                     
-                    if (UserApi.isKakaoTalkLoginAvailable()) {
-                        UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                            print(oauthToken)
-                            print(error)
-                            withAnimation { isLoggedIn = true }
-                        }
-                    } else {
-                        UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                            print(oauthToken)
-                            print(error)
-                            withAnimation { isLoggedIn = true }
-                        }
+                    Task {
+                        let isSuccess = try await viewModel.kakaoButtonDidTap()
+                        withAnimation { isLoggedIn = isSuccess }
                     }
                 })
             .buttonStyle(ScaleButtonStyle())
