@@ -36,10 +36,11 @@ struct TiclemoaNavigationBar<Item: View>: ViewModifier {
                     .customFont(18, .bold)
             }
             .frame(height: 56)
-            Spacer()
+            Spacer(minLength: 0)
             content
                 .toolbar(.hidden)
-            Spacer()
+            Spacer(minLength: 0)
         }
+        .setupBackground()
     }
 }
