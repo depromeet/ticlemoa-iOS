@@ -56,7 +56,7 @@ struct MyPageView: View {
             .padding(.horizontal, 81)
             
             VStack(spacing: 0) {
-                MyPageNavigationView(imageName: "bell", title: "알림") {
+                MyPageNavigationView(imageName: "Bell", title: "알림") {
                     AlertSettingView()
                 }
                 MyPageNavigationView(imageName: "Information", title: "서비스 정보") {
