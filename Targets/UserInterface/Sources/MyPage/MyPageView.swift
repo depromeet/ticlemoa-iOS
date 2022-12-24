@@ -18,37 +18,24 @@ struct MyPageView: View {
             } label: {
                 VStack(spacing: 0) {
                     Group {
-                        Rectangle()
-                            .foregroundColor(.grey4)
+                        DefaultProfileView()
                             .frame(width: 59, height: 59)
-                            .overlay(
-                                VStack(spacing: 0) {
-                                    Circle()
-                                        .frame(width: 21, height: 21)
-                                        .padding(.top, 14)
-                                    Ellipse()
-                                        .frame(width: 42.14, height: 27.39)
-                                        .padding(.top, 5.4)
-                                }
-                                .foregroundColor(.grey2)
-                            )
                     }
-                    .clipShape(Circle())
-                    .padding(.top, 18)
+                    .padding(.top, 24)
                     .padding(.bottom, 12)
-                    HStack(spacing: 0) {
+                    HStack(spacing: 2) {
                         Text("가나다라마바사")
                             .customFont(16, .semiBold)
                             .foregroundColor(.ticlemoaBlack)
-                            .font(.system(size: 16))
                             .fontWeight(.semibold)
                         Image("Pen")
+                            .frame(width: 20, height: 20)
                     }
                     Text("asdf12345@gmail.com")
                         .customFont(14, .medium)
                         .tint(.grey3)
-                        .padding(.top, 2)
-                        .padding(.bottom, 14)
+                        .padding(.top, 4)
+                        .padding(.bottom, 19.5)
                 }
             }
             .padding(.top, 8)
@@ -108,9 +95,9 @@ struct MyPageView: View {
                         .foregroundColor(.grey4)
                     Spacer()
                 }
+                .padding(.horizontal, 20)
             }
             .padding(.vertical, 16.5)
-            .padding(.horizontal, 20)
             
             Button {
                 isAccountDeleteButtonTouched = true
@@ -121,15 +108,13 @@ struct MyPageView: View {
                         .customFont(14, .medium)
                     Spacer()
                 }
+                .padding(.horizontal, 20)
             }
             .padding(.vertical, 16.5)
-            .padding(.horizontal, 20)
             
             Spacer()
         }
-        .setupBackground()
-        .navigationTitle("마이페이지")
-        .navigationBarTitleDisplayMode(.inline)
+        .ticlemoaNavigationBar(title: "마이페이지")
         .ticlmoaBottomSheet(isPresented: $isAccountDeleteButtonTouched) {
             MyPageAccountDeletingView()
         }
