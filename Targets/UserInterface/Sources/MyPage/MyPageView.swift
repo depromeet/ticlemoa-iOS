@@ -131,7 +131,7 @@ struct MyPageView: View {
         .navigationTitle("마이페이지")
         .navigationBarTitleDisplayMode(.inline)
         .ticlmoaBottomSheet(isPresented: $isAccountDeleteButtonTouched) {
-            MyPageAccountDeletingView()
+
         }
     }
 }

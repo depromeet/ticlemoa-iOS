@@ -10,10 +10,13 @@ import SwiftUI
 import KakaoSDKUser
 import KakaoSDKAuth
 import KakaoSDKCommon
+import AuthenticationServices
 
 struct LoginView: View {
-    
+    @StateObject private var viewModel = LoginViewModel()
     @Binding var isLoggedIn: Bool
+    @Environment(\.window) var window: UIWindow?
+    @State var appleSignInDelegates: SignInWithAppleDelegates! = nil
     
     var body: some View {
         mainBody
@@ -64,33 +67,52 @@ private extension LoginView {
                 action: {
                     HapticManager.instance.impact(style: .medium)
                     
-                    if (UserApi.isKakaoTalkLoginAvailable()) {
-                        UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                            print(oauthToken)
-                            print(error)
-                            withAnimation { isLoggedIn = true }
-                        }
-                    } else {
-                        UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                            print(oauthToken)
-                            print(error)
-                            withAnimation { isLoggedIn = true }
-                        }
+                    Task {
+                        let isSuccess = try await viewModel.kakaoButtonDidTap()
+                        withAnimation { isLoggedIn = isSuccess }
                     }
                 })
             .buttonStyle(ScaleButtonStyle())
-            borderLineButton(
-                "Apple으로 로그인",
-                .white,
-                action: {
-                    HapticManager.instance.impact(style: .medium)
-                    withAnimation { isLoggedIn = true }
-                })
+//            borderLineButton(
+//                "Apple으로 로그인",
+//                .white,
+//                action: {
+//                    HapticManager.instance.impact(style: .medium)
+//                    withAnimation { isLoggedIn = true }
+//                })
+            SignInWithApple()
+              .frame(width: 280, height: 60)
+              .onTapGesture(perform: showAppleLogin)
+            
             .buttonStyle(ScaleButtonStyle())
         }
         .padding(.horizontal, 20)
     }
+        
     
+    private func showAppleLogin() {
+      let request = ASAuthorizationAppleIDProvider().createRequest()
+      request.requestedScopes = [.fullName, .email]
+
+      performSignIn(using: [request])
+    }
+    
+    private func performSignIn(using requests: [ASAuthorizationRequest]) {
+      appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
+        if success {
+          // update UI
+        } else {
+          // show the user an error
+        }
+      }
+
+      let controller = ASAuthorizationController(authorizationRequests: requests)
+      controller.delegate = appleSignInDelegates
+      controller.presentationContextProvider = appleSignInDelegates
+
+      controller.performRequests()
+    }
+
     func borderLineButton(
         _ text: String,
         _ backgorund: Color,

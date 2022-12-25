@@ -61,19 +61,27 @@ struct MainTabView: View {
                 // 네비게이션 제목
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Text("TICLEMOA")
-                        .customFont(14, .bold)
+//                        .customFont(14, .bold)
                 }
                 
+                // 종모양 & 마이프로필
                 // 종모양 & 마이프로필
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     NavigationLink(
                         destination: AlarmView(),
                         label: {
-                            Image("alarm")
+                            // TODO: 이미지 에셋 추가 시, 등록
+                            //                                Image("alarm")
+                            Image(systemName: "bell.badge")
+                                .symbolRenderingMode(.palette)
+                                .foregroundColor(.primary)
+                            
                         })
                     NavigationLink(destination: ProfileView(), label: {
-                        Image("defaultProfile")
-                        
+                        //                            Image("defaultProfile")
+                        Image(systemName: "person.crop.circle")
+                            .foregroundColor(Color.grey4)
+                            .font(.title3)
                     })
                 }
             })
