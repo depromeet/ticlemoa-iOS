@@ -6,7 +6,6 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
-import DomainInterface
 import Domain
 import UserInterface
 

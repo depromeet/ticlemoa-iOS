@@ -135,7 +135,6 @@ let mainAppTarget = [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
 			.target(name: Ticlemoa.share.name),
-            .target(name: Ticlemoa.domainInterface.name)
 //			.swinject
 		]
 	),
