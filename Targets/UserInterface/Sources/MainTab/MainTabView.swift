@@ -70,18 +70,11 @@ struct MainTabView: View {
                     NavigationLink(
                         destination: AlarmView(),
                         label: {
-                            // TODO: 이미지 에셋 추가 시, 등록
-                            //                                Image("alarm")
-                            Image(systemName: "bell.badge")
-                                .symbolRenderingMode(.palette)
-                                .foregroundColor(.primary)
-                            
+                            Image("Bell")
                         })
-                    NavigationLink(destination: ProfileView(), label: {
-                        //                            Image("defaultProfile")
-                        Image(systemName: "person.crop.circle")
-                            .foregroundColor(Color.grey4)
-                            .font(.title3)
+                    NavigationLink(destination: MyPageView(), label: {
+                        DefaultProfileView()
+                            .frame(width: 25.45, height: 25.45)
                     })
                 }
             })
