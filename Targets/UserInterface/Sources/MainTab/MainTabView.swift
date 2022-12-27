@@ -69,11 +69,11 @@ struct MainTabView: View {
                     NavigationLink(
                         destination: AlarmView(),
                         label: {
-                            Image("alarm")
+                            Image("Bell")
                         })
-                    NavigationLink(destination: ProfileView(), label: {
-                        Image("defaultProfile")
-                        
+                    NavigationLink(destination: MyPageView(), label: {
+                        DefaultProfileView()
+                            .frame(width: 25.45, height: 25.45)
                     })
                 }
             })
