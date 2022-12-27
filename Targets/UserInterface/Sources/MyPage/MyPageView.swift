@@ -25,14 +25,14 @@ struct MyPageView: View {
                     .padding(.bottom, 12)
                     HStack(spacing: 2) {
                         Text("가나다라마바사")
-                            .customFont(16, .semiBold)
+                            .pretendFont(.subhead3)
                             .foregroundColor(.ticlemoaBlack)
                             .fontWeight(.semibold)
                         Image("Pen")
                             .frame(width: 20, height: 20)
                     }
                     Text("asdf12345@gmail.com")
-                        .customFont(14, .medium)
+                        .pretendFont(.subhead2)
                         .tint(.grey3)
                         .padding(.top, 4)
                         .padding(.bottom, 19.5)
@@ -60,13 +60,13 @@ struct MyPageView: View {
             } label: {
                 HStack {
                     Text("앱 버전정보 1.1.1")
-                        .customFont(14, .medium)
+                        .pretendFont(.subhead2)
                         .foregroundColor(.grey4)
                     Spacer()
                     Group {
                         if true {
                             Text("업데이트")
-                                .customFont(12, .semiBold)
+                                .pretendFont(.subhead1)
                                 .foregroundColor(.white)
                                 .padding(.vertical, 8)
                                 .padding(.horizontal, 12)
@@ -91,7 +91,7 @@ struct MyPageView: View {
             } label: {
                 HStack {
                     Text("로그아웃")
-                        .customFont(14, .medium)
+                        .pretendFont(.subhead2)
                         .foregroundColor(.grey4)
                     Spacer()
                 }
@@ -105,7 +105,7 @@ struct MyPageView: View {
                 HStack {
                     Text("계정삭제")
                         .foregroundColor(.secondaryRed)
-                        .customFont(14, .medium)
+                        .pretendFont(.subhead2)
                     Spacer()
                 }
                 .padding(.horizontal, 20)
@@ -139,7 +139,7 @@ fileprivate struct MyPageNavigationView<Destination: View>: View {
                 HStack {
                     Image(imageName)
                     Text(title)
-                        .customFont(16, .medium)
+                        .pretendFont(.subhead3)
                     Spacer()
                     Image("Arrow.right")
                 }
