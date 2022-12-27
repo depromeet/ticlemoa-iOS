@@ -39,7 +39,7 @@ struct TiclemoaURLRequest {
     func makeURLRequest() -> URLRequest {
         return {
             var request = URLRequest(url: url)
-            request.httpMethod = request.httpMethod
+            request.httpMethod = httpMethod
             // ..
             return request
         }()
