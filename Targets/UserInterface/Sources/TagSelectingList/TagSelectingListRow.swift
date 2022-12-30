@@ -16,11 +16,22 @@ struct TagSelectingListRow: View {
     
     // FIXME: font 및 icon 변경 필요
     var body: some View {
-        HStack {
-            Text(tag.title)
-                .font(.system(size: 16))
-            Spacer()
-            Image(tag.isSelected ? "radio_on" : "radio_off")
+        VStack(spacing: 0) {
+            HStack {
+                Text(tag.title)
+                    .customFont(16, .medium)
+                    .foregroundColor(.ticlemoaBlack)
+                    .padding(.leading, 36)
+                Spacer()
+                Image(tag.isSelected ? "radio_on" : "radio_off")
+                    .padding(.trailing, 27)
+            }
+            .frame(height: TagSelectingListRow.cellHeight)
+            Divider()
+                .overlay(Color.grey2Line)
+                .frame(height: 1)
+                .padding(.top, 4)
+                .padding(.horizontal, 25)
         }
         .listRowBackground(Color.clear)
         .contentShape(Rectangle())
