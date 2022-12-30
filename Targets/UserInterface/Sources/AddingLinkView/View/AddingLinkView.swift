@@ -24,6 +24,8 @@ struct AddingLinkView: View {
     @ObservedObject private var viewModel: AddingLinkViewModel
     @FocusState private var isArticleTitleFocused: Bool // 간혹 preview에서 동작 잘안됨, 시뮬레이터에선 잘됨
     @State private var isPublicSettingsHelpClicked: Bool = false
+    @State private var isTagAddingButtonTouched: Bool = false
+    @State var tags = TagSelectingListViewModel.dummy
     
     init(fromWhere fromWhichButton: FromWhichButton) {
         self.fromWhichButton = fromWhichButton
@@ -44,6 +46,9 @@ struct AddingLinkView: View {
         .padding(.horizontal, 20)
         .navigationTitle("링크 추가")
         .navigationBarTitleDisplayMode(.inline)
+        .ticlmoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
+            TagSelectingListView(tags: $tags)
+        }
     }
 }
 
@@ -121,6 +126,7 @@ extension AddingLinkView {
                 }
                 if viewModel.tags.count < 2 {
                     Button {
+                        isTagAddingButtonTouched = true
                     } label: {
                         HStack(spacing: 3.04) {
                             Image("TagAdd")

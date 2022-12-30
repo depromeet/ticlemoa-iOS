@@ -35,6 +35,7 @@ public struct TagSelectingListView: View {
             makingTagButton
             completeButton
         }
+        .gesture(DragGesture())
     }
     
 }
