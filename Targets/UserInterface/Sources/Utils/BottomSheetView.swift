@@ -14,10 +14,12 @@ struct BottomSheetView<Content: View>: View {
     @State private var viewYOffset: Double = UIScreen.main.bounds.height
     @Environment(\.dismiss) var dismiss
     var content: () -> (Content)
+    let isHandlebarHidden: Bool
 
-    init(isPresent: Binding<Bool>, @ViewBuilder content: @escaping () -> (Content)) {
+    init(isPresent: Binding<Bool>, withHandleBar: Bool = false, @ViewBuilder content: @escaping () -> (Content)) {
         self._isPresent = isPresent
         self.content = content
+        self.isHandlebarHidden = !withHandleBar
     }
     
     var body: some View {
@@ -37,6 +39,7 @@ struct BottomSheetView<Content: View>: View {
                             .frame(width: 42, height: 4)
                             .padding(.top, 18)
                             .padding(.bottom, 4)
+                            .foregroundColor(isHandlebarHidden ? .clear : .ticlemoaBlack)
                         
                         content()
                         
