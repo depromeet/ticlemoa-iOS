@@ -9,10 +9,10 @@
 import SwiftUI
 
 extension View {
-    func ticlmoaBottomSheet(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> (some View)) -> some View {
+    func ticlmoaBottomSheet(isPresented: Binding<Bool>, withHandleBar: Bool = false, @ViewBuilder content: @escaping () -> (some View)) -> some View {
         let keyWindow = UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first!
         
-        let bottomSheetHostingController = UIHostingController(rootView: BottomSheetView(isPresent: isPresented, content: content))
+        let bottomSheetHostingController = UIHostingController(rootView: BottomSheetView(isPresent: isPresented, withHandleBar: withHandleBar, content: content))
         bottomSheetHostingController.modalPresentationStyle = .overCurrentContext
         bottomSheetHostingController.view.backgroundColor = .clear
         bottomSheetHostingController.definesPresentationContext = true
