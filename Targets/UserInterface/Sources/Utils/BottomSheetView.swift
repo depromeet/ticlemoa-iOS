@@ -48,9 +48,9 @@ struct BottomSheetView<Content: View>: View {
                     }
                     .frame(maxWidth: .infinity)
                     .background(Color.grey1)
-                    .offset(x: 0, y: viewYOffset)
                     .cornerRadius(20, corners: .topLeft)
                     .cornerRadius(20, corners: .topRight)
+                    .offset(x: 0, y: viewYOffset)
                     .gesture(drag)
                 }
                 .ignoresSafeArea(.all, edges: [.bottom])
