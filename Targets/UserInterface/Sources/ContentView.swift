@@ -7,14 +7,29 @@
 //
 
 import SwiftUI
+import KakaoSDKAuth
+import KakaoSDKCommon
 
 public struct ContentView: View {
-	
-	public init() { }
-	
-	public var body: some View {
-//		Text("Hello World")
-        MainTabView()
-	}
-	
+    @State private  var isLoggedIn: Bool = false
+    
+    public init() {
+        let appKey = "a864acaf7534a2c1a627e21d352d2e49"
+        KakaoSDK.initSDK(appKey: appKey)
+        
+    }
+    
+    public var body: some View {
+        Group {
+            if isLoggedIn {
+                MainTabView()
+                    .transition(.scale)
+            } else {
+                LoginView(isLoggedIn: $isLoggedIn)
+                    .transition(.scale)
+                
+            }
+        }
+    }
+    
 }

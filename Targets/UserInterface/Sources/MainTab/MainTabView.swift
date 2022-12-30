@@ -61,9 +61,10 @@ struct MainTabView: View {
                 // 네비게이션 제목
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Text("TICLEMOA")
-                        .customFont(14, .bold)
+//                        .customFont(14, .bold)
                 }
                 
+                // 종모양 & 마이프로필
                 // 종모양 & 마이프로필
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     NavigationLink(
