@@ -26,10 +26,6 @@ public struct TagSelectingListView: View {
     // FIXME: font 및 icon 변경 필요
     public var body: some View {
         VStack(alignment: .center) {
-            Capsule()
-                .foregroundColor(.black)
-                .frame(width: 42, height: 4)
-                .padding(18)
             title
             tagList
             makingTagButton
@@ -44,24 +40,39 @@ extension TagSelectingListView {
     
     var title: some View {
         Text("티클모아에 저장하기")
-            .font(.system(size: 18, weight: .bold))
+            .customFont(18, .bold)
+            .frame(height: 59)
     }
     
     var tagList: some View {
-        List {
+        Group {
             if tags.isEmpty {
-                Text("저장된 태그가 없어요.")
-                    .font(.system(size: 16))
-                    .foregroundColor(.grey4)
-                    .padding([.vertical, .horizontal], 12)
-            }
-            ForEach($tags) { $tag in
-                TagSelectingListRow(tag: $tag)
-                    .frame(height: TagSelectingListRow.cellHeight)
+                HStack {
+                    Text("저장된 태그가 없어요.")
+                        .customFont(16, .medium)
+                        .font(.system(size: 16))
+                        .foregroundColor(.grey4)
+                        .padding(.vertical, 12)
+                        .padding(.leading, 36)
+                    Spacer()
+                }
+            } else if (1...3).contains(tags.count) {
+                tagView
+            } else {
+                ScrollView {
+                    tagView
+                }
+                .frame(height: 178)
             }
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 10)
+    }
+    
+    var tagView: some View {
+        ForEach($tags) { $tag in
+            TagSelectingListRow(tag: $tag)
+        }
     }
     
     var makingTagButton: some View {
@@ -69,15 +80,17 @@ extension TagSelectingListView {
             action: {
                 
             }, label: {
-                HStack {
-                    Label("새 태그 만들기", image: "tag")
-                        .foregroundColor(.black)
-                        .padding(.top, 20)
-                        .padding(.horizontal, 35)
+                HStack(spacing: 6.62) {
+                    Image("tag")
+                        .padding(.leading, 34)
+                    Text("새 태그 만들기")
+                        .foregroundColor(.ticlemoaBlack)
+                        .customFont(16, .semiBold)
                     Spacer()
                 }
             }
         )
+        .frame(height: 64)
     }
     
     var completeButton: some View {
@@ -88,6 +101,7 @@ extension TagSelectingListView {
                 HStack {
                     Spacer()
                     Text("완료")
+                        .customFont(16, .bold)
                     Spacer()
                 }
                 .frame(height: 56)
@@ -95,7 +109,7 @@ extension TagSelectingListView {
                 .cornerRadius(6)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(.black)
+                        .foregroundColor(.ticlemoaBlack)
                 )
             }
         )
