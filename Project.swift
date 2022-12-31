@@ -33,19 +33,19 @@ enum Ticlemoa: String {
 // MARK: - Module
 func makeModule(_ module: Ticlemoa,
 				infoPlist: InfoPlist? = nil,
-				dependencies: [Ticlemoa],
+				dependencies: [TargetDependency],
 				hasTest: Bool
 ) -> [Target] {
 	let sources = Target(
 		name: module.name,
 		platform: .iOS,
 		product: module.product,
-		bundleId: "\(Ticlemoa.bundleId).\(Ticlemoa.projectName).\(module.name)",
+		bundleId: "\(Ticlemoa.bundleId).\(Ticlemoa.projectName)",
 		deploymentTarget: Ticlemoa.deploymentTarget,
 		infoPlist: infoPlist ?? .default,
 		sources: ["Targets/\(module.name)/Sources/**"],
 		resources: ["Targets/\(module.name)/Resources/**"],
-		dependencies: dependencies.map { .target(name: $0.name) }
+		dependencies: dependencies
 	)
 	if hasTest {
 		let tests = Target(
@@ -82,10 +82,32 @@ let shareInfoPlist: InfoPlist = .extendingDefault(with: [
 	]
 )
 
-let userInterface = makeModule(.userInterface, dependencies: [], hasTest: true)
-let api = makeModule(.api, dependencies: [], hasTest: true)
-let domain = makeModule(.domain, dependencies: [.api], hasTest: true)
-let share = makeModule(.share, infoPlist: shareInfoPlist, dependencies: [], hasTest: false)
+let userInterface = makeModule(
+	.userInterface,
+	dependencies: [
+		.external(name: "KakaoSDK"),
+		.external(name: "Collections")
+	],
+	hasTest: true
+)
+let api = makeModule(
+	.api,
+	dependencies: [],
+	hasTest: true
+)
+let domain = makeModule(
+	.domain,
+	dependencies: [
+		.target(name: Ticlemoa.api.name)
+	],
+	hasTest: true
+)
+let share = makeModule(
+	.share,
+	infoPlist: shareInfoPlist,
+	dependencies: [],
+	hasTest: false
+)
 
 
 // MARK: - Project
@@ -117,10 +139,7 @@ let mainAppTarget = [
 		dependencies: [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
-            .target(name: Ticlemoa.share.name),
-            .swiftCollection,
-            .kakaoSDK,
-            .alamofire
+            .target(name: Ticlemoa.share.name)
 		]
 	),
 	Target.init(
@@ -146,11 +165,6 @@ let mainAppTarget = [
 let project = Project.init(
 	name: Ticlemoa.projectName,
 	organizationName: Ticlemoa.organizationName,
-	packages: [
-        .swiftCollection,
-        .kakaoSDK,
-        .alamofire
-    ],
 	targets: [
 		mainAppTarget,
 		userInterface,
