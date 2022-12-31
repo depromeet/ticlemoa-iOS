@@ -7,17 +7,6 @@
 
 import ProjectDescription
 
-public extension TargetDependency {
-//	static let swinject = TargetDependency.package(product: "Swinject")
-}
-
-public extension Package {
-//	static let swinject = Package.remote(
-//		url: "https://github.com/Swinject/Swinject.git",
-//		requirement: .upToNextMajor(from: .init(2, 8, 1))
-//	)
-}
-
 // MARK: - SourceFile
 public extension SourceFilesList {
 	static let sources: SourceFilesList = "Sources/**"

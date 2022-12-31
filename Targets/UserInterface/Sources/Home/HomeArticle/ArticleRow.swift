@@ -9,27 +9,39 @@
 import SwiftUI
 
 struct ArticleRow: View {
+    let title: String
+    let tags: [String] = ["tag1"]
+    let imageURLString: String
     
     var body: some View {
-        HStack {
-            
+        HStack(alignment: .center) {
             Color.grey2
                 .frame(maxWidth: 88, maxHeight: 88)
                 .padding(.leading, 20)
-            Spacer()
+                .padding(.trailing, 12)
+                .overlay {
+                    Image(systemName: "t.square")
+                    
+                    // TODO: 이미지 전달 로직 구현 필요
+//                    AsyncImage(url: URL(string: imageURLString)!, scale: 1.0)
+                        .font(.largeTitle)
+                        .foregroundColor(Color.grey3)
+                }
             VStack(alignment:.leading) {
-                Text("아티클 제목제목제목제목제목제목제목제목제목제목")
-                    .customFont(12, .regular)
-                
-                Text("태그들")
-//                    .font(12,. medium)
-                    .foregroundColor(Color.grey1)
-                    .padding(2)
-                    .background(Color.grey1)
+                Text(title)
+                    .pretendFont(.subhead3)
+                    .padding(.top, 14)
+                Spacer()
+                Text(tags.first!)
+                    .pretendFont(.body1)
+                    .foregroundColor(Color.grey4)
+                    .padding(5)
+                    .background(Color.grey2)
                     .background(
                         RoundedRectangle(cornerRadius: 5,style: .continuous)
                             .foregroundColor(Color.grey1)
                     )
+                    .padding(.bottom, 14)
             }
             Spacer()
             VStack {
@@ -37,7 +49,7 @@ struct ArticleRow: View {
                     .padding(.top, 14)
                 Spacer()
             }
-                .padding(.trailing, 20)
+            .padding(.trailing, 20)
         }
         .frame(maxWidth: .infinity, maxHeight: 106)
         .listRowInsets(EdgeInsets(top: 14, leading: 0, bottom: 14, trailing: 0))
@@ -49,7 +61,7 @@ struct ArticleRow: View {
 
 struct ArticleRow_Previews: PreviewProvider {
     static var previews: some View {
-        ArticleRow()
+        ArticleRow(title: "프리뷰 타이틀...", imageURLString: "")
     }
 }
 

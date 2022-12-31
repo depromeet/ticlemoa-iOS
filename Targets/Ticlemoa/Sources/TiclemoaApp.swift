@@ -23,6 +23,7 @@ struct TiclemoaApp: App {
 		WindowGroup {
             ContentView()
                 .environmentObject(modelContainer)
+                .preferredColorScheme(.light)
 		}
 	}
 }

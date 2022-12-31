@@ -12,7 +12,7 @@ enum Ticlemoa: String {
 	static let organizationName = "nyongnyong"
 	static let bundleId = "com.nyongnyong"
 	static let deploymentTarget = DeploymentTarget
-		.iOS(targetVersion: "15.0", devices: [.iphone])
+		.iOS(targetVersion: "16.0", devices: [.iphone])
 	
 	case userInterface = "UserInterface"
     case domainInterface = "DomainInterface"
@@ -50,19 +50,19 @@ func interface(_ module: Ticlemoa,
     
 func makeModule(_ module: Ticlemoa,
 				infoPlist: InfoPlist? = nil,
-				dependencies: [Ticlemoa],
+				dependencies: [TargetDependency],
 				hasTest: Bool
 ) -> [Target] {
 	let sources = Target(
 		name: module.name,
 		platform: .iOS,
 		product: module.product,
-		bundleId: "\(Ticlemoa.bundleId).\(Ticlemoa.projectName).\(module.name)",
+		bundleId: "\(Ticlemoa.bundleId).\(Ticlemoa.projectName)",
 		deploymentTarget: Ticlemoa.deploymentTarget,
 		infoPlist: infoPlist ?? .default,
 		sources: ["Targets/\(module.name)/Sources/**"],
 		resources: ["Targets/\(module.name)/Resources/**"],
-		dependencies: dependencies.map { .target(name: $0.name) }
+		dependencies: dependencies
 	)
 	if hasTest {
 		let tests = Target(
@@ -99,14 +99,32 @@ let shareInfoPlist: InfoPlist = .extendingDefault(with: [
 	]
 )
 
-let userInterface = makeModule(.userInterface, dependencies: [.domainInterface], hasTest: true)
-let api = makeModule(.api, dependencies: [], hasTest: true)
-
-let domainInterface = interface(.domainInterface, dependencies: [])
-let domain = makeModule(.domain, dependencies: [.api, .domainInterface], hasTest: true)
-
-let share = makeModule(.share, infoPlist: shareInfoPlist, dependencies: [.userInterface], hasTest: false)
-
+let userInterface = makeModule(
+	.userInterface,
+	dependencies: [
+		.external(name: "KakaoSDK"),
+		.external(name: "Collections")
+	],
+	hasTest: true
+)
+let api = makeModule(
+	.api,
+	dependencies: [],
+	hasTest: true
+)
+let domain = makeModule(
+	.domain,
+	dependencies: [
+		.target(name: Ticlemoa.api.name)
+	],
+	hasTest: true
+)
+let share = makeModule(
+	.share,
+	infoPlist: shareInfoPlist,
+	dependencies: [],
+	hasTest: false
+)
 
 // MARK: - Project
 
@@ -116,8 +134,11 @@ let infoPlist: InfoPlist = .extendingDefault(with: [
 		"UIMainStoryboardFile": "",
 		"UISupportedInterfaceOrientations" : ["UIInterfaceOrientationPortrait"],
 		"UILaunchStoryboardName": "LaunchScreen",
-        "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true]
-	]
+    "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true],
+    "LSApplicationQueriesSchemes" : [
+        "kakaokompassauth",
+        "kakaolink"
+    ]
 )
 
 let mainAppTarget = [
@@ -134,8 +155,7 @@ let mainAppTarget = [
 		dependencies: [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
-			.target(name: Ticlemoa.share.name),
-//			.swinject
+      .target(name: Ticlemoa.share.name)
 		]
 	),
 	Target.init(
@@ -161,9 +181,6 @@ let mainAppTarget = [
 let project = Project.init(
 	name: Ticlemoa.projectName,
 	organizationName: Ticlemoa.organizationName,
-	packages: [
-//			.swinject,
-	],
 	targets: [
 		mainAppTarget,
 		userInterface,
