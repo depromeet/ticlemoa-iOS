@@ -10,9 +10,9 @@ enum Ticlemoa: String {
 	static let projectName = "Ticlemoa"
 	static let productName = "Ticlemoa"
 	static let organizationName = "nyongnyong"
-	static let bundleId = "com.nyongnyong"
+	static let bundleId = "team.nyongnyong"
 	static let deploymentTarget = DeploymentTarget
-		.iOS(targetVersion: "16.0", devices: [.iphone])
+		.iOS(targetVersion: "15.0", devices: [.iphone])
 	
 	case userInterface = "UserInterface"
 	case domain = "Domain"
@@ -36,6 +36,26 @@ func makeModule(_ module: Ticlemoa,
 				dependencies: [Ticlemoa],
 				hasTest: Bool
 ) -> [Target] {
+    if module == .userInterface {
+        let sources = Target(
+            name: module.name,
+            platform: .iOS,
+            product: module.product,
+            bundleId: "\(Ticlemoa.bundleId).\(Ticlemoa.projectName).\(module.name)",
+            deploymentTarget: Ticlemoa.deploymentTarget,
+            infoPlist: infoPlist ?? .default,
+            sources: ["Targets/\(module.name)/Sources/**"],
+            resources: ["Targets/\(module.name)/Resources/**"],
+//            dependencies: dependencies.map { .target(name: $0.name) }
+            dependencies: [
+                .kakaoSDK,
+//                .swiftCollection,
+                .alamofire
+            ]
+        )
+        return [sources]
+    }
+    
 	let sources = Target(
 		name: module.name,
 		platform: .iOS,
@@ -99,6 +119,20 @@ let infoPlist: InfoPlist = .extendingDefault(with: [
         "LSApplicationQueriesSchemes" : [
             "kakaokompassauth",
             "kakaolink"
+        ],
+        "UIAppFonts": [
+            "Pretendard-Thin.otf",
+            "Pretendard-SemiBold.otf",
+            "Pretendard-Regular.otf",
+            "Pretendard-Medium.otf",
+            "Pretendard-Light.otf",
+            "Pretendard-ExtraLight.otf",
+            "Pretendard-ExtraBold.otf",
+            "Pretendard-Bold.otf",
+            "Pretendard-Black.otf"
+        ],
+        "NSAppTransportSecurity": [
+            "NSAllowsArbitraryLoads": true
         ]
 	]
 )
@@ -118,7 +152,7 @@ let mainAppTarget = [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
             .target(name: Ticlemoa.share.name),
-            .swiftCollection,
+//            .swiftCollection,
             .kakaoSDK,
             .alamofire
 		]
