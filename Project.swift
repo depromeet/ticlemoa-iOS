@@ -12,7 +12,7 @@ enum Ticlemoa: String {
 	static let organizationName = "nyongnyong"
 	static let bundleId = "com.nyongnyong"
 	static let deploymentTarget = DeploymentTarget
-		.iOS(targetVersion: "16.0", devices: [.iphone])
+		.iOS(targetVersion: "15.0", devices: [.iphone])
 	
 	case userInterface = "UserInterface"
     case domainInterface = "DomainInterface"
@@ -134,11 +134,12 @@ let infoPlist: InfoPlist = .extendingDefault(with: [
 		"UIMainStoryboardFile": "",
 		"UISupportedInterfaceOrientations" : ["UIInterfaceOrientationPortrait"],
 		"UILaunchStoryboardName": "LaunchScreen",
-    "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true],
-    "LSApplicationQueriesSchemes" : [
-        "kakaokompassauth",
-        "kakaolink"
-    ]
+		"NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true],
+		"LSApplicationQueriesSchemes" : [
+			"kakaokompassauth",
+			"kakaolink"
+		]
+	]
 )
 
 let mainAppTarget = [
@@ -155,7 +156,7 @@ let mainAppTarget = [
 		dependencies: [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
-      .target(name: Ticlemoa.share.name)
+			.target(name: Ticlemoa.share.name)
 		]
 	),
 	Target.init(
@@ -184,7 +185,6 @@ let project = Project.init(
 	targets: [
 		mainAppTarget,
 		userInterface,
-        domainInterface,
 		domain,
 		api,
 		share
