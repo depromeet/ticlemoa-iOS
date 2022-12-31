@@ -9,6 +9,9 @@ import ProjectDescription
 
 public extension TargetDependency {
 //	static let swinject = TargetDependency.package(product: "Swinject")
+    static let swiftCollection = TargetDependency.package(product: "SwiftCollection")
+    static let kakaoSDK = TargetDependency.package(product: "KakaoSDK")
+    static let alamofire = TargetDependency.package(product: "Alamofire")
 }
 
 public extension Package {
@@ -16,6 +19,18 @@ public extension Package {
 //		url: "https://github.com/Swinject/Swinject.git",
 //		requirement: .upToNextMajor(from: .init(2, 8, 1))
 //	)
+    static let swiftCollection = Package.remote(
+        url: "https://github.com/apple/swift-collections.git",
+        requirement: .upToNextMajor(from: .init(1, 0, 0))
+    )
+    static let kakaoSDK = Package.remote(
+        url: "https://github.com/kakao/kakao-ios-sdk.git",
+        requirement: .upToNextMajor(from: .init(2, 13, 1))
+    )
+    static let alamofire = Package.remote(
+        url: "https://github.com/Alamofire/Alamofire.git",
+        requirement: .upToNextMajor(from: .init(5, 6, 1))
+    )
 }
 
 // MARK: - SourceFile

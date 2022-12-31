@@ -96,6 +96,10 @@ let infoPlist: InfoPlist = .extendingDefault(with: [
 		"UIMainStoryboardFile": "",
 		"UISupportedInterfaceOrientations" : ["UIInterfaceOrientationPortrait"],
 		"UILaunchStoryboardName": "LaunchScreen",
+        "LSApplicationQueriesSchemes" : [
+            "kakaokompassauth",
+            "kakaolink"
+        ]
 	]
 )
 
@@ -113,8 +117,10 @@ let mainAppTarget = [
 		dependencies: [
 			.target(name: Ticlemoa.userInterface.name),
 			.target(name: Ticlemoa.domain.name),
-			.target(name: Ticlemoa.share.name)
-//			.swinject
+            .target(name: Ticlemoa.share.name),
+            .swiftCollection,
+            .kakaoSDK,
+            .alamofire
 		]
 	),
 	Target.init(
@@ -141,8 +147,10 @@ let project = Project.init(
 	name: Ticlemoa.projectName,
 	organizationName: Ticlemoa.organizationName,
 	packages: [
-//			.swinject,
-	],
+        .swiftCollection,
+        .kakaoSDK,
+        .alamofire
+    ],
 	targets: [
 		mainAppTarget,
 		userInterface,
