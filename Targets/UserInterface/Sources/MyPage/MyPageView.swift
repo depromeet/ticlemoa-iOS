@@ -63,25 +63,25 @@ struct MyPageView: View {
                         .pretendFont(.subhead2)
                         .foregroundColor(.grey4)
                     Spacer()
-                    Group {
-                        if true {
-                            Text("업데이트")
-                                .pretendFont(.subhead1)
-                                .foregroundColor(.white)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 12)
-                                .background(
-                                    Capsule()
-                                        .foregroundColor(.ticlemoaBlack)
-                                )
-                                .padding(.vertical, 10)
-                        } else {
-                            Text("최신버전")
-                                .customFont(14, .medium)
-                                .foregroundColor(.grey3)
-                                .padding(.vertical, 16.5)
-                        }
-                    }
+//                    Group {
+//                        if true {
+//                            Text("업데이트")
+//                                .pretendFont(.subhead1)
+//                                .foregroundColor(.white)
+//                                .padding(.vertical, 8)
+//                                .padding(.horizontal, 12)
+//                                .background(
+//                                    Capsule()
+//                                        .foregroundColor(.ticlemoaBlack)
+//                                )
+//                                .padding(.vertical, 10)
+//                        } else {
+//                            Text("최신버전")
+//                                .customFont(14, .medium)
+//                                .foregroundColor(.grey3)
+//                                .padding(.vertical, 16.5)
+//                        }
+//                    }
                 }
                 .padding(.horizontal, 20)
             }

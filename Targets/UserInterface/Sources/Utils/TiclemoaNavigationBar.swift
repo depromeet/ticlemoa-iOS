@@ -33,7 +33,7 @@ struct TiclemoaNavigationBar<Item: View>: ViewModifier {
                     trailingItem().padding(.trailing, 20)
                 }
                 Text(title)
-                    .customFont(18, .bold)
+//                    .customFont(18, .bold)
             }
             .frame(height: 56)
             Spacer(minLength: 0)
