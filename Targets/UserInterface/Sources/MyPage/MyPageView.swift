@@ -27,7 +27,7 @@ struct MyPageView: View {
                         Text("가나다라마바사")
                             .pretendFont(.subhead3)
                             .foregroundColor(.ticlemoaBlack)
-                            .fontWeight(.semibold)
+//                            .fontWeight(.semibold)
                         Image("Pen")
                             .frame(width: 20, height: 20)
                     }

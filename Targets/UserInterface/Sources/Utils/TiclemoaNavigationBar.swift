@@ -38,7 +38,7 @@ struct TiclemoaNavigationBar<Item: View>: ViewModifier {
             .frame(height: 56)
             Spacer(minLength: 0)
             content
-                .toolbar(.hidden)
+//                .toolbar(.hidden)
             Spacer(minLength: 0)
         }
         .setupBackground()
