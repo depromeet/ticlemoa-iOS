@@ -82,11 +82,34 @@ let shareInfoPlist: InfoPlist = .extendingDefault(with: [
 	]
 )
 
-let userInterface = makeModule(.userInterface, dependencies: [], hasTest: true)
-let api = makeModule(.api, dependencies: [], hasTest: true)
-let domain = makeModule(.domain, dependencies: [.api], hasTest: true)
-let share = makeModule(.share, infoPlist: shareInfoPlist, dependencies: [], hasTest: false)
 
+let userInterface = makeModule(
+	.userInterface,
+	dependencies: [
+//		.external(name: "KakaoSDK"),
+//		.external(name: "Collections")
+	],
+	hasTest: true
+)
+let api = makeModule(
+	.api,
+	dependencies: [],
+	hasTest: true
+)
+let domain = makeModule(
+	.domain,
+	dependencies: [
+        .api
+//		.target(name: Ticlemoa.api.name)
+	],
+	hasTest: true
+)
+let share = makeModule(
+	.share,
+	infoPlist: shareInfoPlist,
+	dependencies: [],
+	hasTest: false
+)
 
 // MARK: - Project
 
