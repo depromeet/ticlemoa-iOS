@@ -22,6 +22,7 @@ struct TagSelectingListViewModel: Identifiable, Checkable {
 public struct TagSelectingListView: View {
     
     @Binding var tags: [TagSelectingListViewModel]
+    @State private var isMakingTagButtonTapped: Bool = false
     
     // FIXME: font 및 icon 변경 필요
     public var body: some View {
@@ -78,7 +79,7 @@ extension TagSelectingListView {
     var makingTagButton: some View {
         Button(
             action: {
-                
+                isMakingTagButtonTapped = true
             }, label: {
                 HStack(spacing: 6.62) {
                     Image("tag")
@@ -91,6 +92,13 @@ extension TagSelectingListView {
             }
         )
         .frame(height: 64)
+        .ticlmoaAlert(
+            isPresented: $isMakingTagButtonTapped,
+            title: "새 태그 만들기",
+            style: .inputText,
+            completion: { result in
+                print(result)
+            })
     }
     
     var completeButton: some View {

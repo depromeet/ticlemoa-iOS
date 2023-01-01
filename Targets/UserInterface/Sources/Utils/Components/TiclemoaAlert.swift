@@ -45,10 +45,18 @@ extension View {
         }()
 
         return self.onChange(of: isPresented.wrappedValue) {
-            if $0 {
-                keyWindow?.rootViewController?.present(alertViewController, animated: true)
+            if let presentedViewController = keyWindow?.rootViewController?.presentedViewController {
+                if $0 {
+                    presentedViewController.present(alertViewController, animated: true)
+                } else {
+                    presentedViewController.dismiss(animated: true)
+                }
             } else {
-                keyWindow?.rootViewController?.dismiss(animated: true)
+                if $0 {
+                    keyWindow?.rootViewController?.present(alertViewController, animated: true)
+                } else {
+                    keyWindow?.rootViewController?.dismiss(animated: true)
+                }
             }
         }
     }
