@@ -87,16 +87,20 @@ func makeModule(_ module: Ticlemoa,
 // MARK: - Module
 
 let shareInfoPlist: InfoPlist = .extendingDefault(with: [
-        "CFBundleDisplayName": "\(Ticlemoa.productName)",
-        "CFBundleShortVersionString": "1.0.0",
-        "NSExtension": [
-            "NSExtensionAttributes": [
-                "NSExtensionActivationSupportsText": true
-            ],
-            "NSExtensionMainStoryboard": "MainInterface",
-            "NSExtensionPointIdentifier": "com.apple.share-services"
-        ]
-    ]
+		"CFBundleDisplayName": "\(Ticlemoa.productName)",
+		"CFBundleShortVersionString": "1.0.0",
+		"NSExtension": [
+            "NSExtensionPrincipalClass": "ShareExtension.ShareNavigationController",
+			"NSExtensionAttributes": [
+				"NSExtensionActivationSupportsText": true,
+                "NSExtensionActivationRule": [
+                    "NSExtensionActivationSupportsWebURLWithMaxCount": 1,
+                    "NSExtensionActivationSupportsWebPageWithMaxCount": 1
+                ]
+			],
+			"NSExtensionPointIdentifier": "com.apple.share-services"
+		]
+	]
 )
 
 let userInterface = makeModule(
