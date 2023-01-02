@@ -13,16 +13,26 @@ protocol Checkable {
 }
 
 // FIXME: - Example 타입 변경필요
-struct TagSelectingListViewModel: Identifiable, Checkable {
-    let id: UUID
+public struct TagSelectingListViewModel: Identifiable, Checkable {
+    public let id: UUID
     let title: String
     var isSelected: Bool
+    
+    public init(id: UUID, title: String, isSelected: Bool) {
+        self.id = id
+        self.title = title
+        self.isSelected = isSelected
+    }
 }
 
 public struct TagSelectingListView: View {
     
     @Binding var tags: [TagSelectingListViewModel]
     @State private var isMakingTagButtonTapped: Bool = false
+    
+    public init(tags: Binding<[TagSelectingListViewModel]>) {
+        self._tags = tags
+    }
     
     // FIXME: font 및 icon 변경 필요
     public var body: some View {
@@ -141,7 +151,7 @@ struct SelectableTagListView_Previews: PreviewProvider {
 #if DEBUG
 
 extension TagSelectingListViewModel {
-    static var dummy: [Self] {
+    public static var dummy: [Self] {
         [
             .init(id: .init(), title: "첫번째 태그", isSelected: Bool.random()),
             .init(id: .init(), title: "두번째 태그", isSelected: Bool.random()),
