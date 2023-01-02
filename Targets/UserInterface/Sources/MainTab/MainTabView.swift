@@ -7,49 +7,55 @@
 //
 
 import SwiftUI
+import Domain
 
 struct MainTabView: View {
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
+    @EnvironmentObject var modelContainer: ModelContainer
+
     
     var body: some View {
         NavigationView {
             TabView {
-                HomeView()
-                //                .setupBackground()
-                    .tabItem {
-                        Tab.home.imageItem
-                        Tab.home.textItem
-                    }
-                    .overlay {
-                        VStack {
-                            Spacer()
-                            if isSnackBarButtonExisting {
-                                NavigationLink(
-                                    destination: AddingLinkView(fromWhere: .snackBar),
-                                    label: {
-                                        HStack {
-                                            Text("복사한 링크 추가하기")
-                                                .font(.system(size: 14))
-                                                .foregroundColor(.grey1)
-                                                .padding(.leading, 16)
-                                            Spacer()
-                                            Button {
-                                                isSnackBarButtonExisting = false
-                                            } label: {
-                                                Image("CloseButton")
-                                                    .frame(width: 13.67, height: 13.67)
-                                                    .padding(.trailing, 15.19)
-                                            }
+                HomeView(
+                    viewModel: HomeViewModel(
+                        model: modelContainer.tagModel as? TagModel ?? TagModel()
+                    )
+                )
+                .tabItem {
+                    Tab.home.imageItem
+                    Tab.home.textItem
+                }
+                .overlay {
+                    VStack {
+                        Spacer()
+                        if isSnackBarButtonExisting {
+                            NavigationLink(
+                                destination: AddingLinkView(fromWhere: .snackBar),
+                                label: {
+                                    HStack {
+                                        Text("복사한 링크 추가하기")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.grey1)
+                                            .padding(.leading, 16)
+                                        Spacer()
+                                        Button {
+                                            isSnackBarButtonExisting = false
+                                        } label: {
+                                            Image("CloseButton")
+                                                .frame(width: 13.67, height: 13.67)
+                                                .padding(.trailing, 15.19)
                                         }
-                                        .frame(height: 44)
-                                        .background(Color.ticlemoaBlack)
-                                    })
-                                .cornerRadius(6.0)
-                                .padding(.horizontal, 32)
-                                .padding(.bottom, 32)
-                            }
+                                    }
+                                    .frame(height: 44)
+                                    .background(Color.ticlemoaBlack)
+                                })
+                            .cornerRadius(6.0)
+                            .padding(.horizontal, 32)
+                            .padding(.bottom, 32)
                         }
                     }
+                }
                 CommunityView()
                 //                .setupBackground()
                     .tabItem {
@@ -61,10 +67,9 @@ struct MainTabView: View {
                 // 네비게이션 제목
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Text("TICLEMOA")
-//                        .customFont(14, .bold)
+                        .pretendFont(.subhead2)
                 }
                 
-                // 종모양 & 마이프로필
                 // 종모양 & 마이프로필
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     NavigationLink(

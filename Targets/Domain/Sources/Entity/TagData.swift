@@ -6,13 +6,22 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
-import DomainInterface
+//import DomainInterface
 
 import Foundation
 
-struct TagData: Tag {
-    let id: UUID
-    let name: String
-    let articleIds: [UUID]
-    let created: TimeInterval
+public struct TagData: Tag, Equatable, Hashable {
+    public let id: UUID
+    public let name: String
+    public let articleIds: [UUID]
+    public let created: TimeInterval
+    public var size: CGFloat = 0
+    
+    public init(id: UUID, name: String, articleIds: [UUID], created: TimeInterval, size: CGFloat) {
+        self.id = id
+        self.name = name
+        self.articleIds = articleIds
+        self.created = created
+        self.size = size
+    }
 }

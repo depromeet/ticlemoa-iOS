@@ -7,7 +7,9 @@
 //
 
 import Foundation
-import DomainInterface
+//import DomainInterface
+import Domain
+
 
 public final class ModelContainer: ObservableObject {
     

@@ -7,6 +7,7 @@ let localHelper = LocalHelper(name: "MyPlugin")
 
 // MARK: - Project String Data
 enum Ticlemoa: String {
+
     static let projectName = "Ticlemoa"
     static let productName = "Ticlemoa"
     static let organizationName = "nyongnyong"

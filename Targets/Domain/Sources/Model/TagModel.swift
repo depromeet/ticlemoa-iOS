@@ -9,10 +9,11 @@
 import Foundation
 
 import API
-import DomainInterface
+//import DomainInterface
 
-public final class TagModel: TagModelProtocol {
-    
+public final class TagModel: TagModelProtocol, ObservableObject {
+
+ 
     @Published public var items: [Tag] = []
     
     public init() {

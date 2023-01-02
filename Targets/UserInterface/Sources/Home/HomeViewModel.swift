@@ -10,40 +10,45 @@ import Foundation
 import Combine
 import Collections
 import UIKit
+import Domain
 
 class HomeViewModel: ObservableObject {
+    private var model: TagModel
     @Published var articles: [Article] = []
-    @Published var rows: [[Tag]] = []
-    @Published var tags: [Tag] = [
-        Tag(name: "전체"),
-        Tag(name: "빨간라인"),
-        Tag(name: "넘으면"),
-        Tag(name: "내려감"),
-        Tag(name: "디자인"),
-        Tag(name: "MD"),
-        Tag(name: "커리어고민"),
-        Tag(name: "CS/CX"),
-        Tag(name: "인간관계"),
-        Tag(name: "개발"),
-        Tag(name: "마케팅"),
-        Tag(name: "서비스기획"),
-        Tag(name: "조직문화"),
-        Tag(name: "IT/기술"),
-        Tag(name: "취업 이직"),
-        Tag(name: "회사생활"),
-        Tag(name: "라이프스타일"),
-        Tag(name: "경영/젼략")
-    ]
+    @Published var rows: [[TagData]] = []
+    
+    var tags: [TagData] {
+        get { (model.items as? [TagData]) ?? [] }
+        set { model.items = newValue }
+    }
+    
+    var tagListHeight: CGFloat {
+        return CGFloat(rows.count * 35 + 35)
+    }
+
     @Published var tagText = ""
+    @Published var selectedTag: TagData!
     
-    @Published var selectedTag: Tag!
     
-    
-    init() {
+    init(model: TagModel) {
+        self.model = model
         // Dummy Data 셋업
         articles = Article.allArticles
+        setupDummyTag()
         getTags()
-        selectedTag = tags.first!
+        selectedTag = tags.first
+    }
+    
+    private func setupDummyTag() {
+        self.tags = [
+            TagData(id: UUID() ,name: "전체", articleIds: [UUID()], created: TimeInterval(), size: 0),
+            TagData(id: UUID() ,name: "독서", articleIds: [UUID()], created: TimeInterval(), size: 0),
+            TagData(id: UUID() ,name: "공부", articleIds: [UUID()], created: TimeInterval(), size: 0),
+            TagData(id: UUID() ,name: "농구", articleIds: [UUID()], created: TimeInterval(), size: 0),
+            TagData(id: UUID() ,name: "커피", articleIds: [UUID()], created: TimeInterval(), size: 0),
+            TagData(id: UUID() ,name: "맛집", articleIds: [UUID()], created: TimeInterval(), size: 0)
+        ]
+
     }
     
     /// 월별 데이터 정렬 메소드
@@ -54,9 +59,10 @@ class HomeViewModel: ObservableObject {
         return groupedArticles
     }
     
-    func getTags(){
-        var rows: [[Tag]] = []
-        var currentRow: [Tag] = []
+    func getTags() {
+        var rows: [[TagData]] = []
+        var currentRow: [TagData] = []
+
         
         var totalWidth: CGFloat = 0
         
@@ -95,17 +101,18 @@ class HomeViewModel: ObservableObject {
         }
         
     }
-    
-    
-    func addTag(){
-        tags.append(Tag(name: tagText))
-        tagText = ""
-        getTags()
-    }
-    
-    func removeTag(by id: String){
-        tags = tags.filter{ $0.id != id }
-        getTags()
-    }
+//
+//
+//    func addTag(){
+//        tags.append(Tag(name: tagText))
+//        tagText = ""
+//        getTags()
+//    }
+//
+//    func removeTag(by id: String){
+//        tags = tags.filter{ $0.id != id }
+//        getTags()
+//    }
+
 }
 
