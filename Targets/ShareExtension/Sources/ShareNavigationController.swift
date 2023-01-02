@@ -6,14 +6,19 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
-import UIKit
+import SwiftUI
+import UserInterface
 
-@objc(CustomShareNavigationController)
-class CustomShareNavigationController: UINavigationController {
+@objc(ShareNavigationController)
+final class ShareNavigationController: UINavigationController {
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.setViewControllers([ShareViewController()], animated: false)
+        let hostingController = UIHostingController(rootView: BottomSheet(content: {
+            TagSelectingListView(tags: .constant(TagSelectingListViewModel.dummy))
+        }))
+        hostingController.view.backgroundColor = .clear
+        self.setViewControllers([hostingController], animated: false)
     }
 
     @available(*, unavailable)
