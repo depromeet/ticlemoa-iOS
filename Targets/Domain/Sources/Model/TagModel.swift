@@ -12,7 +12,8 @@ import API
 //import DomainInterface
 
 public final class TagModel: TagModelProtocol, ObservableObject {
-    
+
+ 
     @Published public var items: [Tag] = []
     
     public init() {

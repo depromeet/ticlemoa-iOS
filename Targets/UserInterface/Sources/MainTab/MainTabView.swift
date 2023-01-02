@@ -12,6 +12,7 @@ import Domain
 struct MainTabView: View {
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
     @EnvironmentObject var modelContainer: ModelContainer
+
     
     var body: some View {
         NavigationView {

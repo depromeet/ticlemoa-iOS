@@ -69,6 +69,7 @@ import Domain
 struct HomeArticleList_Previews: PreviewProvider {
     static let homeViewModel: HomeViewModel = {
         let vm = HomeViewModel(model: TagModel())
+
         vm.articles = Article.allArticles
         return vm
     }()

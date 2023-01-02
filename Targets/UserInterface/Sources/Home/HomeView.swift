@@ -11,6 +11,7 @@ let tagHeight = 32
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
+
     @State var isFolding = false
     @State var isPushSearchView = false
     
@@ -36,6 +37,7 @@ private extension HomeView {
                 // Taglist Height 조절
                 Spacer()
                     .frame(minHeight: 0, maxHeight: isFolding ? viewModel.tagListHeight : 35)
+
                 HomeArticleList()
                     .padding(.top, 0)
                     .animation(.default)
@@ -56,6 +58,7 @@ private extension HomeView {
                     HStack(spacing: 10) {
                         ForEach(Array(rows.enumerated()), id: \.offset){ rowIndex, row in
                             makeTagButton(row: row)
+
                         }
                     }
                     .frame(height: 28)
@@ -130,6 +133,7 @@ extension UIScreen{
     static let screenWidth = UIScreen.main.bounds.width
 }
 
+
 extension String{
     func getSize() -> CGFloat{
         let font = UIFont.systemFont(ofSize: 16)
@@ -138,4 +142,3 @@ extension String{
         return size.width
     }
 }
-

@@ -6,15 +6,24 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
-import SwiftUI
+import Domain
 import UserInterface
+
+import SwiftUI
 
 @main
 struct TiclemoaApp: App {
+    
+    private let modelContainer = ModelContainer(
+        articleModel: ArticleModel(),
+        tagModel: TagModel()
+    )
 	
 	var body: some Scene {
 		WindowGroup {
             ContentView()
+                .environmentObject(modelContainer)
+                .preferredColorScheme(.light)
 		}
 	}
 }

@@ -9,6 +9,7 @@
 import API
 //import DomainInterface
 
+
 import Foundation
 
 public final class ArticleModel: ArticleModelProtocol {

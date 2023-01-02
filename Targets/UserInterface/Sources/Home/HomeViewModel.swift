@@ -48,6 +48,7 @@ class HomeViewModel: ObservableObject {
             TagData(id: UUID() ,name: "커피", articleIds: [UUID()], created: TimeInterval(), size: 0),
             TagData(id: UUID() ,name: "맛집", articleIds: [UUID()], created: TimeInterval(), size: 0)
         ]
+
     }
     
     /// 월별 데이터 정렬 메소드
@@ -61,6 +62,7 @@ class HomeViewModel: ObservableObject {
     func getTags() {
         var rows: [[TagData]] = []
         var currentRow: [TagData] = []
+
         
         var totalWidth: CGFloat = 0
         
@@ -111,5 +113,6 @@ class HomeViewModel: ObservableObject {
 //        tags = tags.filter{ $0.id != id }
 //        getTags()
 //    }
+
 }
 
