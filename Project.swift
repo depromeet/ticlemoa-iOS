@@ -10,7 +10,7 @@ enum Ticlemoa: String {
 	static let projectName = "Ticlemoa"
 	static let productName = "Ticlemoa"
 	static let organizationName = "nyongnyong"
-	static let bundleId = "com.nyongnyong"
+	static let bundleId = "team.nyongnyong"
 	static let deploymentTarget = DeploymentTarget
 		.iOS(targetVersion: "15.0", devices: [.iphone])
 	
@@ -86,8 +86,8 @@ let shareInfoPlist: InfoPlist = .extendingDefault(with: [
 let userInterface = makeModule(
 	.userInterface,
 	dependencies: [
-//		.external(name: "KakaoSDK"),
-//		.external(name: "Collections")
+		.external(name: "KakaoSDK"),
+		.external(name: "Collections")
 	],
 	hasTest: true
 )
