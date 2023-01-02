@@ -9,8 +9,8 @@
 import SwiftUI
 
 extension View {
-    func ticlmoaBottomSheet(isPresented: Binding<Bool>, withHandleBar: Bool = false, @ViewBuilder content: @escaping () -> (some View)) -> some View {
-        let keyWindow = UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first!
+    func ticlemoaBottomSheet(isPresented: Binding<Bool>, withHandleBar: Bool = false, @ViewBuilder content: @escaping () -> (some View)) -> some View {
+        let keyWindow = UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first
         
         let bottomSheetHostingController = UIHostingController(rootView: BottomSheetView(isPresent: isPresented, withHandleBar: withHandleBar, content: content))
         bottomSheetHostingController.modalPresentationStyle = .overCurrentContext
@@ -19,7 +19,7 @@ extension View {
         
         return self.onChange(of: isPresented.wrappedValue) { newValue in
             newValue ?
-            keyWindow.rootViewController?.present(bottomSheetHostingController, animated: false) : Void()
+            keyWindow?.rootViewController?.present(bottomSheetHostingController, animated: false) : Void()
         }
     }
     
