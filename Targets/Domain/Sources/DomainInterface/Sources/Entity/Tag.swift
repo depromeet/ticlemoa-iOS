@@ -12,4 +12,5 @@ public protocol Tag {
     var name: String { get }
     var articleIds: [UUID] { get }
     var created: TimeInterval { get }
+    var size: CGFloat { get set }
 }
