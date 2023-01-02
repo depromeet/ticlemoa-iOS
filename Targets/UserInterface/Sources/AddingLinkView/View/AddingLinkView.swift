@@ -46,7 +46,7 @@ struct AddingLinkView: View {
         .padding(.horizontal, 20)
         .navigationTitle("링크 추가")
         .navigationBarTitleDisplayMode(.inline)
-        .ticlmoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
+        .ticlemoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
             TagSelectingListView(tags: $tags)
         }
     }

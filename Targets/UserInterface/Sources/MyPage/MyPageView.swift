@@ -115,8 +115,9 @@ struct MyPageView: View {
             Spacer()
         }
         .ticlemoaNavigationBar(title: "마이페이지")
-        .ticlmoaBottomSheet(isPresented: $isAccountDeleteButtonTouched) {
-            MyPageAccountDeletingView()        }
+        .ticlemoaBottomSheet(isPresented: $isAccountDeleteButtonTouched) {
+            MyPageAccountDeletingView()
+        }
     }
 }
 
