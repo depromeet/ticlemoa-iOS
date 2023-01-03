@@ -9,6 +9,6 @@
 import Foundation
 
 public protocol LoginModelProtocol {
-    var accessTokenPublisher: Published<String?>.Publisher { get }
+    var userDataPublisher: Published<LoginUser>.Publisher { get }
     func requestKakaoLogin(_ accessToken: String) async -> Bool
 }
