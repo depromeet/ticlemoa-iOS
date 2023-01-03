@@ -26,9 +26,11 @@ extension TagData {
 
 public final class TagModel: TagModelProtocol {
     
-    public var itemsPublisher: Published<[DomainInterface.Tag]>.Publisher { $items }
     
+    public var itemsPublisher: Published<[Tag]>.Publisher { $items }
+
     @Published private var items: [Tag] = TagData.dummy
+    private let api: APIDetails = TiclemoaAPI()
     
     public init() {
         

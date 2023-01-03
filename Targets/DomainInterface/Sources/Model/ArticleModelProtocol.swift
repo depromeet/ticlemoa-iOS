@@ -11,6 +11,6 @@ public protocol ArticleModelProtocol {
     func fetch()
     func create(_ item: Article)
     func read(_ item: Article)
-    func update(_ item: Article)
+    func update(_ item: Article) async
     func remove(_ item: Article)
 }
