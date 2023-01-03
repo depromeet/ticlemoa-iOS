@@ -6,8 +6,10 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
+import Combine
+
 public protocol TagModelProtocol {
-    var items: [Tag] { get }
+    var itemsPublisher: Published<[Tag]>.Publisher { get }
     func fetch()
     func create(_ item: Tag)
     func read(_ item: Tag)
