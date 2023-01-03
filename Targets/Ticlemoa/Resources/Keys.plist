@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>HOST</key>
-	<string>http://ticlemoa-env-1.eba-6qebrvxf.ap-northeast-2.elasticbeanstalk.com</string>
+	<key>KAKAOAPPKEY</key>
+	<string>a864acaf7534a2c1a627e21d352d2e49</string>
 </dict>
 </plist>
