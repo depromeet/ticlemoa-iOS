@@ -19,7 +19,7 @@ struct TagSelectingListRow: View {
         VStack(spacing: 0) {
             HStack {
                 Text(tag.title)
-                    .customFont(16, .medium)
+//                    .customFont(16, .medium)
                     .foregroundColor(.ticlemoaBlack)
                     .padding(.leading, 36)
                 Spacer()
