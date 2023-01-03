@@ -124,7 +124,10 @@ let domain = makeModule(
 let share = makeModule(
     .share,
     infoPlist: shareInfoPlist,
-    dependencies: [],
+    dependencies: [
+        .target(name: Ticlemoa.userInterface.name),
+        .target(name: Ticlemoa.domain.name)
+    ],
     hasTest: false
 )
 let domainInterface = makeModule(
