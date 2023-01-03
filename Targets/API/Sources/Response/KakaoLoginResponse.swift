@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct KakaoLoginResponse: Decodable {
+public struct KakaoLoginResponse: Decodable {
     let accessToken: String
     
     init(accessToken: String) {

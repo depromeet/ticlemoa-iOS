@@ -11,28 +11,28 @@ import DomainInterface
 import Foundation
 
 struct ArticleData: Article {
-    let id: UUID
-    let userID: Int
+    let id: Int
     let title: String
     let url: String
     let content: String
-    let tagIds: [UUID]
-    let created: TimeInterval
+    let isPublic: Bool
+    let tagIds: [Int]
+    let created: String
     
     public init(
-        id: UUID,
-        userID: Int,
+        id: Int,
         title: String,
         url: String,
         content: String,
-        tagIds: [UUID],
-        created: TimeInterval
+        isPublic: Bool,
+        tagIds: [Int],
+        created: String
     ) {
         self.id = id
-        self.userID = userID
         self.title = title
         self.url = url
         self.content = content
+        self.isPublic = isPublic
         self.tagIds = tagIds
         self.created = created
     }
