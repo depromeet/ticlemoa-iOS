@@ -9,11 +9,11 @@
 import Foundation
 
 public protocol Article {
-    var id: UUID { get }
-    var userID: Int { get }
+    var id: Int { get }
     var title: String { get }
     var url: String { get }
     var content: String { get }
-    var tagIds: [UUID] { get }
-    var created: TimeInterval { get }
+    var isPublic: Bool { get }
+    var tagIds: [Int] { get }
+    var created: String { get }
 }
