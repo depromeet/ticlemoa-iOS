@@ -14,6 +14,8 @@
 import Foundation
 
 // MARK: - UploadArticleResponse
+
+// TODO: Article 고민 필요
 struct UploadArticleResponse: Codable {
     let content: String
     let isPublic: Bool
