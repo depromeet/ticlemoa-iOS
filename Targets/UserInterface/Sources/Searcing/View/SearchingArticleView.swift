@@ -114,11 +114,11 @@ extension SearchingArticleView {
             
             // FIXME: 일단 HomeView의 HomeArticleList와 동일하게 구현, 추후에 ArticleRow 수정에 따라 변경 예정
             List {
-                ArticleRow()
-                ArticleRow()
-                ArticleRow()
-                ArticleRow()
-                ArticleRow()
+//                ArticleRow()
+//                ArticleRow()
+//                ArticleRow()
+//                ArticleRow()
+//                ArticleRow()
             }
             .listStyle(.plain)
             .frame(maxWidth: .infinity)

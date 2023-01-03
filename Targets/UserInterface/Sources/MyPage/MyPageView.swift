@@ -27,7 +27,7 @@ struct MyPageView: View {
                         Text("가나다라마바사")
                             .pretendFont(.subhead3)
                             .foregroundColor(.ticlemoaBlack)
-                            .fontWeight(.semibold)
+//                            .fontWeight(.semibold)
                         Image("Pen")
                             .frame(width: 20, height: 20)
                     }
@@ -64,23 +64,23 @@ struct MyPageView: View {
                         .foregroundColor(.grey4)
                     Spacer()
                     Group {
-                        if true {
-                            Text("업데이트")
-                                .pretendFont(.subhead1)
-                                .foregroundColor(.white)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 12)
-                                .background(
-                                    Capsule()
-                                        .foregroundColor(.ticlemoaBlack)
-                                )
-                                .padding(.vertical, 10)
-                        } else {
-                            Text("최신버전")
-                                .customFont(14, .medium)
-                                .foregroundColor(.grey3)
-                                .padding(.vertical, 16.5)
-                        }
+//                        if true {
+//                            Text("업데이트")
+//                                .pretendFont(.subhead1)
+//                                .foregroundColor(.white)
+//                                .padding(.vertical, 8)
+//                                .padding(.horizontal, 12)
+//                                .background(
+//                                    Capsule()
+//                                        .foregroundColor(.ticlemoaBlack)
+//                                )
+//                                .padding(.vertical, 10)
+//                        } else {
+//                            Text("최신버전")
+//                                .customFont(14, .medium)
+//                                .foregroundColor(.grey3)
+//                                .padding(.vertical, 16.5)
+//                        }
                     }
                 }
                 .padding(.horizontal, 20)

@@ -41,30 +41,30 @@ extension TagSelectingListView {
     
     var title: some View {
         Text("티클모아에 저장하기")
-            .customFont(18, .bold)
+//            .customFont(18, .bold)
             .frame(height: 59)
     }
     
     var tagList: some View {
         Group {
-            if tags.isEmpty {
-                HStack {
-                    Text("저장된 태그가 없어요.")
-                        .customFont(16, .medium)
-                        .font(.system(size: 16))
-                        .foregroundColor(.grey4)
-                        .padding(.vertical, 12)
-                        .padding(.leading, 36)
-                    Spacer()
-                }
-            } else if (1...3).contains(tags.count) {
-                tagView
-            } else {
-                ScrollView {
-                    tagView
-                }
-                .frame(height: 178)
-            }
+//            if tags.isEmpty {
+//                HStack {
+//                    Text("저장된 태그가 없어요.")
+//                        .customFont(16, .medium)
+//                        .font(.system(size: 16))
+//                        .foregroundColor(.grey4)
+//                        .padding(.vertical, 12)
+//                        .padding(.leading, 36)
+//                    Spacer()
+//                }
+//            } else if (1...3).contains(tags.count) {
+//                tagView
+//            } else {
+//                ScrollView {
+//                    tagView
+//                }
+//                .frame(height: 178)
+//            }
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 10)
@@ -86,7 +86,7 @@ extension TagSelectingListView {
                         .padding(.leading, 34)
                     Text("새 태그 만들기")
                         .foregroundColor(.ticlemoaBlack)
-                        .customFont(16, .semiBold)
+//                        .customFont(16, .semiBold)
                     Spacer()
                 }
             }
@@ -109,7 +109,7 @@ extension TagSelectingListView {
                 HStack {
                     Spacer()
                     Text("완료")
-                        .customFont(16, .bold)
+//                        .customFont(16, .bold)
                     Spacer()
                 }
                 .frame(height: 56)
