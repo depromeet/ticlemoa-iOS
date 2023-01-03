@@ -11,14 +11,22 @@ import Foundation
 import API
 import DomainInterface
 
+extension KakaoLoginResponse {
+    func updateAccessToken(from userData: LoginUser) -> LoginUserData {
+        .init(nickName: userData.nickName, accessToken: self.accessToken)
+    }
+}
+
 public final class LoginModel: LoginModelProtocol {
     
-    public var accessTokenPublisher: Published<String?>.Publisher { $accessToken }
+    public var userDataPublisher: Published<LoginUser>.Publisher { $userData }
     
-    @Published private var accessToken: String?
+    @Published private var userData: LoginUser
     private let api: APIDetails = TiclemoaAPI()
     
-    public init() { }
+    public init() {
+        self.userData = LoginUserData(nickName: "", accessToken: nil) // 초기값 추가 UserDefault?
+    }
     
 }
 
@@ -35,7 +43,7 @@ extension LoginModel {
         guard let response = try? JSONDecoder().decode(KakaoLoginResponse.self, from: data) else {
             return false
         }
-        self.accessToken = response.accessToken
+        self.userData = response.updateAccessToken(from: userData)
         
         return true
     }
