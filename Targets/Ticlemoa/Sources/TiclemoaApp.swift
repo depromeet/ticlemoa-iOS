@@ -11,13 +11,20 @@ import UserInterface
 
 import SwiftUI
 
+import KakaoSDKCommon
+
 @main
 struct TiclemoaApp: App {
     
     private let modelContainer = ModelContainer(
         articleModel: ArticleModel(),
-        tagModel: TagModel()
+        tagModel: TagModel(),
+        loginModel: LoginModel()
     )
+    
+    init() {
+        KakaoSDK.initSDK(appKey: Keys.kakaoappkey)
+    }
 	
 	var body: some Scene {
 		WindowGroup {
