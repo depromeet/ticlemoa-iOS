@@ -13,13 +13,16 @@ public final class ModelContainer: ObservableObject {
     
     let articleModel: ArticleModelProtocol
     let tagModel: TagModelProtocol
+    let loginModel: LoginModelProtocol
     
     public init(
         articleModel: ArticleModelProtocol,
-        tagModel: TagModelProtocol
+        tagModel: TagModelProtocol,
+        loginModel: LoginModelProtocol
     ) {
         self.articleModel = articleModel
         self.tagModel = tagModel
+        self.loginModel = loginModel
     }
     
 }
