@@ -36,8 +36,25 @@ extension ArticleModel {
         
     }
     
-    public func update(_ item: Article) {
-        
+    public func update(_ item: Article) async {
+        do {
+            guard let data = try await api.uploadArticle(by: .init(
+                    accessToken: "",
+                    content: item.content,
+                    title: item.title,
+                    url: item.url,
+                    isPublic: true, // TODO: 변경 필요
+                    tagIds: [] // TODO: 변경 필요
+                )
+            ) else {
+                return
+            }
+            let response = try JSONDecoder().decode(UploadArticleResponse.self, from: data)
+            self.items = [] // TODO: 변경 필요
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
     }
     
     public func remove(_ item: Article) {

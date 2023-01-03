@@ -7,14 +7,16 @@
 //
 
 import Foundation
+import SwiftUI
+
 import KakaoSDKUser
 import KakaoSDKAuth
 import KakaoSDKCommon
 
 
 class LoginViewModel: ObservableObject {
-    let network = LoginAPI()
-    var userInfo = UserInfoService.shared
+    
+    @EnvironmentObject var modelContainer: ModelContainer
     
     public func kakaoButtonDidTap() async throws -> Bool {
         var kakaoLoginerror: Error?
@@ -36,12 +38,9 @@ class LoginViewModel: ObservableObject {
         }
         
         guard kakaoLoginerror == nil else { return false }
-        guard let token = kakaoToken?.accessToken else { return false }
-        let body = KakaoLoginRequest(accessToken: token, vendor: "kakao")
-        let repsonse = try await network.kakaoLogin(body: body)
-        guard (repsonse != nil) else { return false }
-        userInfo.accessToken = repsonse?.accessToken
-        return true
+        guard let accessToken = kakaoToken?.accessToken else { return false }
+        
+        return await modelContainer.loginModel.requestKakaoLogin(accessToken)
     }
 }
 
