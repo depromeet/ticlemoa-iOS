@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Article: Codable {
+struct ResponseArticle: Codable {
     let id: Int
     let createdAt: String?
     let updatedAt: String?
