@@ -54,31 +54,27 @@ private extension HomeView {
                 ForEach(Array(viewModel.rows.enumerated()), id:\.offset) { columnIndex, rows in
                     HStack(spacing: 10){
                         ForEach(Array(rows.enumerated()), id: \.offset){ rowIndex, row in
-                            Button(action: {
-                                HapticManager.instance.impact(style: .light)
-                                viewModel.selectedTag = row
-                            }, label: {
-                                Text(row.name)
-                            })
-                                .pretendFont(.body2)
-                                .foregroundColor(
-//                                    columnIndex == 0 && rowIndex == 0
-                                    viewModel.selectedTag == row
-                                    ? Color.white
-                                    : .grey4
-                                )
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 8)
-                                .background(
-                                    ZStack(alignment: .trailing){
-                                        RoundedRectangle(cornerRadius: 4)
-                                            .fill(
-                                                viewModel.selectedTag == row
-                                                ? Color.ticlemoaBlack
-                                                : Color.grey2
-                                            )
-                                    }
-                                )
+                            Button(
+                                action: {
+                                    HapticManager.instance.impact(style: .light)
+                                    viewModel.selectedTag = row
+                                }, label: {
+                                    Text(row.name)
+                                }
+                            )
+                            .pretendFont(.body2)
+                            .foregroundColor(
+                                // columnIndex == 0 && rowIndex == 0
+                                viewModel.tagButtonColor(by: row)
+                            )
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(
+                                ZStack(alignment: .trailing){
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(viewModel.tagBackgroundColor(by: row))
+                                }
+                            )
                         }
                     }
                     .frame(height: 28)
@@ -119,14 +115,6 @@ struct HomeView_Previews: PreviewProvider {
     }
 }
 
-
-// MARK: - Dummy
-struct Tag: Identifiable, Hashable{
-    var id = UUID().uuidString
-    var name: String
-    var size: CGFloat = 0
-}
-
 extension UIScreen{
     static let screenWidth = UIScreen.main.bounds.width
 }
@@ -137,93 +125,5 @@ extension String{
         let attributes = [NSAttributedString.Key.font: font]
         let size = (self as NSString).size(withAttributes: attributes)
         return size.width
-    }
-}
-
-class ContentViewModel: ObservableObject{
-    
-    @Published var rows: [[Tag]] = []
-    @Published var tags: [Tag] = [
-        Tag(name: "전체"),
-        Tag(name: "IOS"),
-        Tag(name: "IOS App Development"),
-        Tag(name: "Swift"),
-        Tag(name: "SwiftUI"),
-        Tag(name: "XCode"),
-        Tag(name: "IOS"),
-        Tag(name: "IOS App Development"),
-        Tag(name: "Swift"),
-        Tag(name: "SwiftUI"),
-        Tag(name: "XCode"),
-        Tag(name: "IOS"),
-        Tag(name: "IOS App Development"),
-        Tag(name: "Swift"),
-        Tag(name: "SwiftUI"),
-        Tag(name: "XCode"),
-        Tag(name: "IOS"),
-        Tag(name: "IOS App Development"),
-        Tag(name: "Swift"),
-        Tag(name: "SwiftUI")
-    ]
-    @Published var tagText = ""
-    
-    @Published var selectedTag: Tag = Tag(name: "전체")
-    
-    init(){
-        getTags()
-    }
-    
-    func getTags(){
-        var rows: [[Tag]] = []
-        var currentRow: [Tag] = []
-        
-        var totalWidth: CGFloat = 0
-        
-        let screenWidth = UIScreen.screenWidth - 10
-        //        let tagSpaceing: CGFloat = 14 /*Leading Padding*/ + 30 /*Trailing Padding*/ + 6 + 6 /*Leading & Trailing 6, 6 Spacing*/
-        let tagSpaceing: CGFloat = 16 /*Leading Padding*/ + 16 /*Trailing Padding*/ + 6 + 6 /*Leading & Trailing 6, 6 Spacing*/
-        
-        if !tags.isEmpty{
-            
-            for index in 0..<tags.count{
-                self.tags[index].size = tags[index].name.getSize()
-            }
-            
-            tags.forEach{ tag in
-                
-                totalWidth += (tag.size + tagSpaceing)
-                
-                if totalWidth > screenWidth{
-                    totalWidth = (tag.size + tagSpaceing)
-                    rows.append(currentRow)
-                    currentRow.removeAll()
-                    currentRow.append(tag)
-                }else{
-                    currentRow.append(tag)
-                }
-            }
-            
-            if !currentRow.isEmpty{
-                rows.append(currentRow)
-                currentRow.removeAll()
-            }
-            
-            self.rows = rows
-        } else {
-            self.rows = []
-        }
-        
-    }
-    
-    
-    func addTag(){
-        tags.append(Tag(name: tagText))
-        tagText = ""
-        getTags()
-    }
-    
-    func removeTag(by id: String){
-        tags = tags.filter{ $0.id != id }
-        getTags()
     }
 }
