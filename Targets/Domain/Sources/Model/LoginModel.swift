@@ -70,9 +70,18 @@ extension LoginModel {
             }
         }
     }
-        self.userData = response.updateAccessToken(from: userData)
-        
-        return true
+    
+    private func requestKakaoLogin(_ accessToken: String) async -> Bool {
+        let kakaoLoginRequest = KakaoLoginRequest(accessToken: accessToken)
+        do {
+            let data = try await api.request(by: kakaoLoginRequest)
+            let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
+            self.userData = response.updateAccessToken(from: userData)
+            return true
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
     }
     
 }
