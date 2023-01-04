@@ -103,7 +103,6 @@ let userInterface = makeModule(
     .userInterface,
     dependencies: [
         .target(name: Ticlemoa.domainInterface.name),
-        .external(name: "KakaoSDK"),
         .external(name: "Collections")
     ],
     hasTest: true
@@ -117,7 +116,8 @@ let domain = makeModule(
     .domain,
     dependencies: [
         .target(name: Ticlemoa.api.name),
-        .target(name: Ticlemoa.domainInterface.name)
+        .target(name: Ticlemoa.domainInterface.name),
+        .external(name: "KakaoSDK")
     ],
     hasTest: true
 )
