@@ -5,12 +5,16 @@
 //  Created by 김우성 on 2022/11/28.
 //
 
+import DomainInterface
+
 import SwiftUI
 
 let tagHeight = 32
 
 struct HomeView: View {
-    @StateObject var viewModel = HomeViewModel()
+    @EnvironmentObject var modelContainer: ModelContainer
+    @StateObject var viewModel: HomeViewModel
+    
     @State var isFolding = false
     @State var isPushSearchView = false
     
@@ -111,7 +115,7 @@ private extension HomeView {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(viewModel: .init(tagModel: MockTagModel()))
     }
 }
 

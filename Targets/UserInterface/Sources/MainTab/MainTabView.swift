@@ -9,12 +9,13 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var modelContainer: ModelContainer
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
     
     var body: some View {
         NavigationView {
             TabView {
-                HomeView()
+                HomeView(viewModel: .init(tagModel: modelContainer.tagModel))
                 //                .setupBackground()
                     .tabItem {
                         Tab.home.imageItem
@@ -64,7 +65,6 @@ struct MainTabView: View {
 //                        .customFont(14, .bold)
                 }
                 
-                // 종모양 & 마이프로필
                 // 종모양 & 마이프로필
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     NavigationLink(

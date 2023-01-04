@@ -15,7 +15,7 @@ import DomainInterface
 
 final class HomeViewModel: ObservableObject {
     
-    @EnvironmentObject var modelContainer: ModelContainer
+    let tagModel: TagModelProtocol
     
     @Published var articles: [Article] = []
     @Published var rows: [[Tag]] = []
@@ -24,8 +24,10 @@ final class HomeViewModel: ObservableObject {
     
     @Published var selectedTag: Tag!
         
-    init() {
-        modelContainer.tagModel.itemsPublisher
+    init(tagModel: TagModelProtocol) {
+        self.tagModel = tagModel
+        
+        tagModel.itemsPublisher
             .receive(on: RunLoop.main)
             .assign(to: &self.$tags)
         
