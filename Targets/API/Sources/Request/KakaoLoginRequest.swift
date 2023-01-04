@@ -11,11 +11,10 @@ import Foundation
 public struct KakaoLoginRequest: Encodable {
     /// KakaoTalk SDK 에서 발급해주는 "oauthToken"
     let accessToken: String
-    let vendor: String
+    let vendor: String = "kakao"
     
-    public init(accessToken: String, vendor: String) {
+    public init(accessToken: String) {
         self.accessToken = accessToken
-        self.vendor = vendor
     }
 
 }
