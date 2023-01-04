@@ -35,7 +35,11 @@ public struct UploadArticleRequest: Encodable {
         self.tagIds = tagIds
     }
     
-    func makeURLRequest(by baseURL: URL) -> URLRequest {
+}
+
+extension UploadArticleRequest: URLRequestMakable {
+    
+    public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var request = URLRequest(
             url: baseURL,
             cachePolicy: .reloadIgnoringLocalCacheData,
