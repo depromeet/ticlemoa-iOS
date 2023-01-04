@@ -29,12 +29,8 @@ extension KakaoLoginRequest: URLRequestMakable {
         )
         request.httpMethod = HTTPMethod.post.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONEncoder().encode(self)
         
-        let json: [String: Any] = [
-            "accessToken": "\(accessToken)",
-            "vendor": "\(vendor)"
-        ]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
         return request
     }
     
