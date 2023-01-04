@@ -47,17 +47,9 @@ extension UploadArticleRequest: URLRequestMakable {
         )
         request.httpMethod = HTTPMethod.post.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let json: [String: Any] = [
-            "content"   : content,
-            "userId"    : userId,
-            "title"     : title,
-            "url"       : url,
-            "isPublic"  : isPublic,
-            "tagIds"    : tagIds,
-        ]
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        request.httpBody = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+        request.httpBody = try? JSONEncoder().encode(self)
+        
         return request
     }
     
