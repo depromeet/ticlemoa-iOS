@@ -9,7 +9,7 @@
 import Foundation
 
 public struct KakaoLoginResponse: Decodable {
-    let accessToken: String
+    public let accessToken: String
     
     init(accessToken: String) {
         self.accessToken = accessToken
