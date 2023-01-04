@@ -17,8 +17,12 @@ public struct KakaoLoginRequest: Encodable {
         self.accessToken = accessToken
         self.vendor = vendor
     }
+
+}
+
+extension KakaoLoginRequest: URLRequestMakable {
     
-    func makeURLRequest(by baseURL: URL) -> URLRequest {
+    public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var request = URLRequest(
             url: baseURL,
             cachePolicy: .reloadIgnoringLocalCacheData,

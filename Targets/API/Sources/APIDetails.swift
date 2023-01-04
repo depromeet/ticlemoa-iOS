@@ -9,8 +9,7 @@
 import Foundation
 
 public protocol APIDetails {
-    func kakaoLogin(by request: KakaoLoginRequest) async -> Data?
-    func uploadArticle(by request: UploadArticleRequest) async -> Data?
+    func request(by request: URLRequestMakable) async throws -> Data
 }
 
 enum HTTPMethod: String {
@@ -34,47 +33,22 @@ public struct TiclemoaAPI {
     
 }
 
-// MARK: Login
 extension TiclemoaAPI: APIDetails {
     
-    public func kakaoLogin(by request: KakaoLoginRequest) async -> Data? {
+    public func request(by request: URLRequestMakable) async throws -> Data {
         let urlRequest = request.makeURLRequest(by: baseURL)
         
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
-            let httpResponse = response as? HTTPURLResponse
-            print("DEBUG: ", httpResponse!)
-            
-            guard (response as? HTTPURLResponse)?.statusCode == 200 || (response as? HTTPURLResponse)?.statusCode == 201 else {
-                return nil
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 || httpResponse.statusCode == 201
+            else {
+                throw NetworkError.inValidURLRequest
             }
-            print("DEUBG: \(response.description)")
+            
             return data
         } catch {
-            return nil
-        }
-    }
-    
-}
-
-// MARK: Article
-extension TiclemoaAPI {
-    
-    public func uploadArticle(by request: UploadArticleRequest) async -> Data? {
-        let urlRequest = request.makeURLRequest(by: baseURL)
-        
-        do {
-            let (data, response) = try await URLSession.shared.data(for: urlRequest)
-            let httpResponse = response as? HTTPURLResponse
-            print("DEBUG: ", httpResponse!)
-            
-            guard (response as? HTTPURLResponse)?.statusCode == 200 || (response as? HTTPURLResponse)?.statusCode == 201 else {
-                return nil
-            }
-            print("DEUBG: \(response.description)")
-            return data
-        } catch {
-            return nil
+            throw NetworkError.inValidURLRequest
         }
     }
     
