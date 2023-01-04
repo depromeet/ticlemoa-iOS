@@ -10,6 +10,7 @@ import Foundation
 
 enum NetworkError: String, Error {
     case inValidURLString
+    case inValidURLRequest
     case parseUrlFail
     case notFound
     case validationError
@@ -18,18 +19,13 @@ enum NetworkError: String, Error {
     
     var errorDescription: String? {
         switch self {
-        case .inValidURLString:
-            return self.rawValue
-        case .parseUrlFail:
-            return "Cannot initial URL object."
-        case .notFound:
-            return "Not Found"
-        case .validationError:
-            return "Validation Errors"
-        case .serverError:
-            return "Internal Server Error"
-        case .defaultError:
-            return "Something went wrong."
+            case .inValidURLString:     return self.rawValue
+            case .inValidURLRequest:    return self.rawValue
+            case .parseUrlFail:         return "Cannot initial URL object."
+            case .notFound:             return "Not Found"
+            case .validationError:      return "Validation Errors"
+            case .serverError:          return "Internal Server Error"
+            case .defaultError:         return "Something went wrong."
         }
     }
 }
