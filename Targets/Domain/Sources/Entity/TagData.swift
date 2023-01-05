@@ -11,8 +11,7 @@ import DomainInterface
 import Foundation
 
 struct TagData: Tag {
-    let id: UUID
+    let id: Int
     let name: String
-    let articleIds: [UUID]
-    let created: TimeInterval
+    let created: String
 }
