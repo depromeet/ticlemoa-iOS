@@ -8,8 +8,7 @@
 import Foundation
 
 public protocol Tag {
-    var id: UUID { get }
+    var id: Int { get }
     var name: String { get }
-    var articleIds: [UUID] { get }
-    var created: TimeInterval { get }
+    var created: String { get }
 }

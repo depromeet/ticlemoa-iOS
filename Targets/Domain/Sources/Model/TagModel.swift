@@ -19,7 +19,7 @@ extension TagData {
             "마케팅", "서비스기획", "조직문화", "IT/기술", "취업 이직",
             "회사생활", "라이프스타일", "경영/젼략"
         ].enumerated().map({
-            .init(id: UUID(), name: $0.element, articleIds: [], created: .init() + Double($0.offset))
+            .init(id: $0.offset, name: $0.element, created: Date(timeIntervalSinceNow: Double($0.offset)).description)
         })
     }
 }

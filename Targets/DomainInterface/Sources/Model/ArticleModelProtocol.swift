@@ -6,8 +6,10 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
+import Combine
+
 public protocol ArticleModelProtocol {
-    var items: [Article] { get }
+    var itemsPublisher: Published<[Article]>.Publisher { get }
     func fetch()
     func create(_ item: Article)
     func read(_ item: Article)
