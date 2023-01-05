@@ -16,6 +16,14 @@ extension UIFont {
     ) -> UIFont {
         return UIFont(name: "Pretendard-\(weight.rawValue)", size: size) ?? UIFont.boldSystemFont(ofSize: 50)
     }
+    
+    static func setupCustomFont(
+        weight: CGFloat,
+        size: CGFloat = 12,
+        style: PretendardFontWeight
+    ) -> UIFont {
+        return UIFont(name: "Pretendard-\(style.rawValue)", size: size) ?? UIFont.boldSystemFont(ofSize: 50)
+    }
 }
 
 
@@ -122,15 +130,36 @@ struct FontWithLineHeight: ViewModifier {
 
 extension View {
     func pretendFont(
-        _ font: FontSystem
+            _ font: FontSystem
+        ) -> some View {
+            let size = font.size
+            let weight = font.weight
+            let lineHeight = font.lineHeight
+            
+            let font: UIFont = UIFont.pretend(
+                size: size,
+                weight: weight
+            )
+            
+            return ModifiedContent(
+                content: self,
+                modifier: FontWithLineHeight(
+                    font: font,
+                    lineHeight: lineHeight)
+            )
+        }
+    
+    func customFont(
+        weight: CGFloat,
+        size: CGFloat,
+        lineHeight: CGFloat,
+        style: PretendardFontWeight = .medium
     ) -> some View {
-        let size = font.size
-        let weight = font.weight
-        let lineHeight = font.lineHeight
         
-        let font: UIFont = UIFont.pretend(
+        let font: UIFont = UIFont.setupCustomFont(
+            weight: weight,
             size: size,
-            weight: weight
+            style: style
         )
         
         return ModifiedContent(
@@ -144,17 +173,34 @@ extension View {
 
 struct FontTestView: View {
     var body: some View {
-        VStack {
-            Spacer()
-            Text("Title3")
-                .pretendFont(.title3)
+        VStack() {
             
-            Text("Title2")
-                .pretendFont(.title1)
+            Text("반갑습니다!\n티끌모아에서 모아봐요")
+                .customFont(
+                    weight: 700,
+                    size: 16,
+                    lineHeight: 28, style: .bold
+                ).setupBackground()
             
-            Text("Title1")
-                .pretendFont(.body1)
-            Spacer()
+            Text("전체")
+                .customFont(
+                    weight: 700,
+                    size: 14,
+                    lineHeight: 21,
+                    style: .bold
+                )
+                .foregroundColor(Color.white)
+                .background(Color.black)
+            
+            Text("아티클 제목은 최대 2줄로 적어주세요.\n컨테이너를 넘을 경우...으로")
+                .customFont(
+                    weight: 600,
+                    size: 16,
+                    lineHeight: 24,
+                    style: .semiBold
+                )
+                .setupBackground()
+            
         }
     }
 }
