@@ -51,10 +51,20 @@ private extension LoginView {
     var headerTitles: some View {
         Group {
             Text("반갑습니다!\n티클모아에서 모아봐요")
-                .pretendFont(.title3)
+                .customFont(
+                    weight: 700,
+                    size: 24,
+                    lineHeight: 28.8,
+                    style: .bold
+                )
             
             Text("티클모아에서는 나의 아티클을 모으고,\n 다른 사람의 아티클도 모아볼 수 있어요 📝")
-                .pretendFont(.body1)
+                .customFont(
+                    weight: 500,
+                    size: 14,
+                    lineHeight: 21,
+                    style: .medium
+                )
         }
         .multilineTextAlignment(.center)
     }
@@ -128,7 +138,12 @@ private extension LoginView {
                     .cornerRadius(12)
                 VStack {
                     Text(text)
-                        .pretendFont(.subhead3)
+                        .customFont(
+                            weight: 600,
+                            size: 15,
+                            lineHeight: 24,
+                            style: .semiBold
+                        )
                         .foregroundColor(.black)
                 }
             }
