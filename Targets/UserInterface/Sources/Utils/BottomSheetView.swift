@@ -36,6 +36,11 @@ struct BottomSheetView<Content: View>: View {
         .onAppear {
             identicalWithAnimation()
         }
+        .onChange(of: isPresent) { newValue in
+            if !newValue {
+                dismissWithAnimation()
+            }
+        }
     }
     
     private var drag: some Gesture {
