@@ -16,7 +16,7 @@ import KakaoSDKCommon
 @main
 struct TiclemoaApp: App {
     
-    private let modelContainer = ModelContainer(
+    @StateObject var modelContainer = ModelContainer(
         articleModel: ArticleModel(),
         tagModel: TagModel(),
         loginModel: LoginModel()
