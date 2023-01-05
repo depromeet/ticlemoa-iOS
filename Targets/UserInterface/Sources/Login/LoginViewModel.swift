@@ -11,7 +11,11 @@ import SwiftUI
 
 class LoginViewModel: ObservableObject {
     
-    @EnvironmentObject var modelContainer: ModelContainer
+    @ObservedObject var modelContainer: ModelContainer
+    
+    init(modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
+    }
     
     public func kakaoButtonDidTap() async throws -> Bool {
         await modelContainer.loginModel.checkKakaoLogin()

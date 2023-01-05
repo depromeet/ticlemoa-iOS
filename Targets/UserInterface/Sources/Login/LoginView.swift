@@ -10,7 +10,7 @@ import SwiftUI
 import AuthenticationServices
 
 struct LoginView: View {
-    @StateObject private var viewModel = LoginViewModel()
+    @ObservedObject var viewModel: LoginViewModel
     @Binding var isLoggedIn: Bool
     @Environment(\.window) var window: UIWindow?
     @State var appleSignInDelegates: SignInWithAppleDelegates! = nil
@@ -138,10 +138,26 @@ private extension LoginView {
     }
 }
 
-struct LoginView_Previews: PreviewProvider {
-    @State static  var isLoggedIn: Bool = false
-    
-    static var previews: some View {
-        LoginView(isLoggedIn: $isLoggedIn)
-    }
-}
+//#if DEBUG
+//import Domain
+//
+//struct LoginView_Previews: PreviewProvider {
+//    static var modelContainer = ModelContainer(
+//        articleModel: ArticleModel(),
+//        tagModel: TagModel(),
+//        loginModel: LoginModel()
+//    )
+//    @State static  var isLoggedIn: Bool = false
+//
+//    static var previews: some View {
+//        LoginView(
+//            viewModel:
+//                LoginViewModel(
+//                modelContainer: modelContainer
+//                ),
+//            isLoggedIn: $isLoggedIn
+//        )
+//    }
+//}
+//
+//#endif
