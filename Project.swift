@@ -148,6 +148,17 @@ let infoPlist: InfoPlist = .extendingDefault(with: [
         "LSApplicationQueriesSchemes" : [
             "kakaokompassauth",
             "kakaolink"
+        ],
+        "UIAppFonts": [
+            "Pretendard-Black.otf",
+            "Pretendard-Bold.otf",
+            "Pretendard-ExtraBold.otf",
+            "Pretendard-ExtraLight.otf",
+            "Pretendard-Light.otf",
+            "Pretendard-Medium.otf",
+            "Pretendard-Regular.otf",
+            "Pretendard-SemiBold.otf",
+            "Pretendard-Thin.otf"
         ]
     ]
 )
