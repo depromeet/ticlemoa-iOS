@@ -26,3 +26,17 @@ public final class ModelContainer: ObservableObject {
     }
     
 }
+
+#if DEBUG
+
+extension ModelContainer {
+    static var dummy: ModelContainer {
+        .init(
+            articleModel: MockArticleModel(),
+            tagModel: MockTagModel(),
+            loginModel: MockLoginModel()
+        )
+    }
+}
+
+#endif

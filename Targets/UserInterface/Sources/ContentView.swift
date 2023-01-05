@@ -33,3 +33,57 @@ public struct ContentView: View {
     }
     
 }
+
+#if DEBUG
+
+struct MockTag: Tag {
+    var id: Int
+    var name: String
+    var created: String
+}
+
+struct MockArticle: Article {
+    var id: Int
+    var title: String
+    var url: String
+    var content: String
+    var isPublic: Bool
+    var tagIds: [Int]
+    var created: String
+}
+
+struct MockLoginUser: LoginUser {
+    var nickName: String = ""
+    var accessToken: String?
+}
+
+final class MockArticleModel: ArticleModelProtocol {
+    @Published var items: [DomainInterface.Article] = []
+    var itemsPublisher: Published<[DomainInterface.Article]>.Publisher { $items }
+
+    func fetch() { }
+    func create(_ item: DomainInterface.Article) { }
+    func read(_ item: DomainInterface.Article) { }
+    func update(_ item: DomainInterface.Article) async { }
+    func remove(_ item: DomainInterface.Article) { }
+}
+
+final class MockTagModel: TagModelProtocol {
+    @Published var items: [DomainInterface.Tag] = []
+    var itemsPublisher: Published<[DomainInterface.Tag]>.Publisher { $items }
+    
+    func fetch() { }
+    func create(_ item: DomainInterface.Tag) { }
+    func read(_ item: DomainInterface.Tag) { }
+    func update(_ item: DomainInterface.Tag) { }
+    func remove(_ item: DomainInterface.Tag) { }
+}
+
+final class MockLoginModel: LoginModelProtocol {
+    @Published var userData: LoginUser = MockLoginUser()
+    var userDataPublisher: Published<DomainInterface.LoginUser>.Publisher { $userData }
+    
+    func checkKakaoLogin() async -> Bool { false }
+}
+
+#endif
