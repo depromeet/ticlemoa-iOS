@@ -31,11 +31,12 @@ struct LoginView: View {
                 .frame(maxHeight: 61)
             headerTitles
             Spacer()
-            Color.grey2
-                .frame(maxWidth: 214, maxHeight: 214)
             
+            ticlemoaIcon
+                
             Spacer()
             socialLoginButtons
+                .padding(.top, 10)
             Spacer()
                 .frame(maxHeight: 58)
         }
@@ -66,11 +67,21 @@ private extension LoginView {
         .multilineTextAlignment(.center)
     }
     
+    var ticlemoaIcon: some View {
+        Color.grey2
+            .frame(maxWidth: 214, maxHeight: 214)
+            .cornerRadius(9.73)
+            .overlay(
+                Image("t_icon")
+            )
+    }
+    
     var socialLoginButtons: some View {
-        VStack {
+        VStack(spacing: 12) {
             borderLineButton(
                 "카카오톡으로 로그인",
-                .yellow,
+                Color.kakaoYellow,
+                imageName: "kakao_icon",
                 action: {
                     HapticManager.instance.impact(style: .medium)
                     
@@ -80,15 +91,15 @@ private extension LoginView {
                     }
                 })
             .buttonStyle(ScaleButtonStyle())
-//            borderLineButton(
-//                "Apple으로 로그인",
-//                .white,
-//                action: {
-//                    HapticManager.instance.impact(style: .medium)
-//                    withAnimation { isLoggedIn = true }
-//                })
-            SignInWithApple()
-              .frame(width: 280, height: 60)
+            borderLineButton(
+                "Apple으로 로그인",
+                .white,
+                imageName: "apple_icon",
+                action: {
+                    HapticManager.instance.impact(style: .medium)
+                    withAnimation { isLoggedIn = true }
+                })
+//            SignInWithApple()
               .onTapGesture(perform: showAppleLogin)
             
             .buttonStyle(ScaleButtonStyle())
@@ -123,6 +134,7 @@ private extension LoginView {
     func borderLineButton(
         _ text: String,
         _ backgorund: Color,
+        imageName: String,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: {
@@ -132,8 +144,12 @@ private extension LoginView {
                 Rectangle()
                     .fill(backgorund)
                     .frame(maxHeight: 56)
-                    .cornerRadius(12)
-                VStack {
+                    .cornerRadius(4)
+                HStack {
+                    Image(imageName)
+                        .padding(.leading, 21)
+                    Spacer()
+                }.overlay(
                     Text(text)
                         .customFont(
                             weight: 600,
@@ -141,11 +157,10 @@ private extension LoginView {
                             lineHeight: 24,
                             style: .semiBold
                         )
-                        .foregroundColor(.black)
-                }
+                        .foregroundColor(Color.darkRed))
             }
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: 4)
                     .stroke(Color.black, lineWidth: 1.2)
             )
         })
@@ -153,26 +168,26 @@ private extension LoginView {
     }
 }
 
-//#if DEBUG
-//import Domain
-//
-//struct LoginView_Previews: PreviewProvider {
-//    static var modelContainer = ModelContainer(
-//        articleModel: ArticleModel(),
-//        tagModel: TagModel(),
-//        loginModel: LoginModel()
-//    )
-//    @State static  var isLoggedIn: Bool = false
-//
-//    static var previews: some View {
-//        LoginView(
-//            viewModel:
-//                LoginViewModel(
-//                modelContainer: modelContainer
-//                ),
-//            isLoggedIn: $isLoggedIn
-//        )
-//    }
-//}
-//
-//#endif
+#if DEBUG
+import Domain
+
+struct LoginView_Previews: PreviewProvider {
+    static var modelContainer = ModelContainer(
+        articleModel: ArticleModel(),
+        tagModel: TagModel(),
+        loginModel: LoginModel()
+    )
+    @State static  var isLoggedIn: Bool = false
+
+    static var previews: some View {
+        LoginView(
+            viewModel:
+                LoginViewModel(
+                modelContainer: modelContainer
+                ),
+            isLoggedIn: $isLoggedIn
+        )
+    }
+}
+
+#endif
