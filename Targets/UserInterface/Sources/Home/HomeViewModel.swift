@@ -17,7 +17,7 @@ final class HomeViewModel: ObservableObject {
     
     @EnvironmentObject var modelContainer: ModelContainer
     
-    @Published var articles: [Article] = []
+    @Published var articles: [TemporaryArticle] = []
     @Published var rows: [[Tag]] = []
     @Published var tags: [Tag] = []
     @Published var tagText = ""
@@ -30,13 +30,13 @@ final class HomeViewModel: ObservableObject {
             .assign(to: &self.$tags)
         
         // Dummy Data 셋업
-        articles = Article.allArticles
+        articles = TemporaryArticle.allArticles
 //        getTags()
         selectedTag = tags.first!
     }
     
     /// 월별 데이터 정렬 메소드
-    func groupArticlesByMonth(articles: [Article]) -> ArticleGroup {
+    func groupArticlesByMonth(articles: [TemporaryArticle]) -> ArticleGroup {
         guard !articles.isEmpty else { return [:] }
         
         let groupedArticles = ArticleGroup(grouping: articles) { $0.month }
@@ -107,7 +107,7 @@ extension HomeViewModel {
 //        getTags()
     }
     
-    func removeTag(by id: UUID){
+    func removeTag(by id: Int){
         guard let removingItem = tags.first(where: { $0.id == id }) else {
             return
         }
