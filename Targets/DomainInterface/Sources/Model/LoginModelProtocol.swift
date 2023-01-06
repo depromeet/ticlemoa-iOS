@@ -11,4 +11,6 @@ import Foundation
 public protocol LoginModelProtocol {
     var userDataPublisher: Published<LoginUser>.Publisher { get }
     func checkKakaoLogin() async -> Bool
+    func isKakaoTalkLoginUrl(_ url: URL) -> Bool
+    func authController(url: URL) -> Bool
 }
