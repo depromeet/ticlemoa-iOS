@@ -33,7 +33,7 @@ struct LoginView: View {
             Spacer()
             
             ticlemoaIcon
-                
+            
             Spacer()
             socialLoginButtons
                 .padding(.top, 10)
@@ -100,40 +100,41 @@ private extension LoginView {
                 imageName: "apple_icon",
                 action: {
                     HapticManager.instance.impact(style: .medium)
-                    withAnimation { isLoggedIn = true }
+                    showAppleLogin()
                 })
-//            SignInWithApple()
-              .onTapGesture(perform: showAppleLogin)
+            //            SignInWithApple()
+            .onTapGesture(perform: showAppleLogin)
             
             .buttonStyle(ScaleButtonStyle())
         }
         .padding(.horizontal, 20)
     }
-        
+    
     
     private func showAppleLogin() {
-      let request = ASAuthorizationAppleIDProvider().createRequest()
-      request.requestedScopes = [.fullName, .email]
-
-      performSignIn(using: [request])
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        performSignIn(using: [request])
     }
     
     private func performSignIn(using requests: [ASAuthorizationRequest]) {
-      appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
-        if success {
-          // update UI
-        } else {
-          // show the user an error
+        appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
+            if success {
+                // update UI
+                withAnimation { isLoggedIn = true }
+            } else {
+                // show the user an error
+            }
         }
-      }
-
-      let controller = ASAuthorizationController(authorizationRequests: requests)
-      controller.delegate = appleSignInDelegates
-      controller.presentationContextProvider = appleSignInDelegates
-
-      controller.performRequests()
+        
+        let controller = ASAuthorizationController(authorizationRequests: requests)
+        controller.delegate = appleSignInDelegates
+        controller.presentationContextProvider = appleSignInDelegates
+        
+        controller.performRequests()
     }
-
+    
     func borderLineButton(
         _ text: String,
         _ backgorund: Color,
@@ -181,12 +182,12 @@ struct LoginView_Previews: PreviewProvider {
         loginModel: LoginModel()
     )
     @State static  var isLoggedIn: Bool = false
-
+    
     static var previews: some View {
         LoginView(
             viewModel:
                 LoginViewModel(
-                modelContainer: modelContainer
+                    modelContainer: modelContainer
                 ),
             isLoggedIn: $isLoggedIn
         )
