@@ -37,7 +37,7 @@ struct HomeArticleList: View {
             
             List {
                 ForEach(
-                    Array(viewModel.groupArticlesByMonth(articles: Article.allArticles)).reversed(),id: \.key) { month, articles in
+                    Array(viewModel.groupArticlesByMonth(articles: TemporaryArticle.allArticles)).reversed(),id: \.key) { month, articles in
                         Section {
                             HStack {
                                 Text(month)
@@ -67,7 +67,7 @@ struct HomeArticleList: View {
 struct HomeArticleList_Previews: PreviewProvider {
     static let homeViewModel: HomeViewModel = {
         let vm = HomeViewModel()
-        vm.articles = Article.allArticles
+        vm.articles = TemporaryArticle.allArticles
         return vm
     }()
     
