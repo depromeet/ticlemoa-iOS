@@ -1,6 +1,6 @@
 //
 //  KakaoLoginRequest.swift
-//  Ticlemoa
+//  API
 //
 //  Created by 김우성 on 2022/12/21.
 //  Copyright © 2022 nyongnyong. All rights reserved.
@@ -23,7 +23,7 @@ extension KakaoLoginRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var request = URLRequest(
-            url: baseURL,
+            url: baseURL.appendingPathExtension("/auth/*/login"),
             cachePolicy: .reloadIgnoringLocalCacheData,
             timeoutInterval: 10
         )
