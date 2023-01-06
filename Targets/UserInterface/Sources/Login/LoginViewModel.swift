@@ -19,6 +19,18 @@ class LoginViewModel: ObservableObject {
     
 }
 
+// MARK: Auth
+extension LoginViewModel {
+    
+    func isKakaoTalkLogin(_ url: URL) -> Bool {
+        modelContainer.loginModel.isKakaoTalkLoginUrl(url)
+    }
+    
+    func authControllerHandleOpen(url: URL) -> Bool {
+        modelContainer.loginModel.authController(url: url)
+    }
+    
+}
 
 
 

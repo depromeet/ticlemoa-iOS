@@ -7,9 +7,6 @@
 //
 
 import SwiftUI
-import KakaoSDKUser
-import KakaoSDKAuth
-import KakaoSDKCommon
 import AuthenticationServices
 
 struct LoginView: View {
@@ -21,8 +18,8 @@ struct LoginView: View {
     var body: some View {
         mainBody
             .onOpenURL { url in
-                if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                    _ = AuthController.handleOpenUrl(url: url)
+                if viewModel.isKakaoTalkLogin(url) {
+                    _ = viewModel.authControllerHandleOpen(url: url)
                 }
             }
             .setupBackground()

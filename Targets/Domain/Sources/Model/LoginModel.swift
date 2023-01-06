@@ -36,6 +36,14 @@ public final class LoginModel: LoginModelProtocol {
 
 extension LoginModel {
     
+    public func isKakaoTalkLoginUrl(_ url: URL) -> Bool {
+        AuthApi.isKakaoTalkLoginUrl(url)
+    }
+    
+    public func authController(url: URL) -> Bool {
+        AuthController.handleOpenUrl(url: url)
+    }
+    
     public func checkKakaoLogin() async -> Bool {
         switch await kakaoAccessToken() {
             case .success(let token):
