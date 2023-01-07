@@ -49,7 +49,9 @@ struct MockArticle: Article {
     var content: String
     var isPublic: Bool
     var tagIds: [Int]
-    var created: String
+    var viewCount: Int
+    var createdAt: String
+    var updatedAt: String
 }
 
 struct MockLoginUser: LoginUser {

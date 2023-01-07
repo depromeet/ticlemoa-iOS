@@ -15,5 +15,7 @@ public protocol Article {
     var content: String { get }
     var isPublic: Bool { get }
     var tagIds: [Int] { get }
-    var created: String { get }
+    var viewCount: Int { get }
+    var createdAt: String { get }
+    var updatedAt: String { get }
 }
