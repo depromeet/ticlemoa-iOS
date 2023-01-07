@@ -24,11 +24,11 @@ extension DeleteArticleRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var request = URLRequest(
-            url: baseURL.appendingPathExtension("/article").appendingPathExtension(articleIds.joined(separator: ",")),
+            url: baseURL.appendingPathComponent("/article").appendingPathComponent(articleIds.joined(separator: ",")),
             cachePolicy: .reloadIgnoringLocalCacheData,
             timeoutInterval: 10
         )
-        request.httpMethod = HTTPMethod.post.rawValue
+        request.httpMethod = HTTPMethod.delete.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         

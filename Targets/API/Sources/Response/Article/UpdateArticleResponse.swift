@@ -12,12 +12,11 @@ public struct UpdateArticleResponse: Decodable {
     let content: String
     let isPublic: Bool
     let title: String
-    let link: String
+    let url: String
     let userId: Int
-    let deletedAt: String?
     let id: Int
-    let createdAt, updatedAt: String
-    let viewCount: Int
+    let deletedAt: String?
+    let updatedAt: String
 }
 
 

@@ -33,7 +33,7 @@ extension CreateArticleRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var request = URLRequest(
-            url: baseURL.appendingPathExtension("/article"),
+            url: baseURL.appendingPathComponent("/article"),
             cachePolicy: .reloadIgnoringLocalCacheData,
             timeoutInterval: 10
         )

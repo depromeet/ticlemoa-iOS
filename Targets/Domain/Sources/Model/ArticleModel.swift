@@ -44,7 +44,7 @@ extension Article {
     func uploadArticleRequest(with loginUser: LoginUser) -> UpdateArticleRequest {
         .init(
             accessToken: loginUser.accessToken ?? "",
-            path: self.id,
+            articleId: self.id,
             body: .init(
                 content: self.content,
                 userId: loginUser.userId ?? 0,

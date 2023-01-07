@@ -24,7 +24,7 @@ extension SearchArticleRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var urlComponents = URLComponents(
-            url: baseURL.appendingPathExtension("/article"),
+            url: baseURL.appendingPathComponent("/article"),
             resolvingAgainstBaseURL: false
         )
         urlComponents?.queryItems = [
