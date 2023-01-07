@@ -11,8 +11,8 @@ import DomainInterface
 import SwiftUI
 
 public struct ContentView: View {
-    @State private var isLoggedIn: Bool = false // MARK: AppStore? UserDefault?
     @EnvironmentObject var modelContainer: ModelContainer
+    @State private var isLoggedIn: Bool = false // MARK: AppStore? UserDefault?
     
     public init() { }
     
@@ -23,12 +23,10 @@ public struct ContentView: View {
                     .transition(.scale)
             } else {
                 LoginView(
-                    viewModel: LoginViewModel(
-                        modelContainer: modelContainer
-                    ),
+                    viewModel: .init(modelContainer: modelContainer),
                     isLoggedIn: $isLoggedIn
                 )
-                    .transition(.scale)
+                .transition(.scale)
                 
             }
         }
@@ -86,6 +84,8 @@ final class MockLoginModel: LoginModelProtocol {
     var userDataPublisher: Published<DomainInterface.LoginUser>.Publisher { $userData }
     
     func checkKakaoLogin() async -> Bool { false }
+    func isKakaoTalkLoginUrl(_ url: URL) -> Bool { return true }
+    func authController(url: URL) -> Bool { return true }
 }
 
 #endif
