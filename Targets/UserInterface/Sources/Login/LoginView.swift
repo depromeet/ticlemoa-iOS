@@ -15,6 +15,9 @@ struct LoginView: View {
     @Environment(\.window) var window: UIWindow?
     @State var appleSignInDelegates: SignInWithAppleDelegates! = nil
     
+    @State var selectedPage: Int = 1
+    var pages: Int = 3
+    
     var body: some View {
         mainBody
             .onOpenURL { url in
@@ -29,14 +32,18 @@ struct LoginView: View {
         VStack {
             Spacer()
                 .frame(maxHeight: 61)
-            headerTitles
-            Spacer()
             
-            ticlemoaIcon
+            OnboardingTabView(selectedPage: $selectedPage, pages: pages)
             
-            Spacer()
+            PageControl(
+                selectedPage: $selectedPage,
+                pages: pages,
+                circleDiameter: 8.0,
+                circleMargin: 8.0
+            )
+                
             socialLoginButtons
-                .padding(.top, 10)
+                .padding(.top, 60)
             Spacer()
                 .frame(maxHeight: 58)
         }
@@ -78,7 +85,7 @@ private extension LoginView {
     
     var socialLoginButtons: some View {
         VStack(spacing: 12) {
-            borderLineButton(
+            RoundedButton(
                 "카카오톡으로 로그인",
                 Color.kakaoYellow,
                 imageName: "kakao_icon",
@@ -91,10 +98,11 @@ private extension LoginView {
                     }
                 })
             .buttonStyle(ScaleButtonStyle())
-            borderLineButton(
+            RoundedButton(
                 "Apple으로 로그인",
-                .white,
-                imageName: "apple_icon",
+                foregroundColor: .white,
+                .black,
+                imageName: "apple_icon_white",
                 action: {
                     HapticManager.instance.impact(style: .medium)
                     showAppleLogin()
@@ -132,8 +140,9 @@ private extension LoginView {
         controller.performRequests()
     }
     
-    func borderLineButton(
+    func RoundedButton(
         _ text: String,
+        foregroundColor: Color = Color.darkRed,
         _ backgorund: Color,
         imageName: String,
         action: @escaping () -> Void
@@ -158,37 +167,33 @@ private extension LoginView {
                             lineHeight: 24,
                             style: .semiBold
                         )
-                        .foregroundColor(Color.darkRed))
+                        .foregroundColor(foregroundColor))
             }
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color.black, lineWidth: 1.2)
-            )
         })
         
     }
 }
-
-#if DEBUG
-import Domain
-
-struct LoginView_Previews: PreviewProvider {
-    static var modelContainer = ModelContainer(
-        articleModel: ArticleModel(),
-        tagModel: TagModel(),
-        loginModel: LoginModel()
-    )
-    @State static  var isLoggedIn: Bool = false
-    
-    static var previews: some View {
-        LoginView(
-            viewModel:
-                LoginViewModel(
-                    modelContainer: modelContainer
-                ),
-            isLoggedIn: $isLoggedIn
-        )
-    }
-}
-
-#endif
+//
+//#if DEBUG
+//import Domain
+//
+//struct LoginView_Previews: PreviewProvider {
+//    static var modelContainer = ModelContainer(
+//        articleModel: ArticleModel(),
+//        tagModel: TagModel(),
+//        loginModel: LoginModel()
+//    )
+//    @State static  var isLoggedIn: Bool = false
+//    
+//    static var previews: some View {
+//        LoginView(
+//            viewModel:
+//                LoginViewModel(
+//                    modelContainer: modelContainer
+//                ),
+//            isLoggedIn: $isLoggedIn
+//        )
+//    }
+//}
+//
+//#endif
