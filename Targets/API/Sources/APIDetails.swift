@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol APIDetails {
-    func request(by request: URLRequestMakable) async throws -> Data
+    func request(by request: URLRequestMakable) async -> Result<Data, NetworkError>
 }
 
 enum HTTPMethod: String {
@@ -26,7 +26,7 @@ public struct TiclemoaAPI {
     
     public init() {
         guard let baseURL = URL(string: URLStrings.host) else {
-            fatalError(NetworkError.inValidURLString.rawValue)
+            fatalError(NetworkError.inValidURLString.description)
         }
         self.baseURL = baseURL
     }
@@ -35,20 +35,22 @@ public struct TiclemoaAPI {
 
 extension TiclemoaAPI: APIDetails {
     
-    public func request(by request: URLRequestMakable) async throws -> Data {
+    public func request(by request: URLRequestMakable) async -> Result<Data, NetworkError> {
         let urlRequest = request.makeURLRequest(by: baseURL)
-        
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 || httpResponse.statusCode == 201
-            else {
-                throw NetworkError.inValidURLRequest
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+                return .failure(.validationError)
             }
-            
-            return data
+            switch statusCode {
+                case 200, 201:      return .success(data)
+                case 400..<500:     return .failure(.validationError)
+                case 500..<600:     return .failure(.serverError)
+                default:
+                    return .failure(.unknownError)
+            }
         } catch {
-            throw NetworkError.inValidURLRequest
+            return .failure(.notFound)
         }
     }
     
