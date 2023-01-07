@@ -13,14 +13,18 @@ import Foundation
 
 extension Article {
     
-    func uploadArticleRequest(with accessToken: String) -> UploadArticleRequest {
+    func uploadArticleRequest(with loginUser: LoginUser) -> UpdateArticleRequest {
         .init(
-            accessToken: accessToken,
-            content: self.content,
-            title: self.title,
-            url: self.url,
-            isPublic: self.isPublic,
-            tagIds: self.tagIds
+            accessToken: loginUser.accessToken ?? "",
+            path: self.id,
+            body: .init(
+                content: self.content,
+                userId: loginUser.userId ?? 0,
+                title: self.title,
+                url: self.url,
+                isPublic: self.isPublic,
+                tagIds: self.tagIds
+            )
         )
     }
     
@@ -52,10 +56,17 @@ extension ArticleModel {
     }
     
     public func update(_ item: Article) async {
-        let uploadArticleRequest = item.uploadArticleRequest(with: "accessToken") // TODO: 전달방법 고민 필요 UserDefault?
+        let loginUser = LoginUserData(nickName: "테스트", accessToken: "토큰", userId: 0) // TODO: 전달방법 고민 필요 UserDefault?
+        let uploadArticleRequest = item.uploadArticleRequest(with: loginUser)
+        let result = await api.request(by: uploadArticleRequest)
+        
         do {
-            let data = try await api.request(by: uploadArticleRequest)
-            let response = try JSONDecoder().decode(UploadArticleResponse.self, from: data)
+            switch result {
+                case .success(let data):
+                    let response = try JSONDecoder().decode(UpdateArticleResponse.self, from: data)
+                case .failure(let error):
+                    print(error.description)
+            }
         } catch {
             print(error.localizedDescription)
         }

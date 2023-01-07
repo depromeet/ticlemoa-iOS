@@ -13,4 +13,5 @@ import Foundation
 struct LoginUserData: LoginUser {
     let nickName: String
     let accessToken: String?
+    let userId: Int?
 }
