@@ -17,7 +17,7 @@ import KakaoSDKCommon
 
 extension KakaoLoginResponse {
     func updateAccessToken(from userData: LoginUser) -> LoginUserData {
-        .init(nickName: userData.nickName, accessToken: self.accessToken)
+        .init(nickName: userData.nickName, accessToken: self.accessToken, userId: self.userId)
     }
 }
 
@@ -29,7 +29,7 @@ public final class LoginModel: LoginModelProtocol {
     private let api: APIDetails = TiclemoaAPI()
     
     public init() {
-        self.userData = LoginUserData(nickName: "", accessToken: nil) // 초기값 추가 UserDefault?
+        self.userData = LoginUserData(nickName: "", accessToken: nil, userId: nil) // 초기값 추가 UserDefault?
     }
     
 }
@@ -78,14 +78,37 @@ extension LoginModel {
             }
         }
     }
+    public func update(_ item: Article) async {
+        let loginUser = LoginUserData(nickName: "테스트", accessToken: "토큰", userId: 0) // TODO: 전달방법 고민 필요 UserDefault?
+        let uploadArticleRequest = item.uploadArticleRequest(with: loginUser)
+        let result = await api.request(by: uploadArticleRequest)
+        
+        do {
+            switch result {
+                case .success(let data):
+                    let response = try JSONDecoder().decode(UpdateArticleResponse.self, from: data)
+                case .failure(let error):
+                    print(error.description)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
     
     private func requestKakaoLogin(_ accessToken: String) async -> Bool {
         let kakaoLoginRequest = KakaoLoginRequest(accessToken: accessToken)
+        let result = await api.request(by: kakaoLoginRequest)
+        
         do {
-            let data = try await api.request(by: kakaoLoginRequest)
-            let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
-            self.userData = response.updateAccessToken(from: userData)
-            return true
+            switch result {
+                case .success(let data):
+                    let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
+                    self.userData = response.updateAccessToken(from: userData)
+                    return true
+                case .failure(let error):
+                    print(error.description)
+                    return false
+            }
         } catch {
             print(error.localizedDescription)
             return false
