@@ -26,7 +26,7 @@ struct LoginUserData: Codable, LoginUser {
     }
     
     let nickName: String
-    let accessToken: String?
-    let userId: Int?
+    let accessToken: String
+    let userId: Int
     let mail: String
 }
