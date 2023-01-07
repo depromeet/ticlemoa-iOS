@@ -8,24 +8,20 @@
 
 import Foundation
 
-enum NetworkError: String, Error {
+public enum NetworkError: Error, CustomStringConvertible {
     case inValidURLString
-    case inValidURLRequest
-    case parseUrlFail
     case notFound
     case validationError
     case serverError
-    case defaultError
+    case unknownError
     
-    var errorDescription: String? {
+    public var description: String {
         switch self {
-            case .inValidURLString:     return self.rawValue
-            case .inValidURLRequest:    return self.rawValue
-            case .parseUrlFail:         return "Cannot initial URL object."
-            case .notFound:             return "Not Found"
-            case .validationError:      return "Validation Errors"
-            case .serverError:          return "Internal Server Error"
-            case .defaultError:         return "Something went wrong."
+            case .inValidURLString:             return "inValidURLString"
+            case .notFound:                     return "Not Found"
+            case .validationError:              return "Validation Errors"
+            case .serverError:                  return "Internal Server Error"
+            case .unknownError:                 return "Something went wrong."
         }
     }
 }
