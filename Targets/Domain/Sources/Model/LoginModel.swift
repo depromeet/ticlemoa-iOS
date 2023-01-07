@@ -16,20 +16,29 @@ import KakaoSDKAuth
 import KakaoSDKCommon
 
 extension KakaoLoginResponse {
-    func updateAccessToken(from userData: LoginUser) -> LoginUserData {
-        .init(nickName: userData.nickName, accessToken: self.accessToken, userId: self.userId)
+    func updateLoginUser() -> LoginUserData? {
+        guard let baseData = LoginUserData.shared else {
+            return nil
+        }
+        LoginUserData.shared = .init(
+            nickName: baseData.nickName,
+            accessToken: self.accessToken,
+            userId: self.userId,
+            mail: baseData.mail
+        )
+        return LoginUserData.shared
     }
 }
 
 public final class LoginModel: LoginModelProtocol {
     
-    public var userDataPublisher: Published<LoginUser>.Publisher { $userData }
+    public var userDataPublisher: Published<LoginUser?>.Publisher { $userData }
     
-    @Published private var userData: LoginUser
+    @Published private var userData: LoginUser?
     private let api: APIDetails = TiclemoaAPI()
     
     public init() {
-        self.userData = LoginUserData(nickName: "", accessToken: nil, userId: nil) // 초기값 추가 UserDefault?
+        self.userData = LoginUserData.shared
     }
     
 }
@@ -79,8 +88,8 @@ extension LoginModel {
         }
     }
     public func update(_ item: Article) async {
-        let loginUser = LoginUserData(nickName: "테스트", accessToken: "토큰", userId: 0) // TODO: 전달방법 고민 필요 UserDefault?
-        let uploadArticleRequest = item.uploadArticleRequest(with: loginUser)
+        let loginUser = LoginUserData(nickName: "테스트", accessToken: "토큰", userId: 0, mail: "") // TODO: 전달방법 고민 필요 UserDefault?
+        let uploadArticleRequest = item.updateArticleRequest(with: loginUser)
         let result = await api.request(by: uploadArticleRequest)
         
         do {
@@ -103,7 +112,7 @@ extension LoginModel {
             switch result {
                 case .success(let data):
                     let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
-                    self.userData = response.updateAccessToken(from: userData)
+                    self.userData = response.updateLoginUser()
                     return true
                 case .failure(let error):
                     print(error.description)

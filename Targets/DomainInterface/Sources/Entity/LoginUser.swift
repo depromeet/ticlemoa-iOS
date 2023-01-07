@@ -12,4 +12,5 @@ public protocol LoginUser {
     var nickName: String { get }
     var accessToken: String? { get }
     var userId: Int? { get }
+    var mail: String { get }
 }

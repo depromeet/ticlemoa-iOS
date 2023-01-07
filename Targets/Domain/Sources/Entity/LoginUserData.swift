@@ -10,8 +10,23 @@ import DomainInterface
 
 import Foundation
 
-struct LoginUserData: LoginUser {
+struct LoginUserData: Codable, LoginUser {
+    
+    static var shared: LoginUserData? {
+        get {
+            guard let value = UserDefaults.standard.value(forKey: "LoginUser") else { return nil }
+            guard let data = value as? Data else { return nil }
+            let loginUser = try? JSONDecoder().decode(LoginUserData.self, from: data)
+            return loginUser
+        }
+        set {
+            let jsonData = try? JSONEncoder().encode(newValue)
+            UserDefaults.standard.set(jsonData, forKey: "LoginUser")
+        }
+    }
+    
     let nickName: String
     let accessToken: String?
     let userId: Int?
+    let mail: String
 }
