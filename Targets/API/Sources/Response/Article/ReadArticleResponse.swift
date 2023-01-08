@@ -10,19 +10,19 @@ import Foundation
 
 public struct ReadArticleResponse: Decodable {
     
-    struct ReadArticle: Decodable {
-        let content: String
-        let isPublic: Bool
-        let title: String
-        let url: String
-        let userId: Int
-        let deletedAt: String?
-        let id: Int
-        let createdAt: String?
-        let updatedAt: String?
-        let viewCount: Int
+    public struct ReadArticle: Decodable {
+        public let content: String
+        public let isPublic: Bool
+        public let title: String
+        public let url: String
+        public let userId: Int
+        public let deletedAt: String?
+        public let id: Int
+        public let createdAt: String
+        public let updatedAt: String
+        public let viewCount: Int
     }
     
-    let articles: [ReadArticle]
+    public let articles: [ReadArticle]
     
 }

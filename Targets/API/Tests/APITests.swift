@@ -142,7 +142,7 @@ extension APITests {
         // given
         let request = SearchArticleRequest(accessToken: accessToken, search: "1")
         // when
-        let result = try! await self.sut.request(by: request)
+        let result = await self.sut.request(by: request)
         if case .success(let data) = result {
             let response = try? JSONDecoder().decode(SearchArticleResponse.self, from: data)
             

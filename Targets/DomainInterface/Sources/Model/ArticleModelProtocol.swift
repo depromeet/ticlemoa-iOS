@@ -10,9 +10,9 @@ import Combine
 
 public protocol ArticleModelProtocol {
     var itemsPublisher: Published<[Article]>.Publisher { get }
-    func fetch()
-    func create(_ item: Article)
-    func read(_ item: Article)
+    func create(_ item: Article, tagIds: [Int]) async
+    func fetch() async
     func update(_ item: Article) async
-    func remove(_ item: Article)
+    func removes(_ items: [Article]) async
+    func search(_ keyword: String) async
 }

@@ -11,8 +11,8 @@ import DomainInterface
 import SwiftUI
 
 public struct ContentView: View {
-    @State private var isLoggedIn: Bool = false // MARK: AppStore? UserDefault?
     @EnvironmentObject var modelContainer: ModelContainer
+    @State private var isLoggedIn: Bool = false // MARK: AppStore? UserDefault?
     
     public init() { }
     
@@ -23,12 +23,10 @@ public struct ContentView: View {
                     .transition(.scale)
             } else {
                 LoginView(
-                    viewModel: LoginViewModel(
-                        modelContainer: modelContainer
-                    ),
+                    viewModel: .init(modelContainer: modelContainer),
                     isLoggedIn: $isLoggedIn
                 )
-                    .transition(.scale)
+                .transition(.scale)
                 
             }
         }
@@ -51,24 +49,27 @@ struct MockArticle: Article {
     var content: String
     var isPublic: Bool
     var tagIds: [Int]
-    var created: String
+    var viewCount: Int
+    var createdAt: String
+    var updatedAt: String
 }
 
 struct MockLoginUser: LoginUser {
     var userId: Int? = 1
     var nickName: String = ""
-    var accessToken: String?
+    var accessToken: String
+    var userId: Int
+    var mail: String
 }
 
 final class MockArticleModel: ArticleModelProtocol {
     @Published var items: [DomainInterface.Article] = []
     var itemsPublisher: Published<[DomainInterface.Article]>.Publisher { $items }
-
-    func fetch() { }
-    func create(_ item: DomainInterface.Article) { }
-    func read(_ item: DomainInterface.Article) { }
+    func fetch() async { }
     func update(_ item: DomainInterface.Article) async { }
-    func remove(_ item: DomainInterface.Article) { }
+    func create(_ item: DomainInterface.Article, tagIds: [Int]) async { }
+    func removes(_ items: [DomainInterface.Article]) async { }
+    func search(_ keyword: String) async { }
 }
 
 final class MockTagModel: TagModelProtocol {
@@ -83,18 +84,13 @@ final class MockTagModel: TagModelProtocol {
 }
 
 final class MockLoginModel: LoginModelProtocol {
-    func isKakaoTalkLoginUrl(_ url: URL) -> Bool {
-        return true //FIXME: 다른 pr에서 수정 예정
-    }
-    
-    func authController(url: URL) -> Bool {
-        return true //FIXME: 다른 pr에서 수정 예정
-    }
-    
-    @Published var userData: LoginUser = MockLoginUser()
-    var userDataPublisher: Published<DomainInterface.LoginUser>.Publisher { $userData }
-    
+    @Published var userData: LoginUser? = MockLoginUser(
+        nickName: "TestNickname", accessToken: "", userId: 0, mail: "ticlemoa@gmail.com"
+    )
+    var userDataPublisher: Published<DomainInterface.LoginUser?>.Publisher { $userData }
     func checkKakaoLogin() async -> Bool { false }
+    func isKakaoTalkLoginUrl(_ url: URL) -> Bool { return true }
+    func authController(url: URL) -> Bool { return true }
 }
 
 #endif

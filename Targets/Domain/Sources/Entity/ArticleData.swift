@@ -16,8 +16,9 @@ struct ArticleData: Article {
     let url: String
     let content: String
     let isPublic: Bool
-    let tagIds: [Int]
-    let created: String
+    var viewCount: Int
+    var createdAt: String
+    var updatedAt: String
     
     public init(
         id: Int,
@@ -25,15 +26,17 @@ struct ArticleData: Article {
         url: String,
         content: String,
         isPublic: Bool,
-        tagIds: [Int],
-        created: String
+        viewCount: Int,
+        createdAt: String,
+        updatedAt: String
     ) {
         self.id = id
         self.title = title
         self.url = url
         self.content = content
         self.isPublic = isPublic
-        self.tagIds = tagIds
-        self.created = created
+        self.viewCount = viewCount
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
     }
 }
