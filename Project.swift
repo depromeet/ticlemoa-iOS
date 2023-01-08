@@ -18,12 +18,12 @@ enum Ticlemoa: String {
     case domainInterface = "DomainInterface"
     case domain = "Domain"
     case api = "API"
-    case share = "ShareExtension"
+//    case share = "ShareExtension"
     
     var name: String { self.rawValue }
     var product: Product {
         switch self {
-            case .share:    return .appExtension
+//            case .share:    return .appExtension
             default:        return .framework
         }
     }
@@ -86,22 +86,22 @@ func makeModule(_ module: Ticlemoa,
 
 // MARK: - Module
 
-let shareInfoPlist: InfoPlist = .extendingDefault(with: [
-		"CFBundleDisplayName": "\(Ticlemoa.productName)",
-		"CFBundleShortVersionString": "1.0.0",
-		"NSExtension": [
-            "NSExtensionPrincipalClass": "ShareExtension.ShareNavigationController",
-			"NSExtensionAttributes": [
-				"NSExtensionActivationSupportsText": true,
-                "NSExtensionActivationRule": [
-                    "NSExtensionActivationSupportsWebURLWithMaxCount": 1,
-                    "NSExtensionActivationSupportsWebPageWithMaxCount": 1
-                ]
-			],
-			"NSExtensionPointIdentifier": "com.apple.share-services"
-		]
-	]
-)
+//let shareInfoPlist: InfoPlist = .extendingDefault(with: [
+//		"CFBundleDisplayName": "\(Ticlemoa.productName)",
+//		"CFBundleShortVersionString": "1.0.0",
+//		"NSExtension": [
+//            "NSExtensionPrincipalClass": "ShareExtension.ShareNavigationController",
+//			"NSExtensionAttributes": [
+//				"NSExtensionActivationSupportsText": true,
+//                "NSExtensionActivationRule": [
+//                    "NSExtensionActivationSupportsWebURLWithMaxCount": 1,
+//                    "NSExtensionActivationSupportsWebPageWithMaxCount": 1
+//                ]
+//			],
+//			"NSExtensionPointIdentifier": "com.apple.share-services"
+//		]
+//	]
+//)
 
 let userInterface = makeModule(
     .userInterface,
@@ -125,15 +125,15 @@ let domain = makeModule(
     ],
     hasTest: true
 )
-let share = makeModule(
-    .share,
-    infoPlist: shareInfoPlist,
-    dependencies: [
-        .target(name: Ticlemoa.userInterface.name),
-        .target(name: Ticlemoa.domain.name)
-    ],
-    hasTest: false
-)
+//let share = makeModule(
+//    .share,
+//    infoPlist: shareInfoPlist,
+//    dependencies: [
+//        .target(name: Ticlemoa.userInterface.name),
+//        .target(name: Ticlemoa.domain.name)
+//    ],
+//    hasTest: false
+//)
 let domainInterface = makeModule(
     .domainInterface,
     dependencies: [],
@@ -181,7 +181,7 @@ let mainAppTarget = [
         dependencies: [
             .target(name: Ticlemoa.userInterface.name),
             .target(name: Ticlemoa.domain.name),
-            .target(name: Ticlemoa.share.name)
+//            .target(name: Ticlemoa.share.name)
         ]
     ),
     Target.init(
@@ -212,7 +212,7 @@ let project = Project.init(
         userInterface,
         domain,
         api,
-        share,
+//        share,
         domainInterface
     ].flatMap { $0 }
 )
