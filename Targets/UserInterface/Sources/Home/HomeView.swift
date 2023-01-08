@@ -12,7 +12,7 @@ let tagHeight = 32
 struct HomeView: View {
     @EnvironmentObject var modelContainer: ModelContainer
     @StateObject var viewModel: HomeViewModel
-    @State var isFolding = false
+    @State var isFolding = true
     @State var isPushSearchView = false
     
     var body: some View {
@@ -35,16 +35,16 @@ private extension HomeView {
             
             VStack {
                 Spacer()
-                    .frame(maxHeight: 36)
-                
-                Spacer()
-                    .frame(minHeight: 0, maxHeight: isFolding ? 35 : 250)
+                    .frame(
+                        minHeight: 0,
+                        maxHeight: isFolding ? 80 : 35 + CGFloat((35 * viewModel.homeTags.count))
+                    )
                 HomeArticleList(viewModel: viewModel)
                     .padding(.top, 0)
                     .animation(.default)
                     .transition(.slide)
                     .environmentObject(viewModel)
-                    .setupBackground()
+                    .background(Color.grey1)
                 
                 Spacer()
                 Divider()
@@ -53,17 +53,18 @@ private extension HomeView {
     }
     
     var tagListView: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 4){
-                ForEach(Array(viewModel.rows.enumerated()), id:\.offset) { columnIndex, rows in
-                    HStack(spacing: 10){
+                ForEach(Array(viewModel.homeRows.enumerated()), id:\.offset) { columnIndex, rows in
+                    
+                    HStack(spacing: 10) {
                         ForEach(Array(rows.enumerated()), id: \.offset){ rowIndex, row in
                             Button(
                                 action: {
                                     HapticManager.instance.impact(style: .light)
                                     viewModel.selectedTag = row
                                 }, label: {
-                                    Text(row.tagName)
+                                    Text(row.tag.tagName)
                                 }
                             )
                             .pretendFont(.body2)
@@ -85,11 +86,37 @@ private extension HomeView {
                     .padding(.vertical, 10)
                 }
                 
-                Spacer()
+                // 태그 관리
+                Button(
+                    action: {
+                        // TODO: 태그관리 화면으로 이동
+                        HapticManager.instance.impact(style: .light)
+                    },
+                    label: {
+                        
+                        HStack {
+                            Text("태그 관리")
+                                .foregroundColor(.ticlemoaBlack)
+                                .customFont(
+                                    weight: 400,
+                                    size: 12,
+                                    lineHeight: 18,
+                                    style: .medium
+                                )
+                                .padding(.top, 11)
+                            
+                            Image("left_chevron")
+                                .padding(.top, 10)
+                        }
+                    }
+                )
+                
+//                Spacer()
             }
             .padding(.top, 24)
             .padding(.trailing, 65)
             
+            // Fold - UnFold Button
             VStack {
                 HStack {
                     Spacer()
@@ -98,12 +125,13 @@ private extension HomeView {
                         .frame(width: 24, height: 24)
                         .overlay {
                             Image(systemName: isFolding ? "chevron.down" : "chevron.up")
+                                .frame(width: 32, height: 32)
                                 .animation(.linear)
                         }
                     Spacer()
                         .frame(maxWidth: 20)
                 }
-                .padding(.top, 20)
+                .padding(.top, 30)
                 Spacer()
             }
             .onTapGesture {
@@ -113,19 +141,19 @@ private extension HomeView {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(
-            viewModel: HomeViewModel(
-                modelContainer: ModelContainer(
-                    articleModel: MockArticleModel(),
-                    tagModel: MockTagModel(),
-                    loginModel: MockLoginModel()
-                )
-            )
-        )
-    }
-}
+//struct HomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeView(
+//            viewModel: HomeViewModel(
+//                modelContainer: ModelContainer(
+//                    articleModel: MockArticleModel(),
+//                    tagModel: MockTagModel(),
+//                    loginModel: MockLoginModel()
+//                )
+//            )
+//        )
+//    }
+//}
 
 extension UIScreen{
     static let screenWidth = UIScreen.main.bounds.width
