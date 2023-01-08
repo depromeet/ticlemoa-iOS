@@ -87,22 +87,6 @@ extension LoginModel {
             }
         }
     }
-    public func update(_ item: Article) async {
-        let loginUser = LoginUserData(nickName: "테스트", accessToken: "토큰", userId: 0, mail: "") // TODO: 전달방법 고민 필요 UserDefault?
-        let uploadArticleRequest = item.updateArticleRequest(with: loginUser)
-        let result = await api.request(by: uploadArticleRequest)
-        
-        do {
-            switch result {
-                case .success(let data):
-                    let response = try JSONDecoder().decode(UpdateArticleResponse.self, from: data)
-                case .failure(let error):
-                    print(error.description)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
     
     private func requestKakaoLogin(_ accessToken: String) async -> Bool {
         let kakaoLoginRequest = KakaoLoginRequest(accessToken: accessToken)
