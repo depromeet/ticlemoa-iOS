@@ -9,6 +9,6 @@ import Foundation
 
 public protocol Tag {
     var id: Int { get }
-    var name: String { get }
-    var created: String { get }
+    var userId: Int { get }
+    var tagName: String { get }
 }

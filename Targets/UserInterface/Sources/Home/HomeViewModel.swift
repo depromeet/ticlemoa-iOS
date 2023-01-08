@@ -107,11 +107,15 @@ extension HomeViewModel {
 //        getTags()
     }
     
-    func removeTag(by id: Int){
-        guard let removingItem = tags.first(where: { $0.id == id }) else {
-            return
+    func removeTag(by id: Int) {
+        Task {
+            do {
+                try await modelContainer.tagModel.remove(tagId: id)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
-        modelContainer.tagModel.remove(removingItem)
+        
 //        getTags()
     }
     
