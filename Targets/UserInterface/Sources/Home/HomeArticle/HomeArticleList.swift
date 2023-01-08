@@ -9,29 +9,38 @@
 import SwiftUI
 
 struct HomeArticleList: View {
-    @EnvironmentObject var viewModel: HomeViewModel
+    @EnvironmentObject var modelContainer: ModelContainer
+    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
         VStack {
             Divider()
-            NavigationLink {
-                // TODO: 검색 화면으로 이동
-            } label: {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .pretendFont(.title3)
-                    Text("검색")
-                        .pretendFont(.title1)
-                        .foregroundColor(Color.ticlemoaBlack)
-                    
-                    Spacer()
-                    Text("최신순")
-                        .pretendFont(.title1)
-                        .foregroundColor(Color.ticlemoaBlack)
+            HStack {
+                NavigationLink {
+                    SearchingArticleView(viewModel: .init(modelContainer: modelContainer))
+                        .navigationBarBackButtonHidden(true)
+                } label: {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .pretendFont(.title3)
+                        Text("검색")
+                            .pretendFont(.title1)
+                            .foregroundColor(Color.ticlemoaBlack)
+                    }
+                    .background { Color.grey1 }
+                    .foregroundColor(.black)
+                    .padding(.horizontal, 16)
                 }
-                .background { Color.grey1 }
-                .foregroundColor(.black)
-                .padding(.horizontal, 16)
+                Spacer()
+                Button(
+                    action: {
+                        
+                    }, label: {
+                        Text("최신순")  // MARK: Menu 제안
+                            .pretendFont(.title1)
+                            .foregroundColor(Color.ticlemoaBlack)
+                    }
+                )
             }
             Divider()
             
@@ -65,20 +74,7 @@ struct HomeArticleList: View {
 }
 
 struct HomeArticleList_Previews: PreviewProvider {
-    static let homeViewModel: HomeViewModel = {
-        let vm = HomeViewModel(
-            modelContainer: ModelContainer(
-                articleModel: MockArticleModel(),
-                tagModel: MockTagModel(),
-                loginModel: MockLoginModel()
-            )
-        )
-        vm.articles = TemporaryArticle.allArticles
-        return vm
-    }()
-    
     static var previews: some View {
-        HomeArticleList()
-            .environmentObject(homeViewModel)
+        HomeArticleList(viewModel: .init(modelContainer: .dummy))
     }
 }

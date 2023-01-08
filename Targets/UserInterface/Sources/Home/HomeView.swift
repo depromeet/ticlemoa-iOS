@@ -10,6 +10,7 @@ import SwiftUI
 let tagHeight = 32
 
 struct HomeView: View {
+    @EnvironmentObject var modelContainer: ModelContainer
     @StateObject var viewModel: HomeViewModel
     @State var isFolding = false
     @State var isPushSearchView = false
@@ -35,7 +36,7 @@ private extension HomeView {
                 
                 Spacer()
                     .frame(minHeight: 0, maxHeight: isFolding ? 35 : 250)
-                HomeArticleList()
+                HomeArticleList(viewModel: .init(modelContainer: modelContainer))
                     .padding(.top, 0)
                     .animation(.default)
                     .transition(.slide)

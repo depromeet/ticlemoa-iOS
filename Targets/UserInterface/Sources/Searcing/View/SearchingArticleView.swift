@@ -7,14 +7,21 @@
 //
 
 import SwiftUI
+//import Foundation
 
 struct SearchingArticleView: View {
+    @ObservedObject var viewModel: SearchingArticleViewModel
     @State private var searchQuery: String = ""
-    @ObservedObject private var viewModel: SearchingArticleViewModel
+//    @AppStorage("searchQueries") var recentQueries: [String] = [] MARK: 사용법 학습필요
+    @State var recentQueries: [String] = (UserDefaults.standard.array(forKey: "searchQueries") as? [String] ?? []) {
+        willSet {
+            UserDefaults.standard.set(newValue, forKey: "searchQueries")
+        }
+    }
     @Environment(\.dismiss) private var dismiss
     
-    init(recentQueries: [String]) {
-        self.viewModel = SearchingArticleViewModel(recentQueries: recentQueries)
+    init(viewModel: SearchingArticleViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -37,7 +44,7 @@ struct SearchingArticleView: View {
                 }
                 Spacer()
             }
-            if viewModel.recentQueries.isEmpty && searchQuery.isEmpty {
+            if recentQueries.isEmpty && searchQuery.isEmpty {
                 Text("최근 검색어가 없습니다.")
                     .font(.system(size: 14))
                     .foregroundColor(.grey4)
@@ -82,7 +89,7 @@ extension SearchingArticleView {
                     .font(.system(size: 14))
                 Spacer()
                 Button {
-                    viewModel.recentQueries.removeAll()
+                    recentQueries.removeAll()
                 } label: {
                     Text("전체삭제")
                         .foregroundColor(.grey3)
@@ -92,8 +99,8 @@ extension SearchingArticleView {
             .padding(.horizontal, 20)
             ScrollView {
                 LazyVStack {
-                    ForEach(viewModel.recentQueries, id: \.self) { recentQuery in
-                        recentQueryView(recentQueries: $viewModel.recentQueries, query: recentQuery)
+                    ForEach(recentQueries, id: \.self) { recentQuery in
+                        recentQueryView(recentQueries: $recentQueries, query: recentQuery)
                     }
                 }
             }
@@ -156,6 +163,6 @@ private struct recentQueryView: View {
 
 struct SearchingArticleView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchingArticleView(recentQueries: ["서비스기획", "더블다이아몬드", "UX 방법론"])
+        SearchingArticleView(viewModel: .init(modelContainer: .dummy))
     }
 }
