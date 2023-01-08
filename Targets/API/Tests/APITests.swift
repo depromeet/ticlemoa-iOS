@@ -153,15 +153,76 @@ extension APITests {
             XCTAssertTrue(false)
         }
     }
-    
 }
 
-// MARK: - Article Request / Response
-/*
-    
+/* MARK: - Tag Request / Response
+ tagId는 test_readTag를 통해 확인 후 직접 기입
  */
 
 extension APITests {
-    
-}
+    func test_createTag() async {
+        // given
+        let newItem = CreateTagRequest.Body(tagName: "차요셉 태그")
+        let request = CreateTagRequest(accessToken: accessToken, body: newItem)
+        
+        // when
+        let result = await self.sut.request(by: request)
+        if case .success(let data) = result {
+        // then
+            XCTAssertNotNil(data)
+        } else {
+            XCTAssertTrue(false)
+        }
 
+    }
+    
+    func test_readTag() async {
+        // given
+        let request = ReadTagRequest(accessToken: accessToken, page: 1, take: 1)
+        
+        // when
+        let result = await self.sut.request(by: request)
+        if case .success(let data) = result {
+            let response = try? JSONDecoder().decode(ReadTagResponse.self, from: data)
+
+        // then
+            XCTAssertNotNil(data)
+            XCTAssertNotNil(response)
+        } else {
+            XCTAssertTrue(false)
+        }
+    }
+    
+    func test_updateTag() async {
+        // given
+        let newItem = UpdateTagRequest.Body(tagName: "차요셉 태그")
+        let request = UpdateTagRequest(accessToken: accessToken, tagId: 1, body: newItem) // TODO: tagId는 test_readTag를 통해 확인 후 직접 기입
+        
+        // when
+        let result = await self.sut.request(by: request)
+        if case .success(let data) = result {
+
+        // then
+            XCTAssertNotNil(data)
+        } else {
+            XCTAssertTrue(false)
+        }
+    }
+    
+    func test_deleteTag() async {
+        // given
+        let request = DeleteTagRequest(accessToken: accessToken, tagId: 1) // TODO: tagId는 test_readTag를 통해 확인 후 직접 기입
+        
+        // when
+        let result = await self.sut.request(by: request)
+        var success: Bool
+        switch result {
+            case .success(_): success = true
+            case .failure(_): success = false
+        }
+        
+        // then
+        XCTAssertTrue(success)
+        
+    }
+}

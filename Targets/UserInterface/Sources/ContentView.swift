@@ -38,8 +38,8 @@ public struct ContentView: View {
 
 struct MockTag: Tag {
     var id: Int
-    var name: String
-    var created: String
+    var userId: Int
+    var tagName: String
 }
 
 struct MockArticle: Article {
@@ -55,6 +55,7 @@ struct MockArticle: Article {
 }
 
 struct MockLoginUser: LoginUser {
+    var userId: Int? = 1
     var nickName: String = ""
     var accessToken: String
     var userId: Int
@@ -76,10 +77,10 @@ final class MockTagModel: TagModelProtocol {
     var itemsPublisher: Published<[DomainInterface.Tag]>.Publisher { $items }
     
     func fetch() { }
-    func create(_ item: DomainInterface.Tag) { }
-    func read(_ item: DomainInterface.Tag) { }
-    func update(_ item: DomainInterface.Tag) { }
-    func remove(_ item: DomainInterface.Tag) { }
+    func create(tagName: String) async throws {}
+    func read(page: Int, take: Int) async throws {}
+    func update(tagId: Int, tagName: String) async throws {}
+    func remove(tagId: Int) async throws {}
 }
 
 final class MockLoginModel: LoginModelProtocol {

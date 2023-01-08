@@ -19,7 +19,7 @@ extension TagData {
             "마케팅", "서비스기획", "조직문화", "IT/기술", "취업 이직",
             "회사생활", "라이프스타일", "경영/젼략"
         ].enumerated().map({
-            .init(id: $0.offset, name: $0.element, created: Date(timeIntervalSinceNow: Double($0.offset)).description)
+            .init(id: $0.offset, userId: 1, tagName: $0.element)
         })
     }
 }
@@ -44,20 +44,81 @@ extension TagModel {
         
     }
     
-    public func create(_ item: Tag) {
-    
+    public func create(tagName: String) async throws {
+        let requestBody = CreateTagRequest.Body(tagName: tagName)
+        
+        let uploadTagRequest = CreateTagRequest(
+            accessToken: "accessToken",
+            body: requestBody
+        )
+        let result = await api.request(by: uploadTagRequest)
+        
+        do {
+            switch result {
+            case .success(_):
+                print("태그 추가 성공")
+            case .failure(let error):
+               throw error
+            }
+        } catch {
+            throw error
+        }
     }
     
-    public func read(_ item: Tag) {
+    public func read(page: Int, take: Int) async throws {
+        let readTagRequest = ReadTagRequest(accessToken: "accessToken", page: page, take: take)
+        let result = await api.request(by: readTagRequest)
+        
+        do {
+            switch result {
+            case .success(let data):
+                let response = try JSONDecoder().decode(ReadTagResponse.self, from: data)
+                self.items = response.tags.map {
+                    TagData(
+                        id: $0.id,
+                        userId: $0.userId,
+                        tagName: $0.tagName)
+                }
+            case .failure(let error):
+               throw error
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    public func update(tagId: Int, tagName: String) async throws {
+        let requestBody = UpdateTagRequest.Body(tagName: tagName)
+        
+        let updateTagRequest = UpdateTagRequest(accessToken: "accessToken", tagId: tagId, body: requestBody)
+        let result = await api.request(by: updateTagRequest)
+        
+        do {
+            switch result {
+            case .success(_):
+                print("태그 업데이트 성공")
+            case .failure(let error):
+               throw error
+            }
+        } catch {
+            throw error
+        }
         
     }
     
-    public func update(_ item: Tag) {
+    public func remove(tagId: Int) async throws {
+        let deleteTagRequest = DeleteTagRequest(accessToken: "accessToken", tagId: tagId)
+        let result = await api.request(by: deleteTagRequest)
         
+        do {
+            switch result {
+            case .success(_):
+                print("태그 제거 성공")
+            case .failure(let error):
+               throw error
+            }
+        } catch {
+            throw error
+        }
     }
-    
-    public func remove(_ item: Tag) {
-        
-    }
-    
 }

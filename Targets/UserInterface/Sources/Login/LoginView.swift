@@ -15,6 +15,9 @@ struct LoginView: View {
     @Environment(\.window) var window: UIWindow?
     @State var appleSignInDelegates: SignInWithAppleDelegates! = nil
     
+    @State var selectedPage: Int = 1
+    var pages: Int = 3
+    
     var body: some View {
         mainBody
             .onOpenURL { url in
@@ -29,15 +32,23 @@ struct LoginView: View {
         VStack {
             Spacer()
                 .frame(maxHeight: 61)
-            headerTitles
-            Spacer()
-            Color.grey2
-                .frame(maxWidth: 214, maxHeight: 214)
             
-            Spacer()
+            OnboardingTabView(selectedPage: $selectedPage, pages: pages)
+            
+            PageControl(
+                selectedPage: $selectedPage,
+                pages: pages,
+                circleDiameter: 8.0,
+                circleMargin: 8.0
+            )
+                
             socialLoginButtons
+                .padding(.top, 60)
             Spacer()
                 .frame(maxHeight: 58)
+            Button("임시 로그인 버튼") {
+                isLoggedIn = true
+            }
         }
     }
 }
@@ -66,11 +77,21 @@ private extension LoginView {
         .multilineTextAlignment(.center)
     }
     
+    var ticlemoaIcon: some View {
+        Color.grey2
+            .frame(maxWidth: 214, maxHeight: 214)
+            .cornerRadius(9.73)
+            .overlay(
+                Image("t_icon")
+            )
+    }
+    
     var socialLoginButtons: some View {
-        VStack {
-            borderLineButton(
+        VStack(spacing: 12) {
+            RoundedButton(
                 "카카오톡으로 로그인",
-                .yellow,
+                Color.kakaoYellow,
+                imageName: "kakao_icon",
                 action: {
                     HapticManager.instance.impact(style: .medium)
                     
@@ -80,49 +101,53 @@ private extension LoginView {
                     }
                 })
             .buttonStyle(ScaleButtonStyle())
-//            borderLineButton(
-//                "Apple으로 로그인",
-//                .white,
-//                action: {
-//                    HapticManager.instance.impact(style: .medium)
-//                    withAnimation { isLoggedIn = true }
-//                })
-            SignInWithApple()
-              .frame(width: 280, height: 60)
-              .onTapGesture(perform: showAppleLogin)
+            RoundedButton(
+                "Apple으로 로그인",
+                foregroundColor: .white,
+                .black,
+                imageName: "apple_icon_white",
+                action: {
+                    HapticManager.instance.impact(style: .medium)
+                    showAppleLogin()
+                })
+            //            SignInWithApple()
+            .onTapGesture(perform: showAppleLogin)
             
             .buttonStyle(ScaleButtonStyle())
         }
         .padding(.horizontal, 20)
     }
-        
+    
     
     private func showAppleLogin() {
-      let request = ASAuthorizationAppleIDProvider().createRequest()
-      request.requestedScopes = [.fullName, .email]
-
-      performSignIn(using: [request])
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        performSignIn(using: [request])
     }
     
     private func performSignIn(using requests: [ASAuthorizationRequest]) {
-      appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
-        if success {
-          // update UI
-        } else {
-          // show the user an error
+        appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
+            if success {
+                // update UI
+                withAnimation { isLoggedIn = true }
+            } else {
+                // show the user an error
+            }
         }
-      }
-
-      let controller = ASAuthorizationController(authorizationRequests: requests)
-      controller.delegate = appleSignInDelegates
-      controller.presentationContextProvider = appleSignInDelegates
-
-      controller.performRequests()
+        
+        let controller = ASAuthorizationController(authorizationRequests: requests)
+        controller.delegate = appleSignInDelegates
+        controller.presentationContextProvider = appleSignInDelegates
+        
+        controller.performRequests()
     }
-
-    func borderLineButton(
+    
+    func RoundedButton(
         _ text: String,
+        foregroundColor: Color = Color.darkRed,
         _ backgorund: Color,
+        imageName: String,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: {
@@ -132,8 +157,12 @@ private extension LoginView {
                 Rectangle()
                     .fill(backgorund)
                     .frame(maxHeight: 56)
-                    .cornerRadius(12)
-                VStack {
+                    .cornerRadius(4)
+                HStack {
+                    Image(imageName)
+                        .padding(.leading, 21)
+                    Spacer()
+                }.overlay(
                     Text(text)
                         .customFont(
                             weight: 600,
@@ -141,18 +170,13 @@ private extension LoginView {
                             lineHeight: 24,
                             style: .semiBold
                         )
-                        .foregroundColor(.black)
-                }
+                        .foregroundColor(foregroundColor))
             }
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.black, lineWidth: 1.2)
-            )
         })
         
     }
 }
-
+//
 //#if DEBUG
 //import Domain
 //
@@ -163,12 +187,12 @@ private extension LoginView {
 //        loginModel: LoginModel()
 //    )
 //    @State static  var isLoggedIn: Bool = false
-//
+//    
 //    static var previews: some View {
 //        LoginView(
 //            viewModel:
 //                LoginViewModel(
-//                modelContainer: modelContainer
+//                    modelContainer: modelContainer
 //                ),
 //            isLoggedIn: $isLoggedIn
 //        )

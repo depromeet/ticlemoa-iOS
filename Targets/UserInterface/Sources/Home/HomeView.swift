@@ -10,7 +10,7 @@ import SwiftUI
 let tagHeight = 32
 
 struct HomeView: View {
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var viewModel: HomeViewModel
     @State var isFolding = false
     @State var isPushSearchView = false
     
@@ -59,7 +59,7 @@ private extension HomeView {
                                     HapticManager.instance.impact(style: .light)
                                     viewModel.selectedTag = row
                                 }, label: {
-                                    Text(row.name)
+                                    Text(row.tagName)
                                 }
                             )
                             .pretendFont(.body2)
@@ -111,7 +111,15 @@ private extension HomeView {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(
+            viewModel: HomeViewModel(
+                modelContainer: ModelContainer(
+                    articleModel: MockArticleModel(),
+                    tagModel: MockTagModel(),
+                    loginModel: MockLoginModel()
+                )
+            )
+        )
     }
 }
 
