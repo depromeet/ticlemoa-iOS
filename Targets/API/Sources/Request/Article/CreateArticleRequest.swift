@@ -20,6 +20,22 @@ public struct CreateArticleRequest {
         let url: String
         let isPublic: Bool
         let tagIds: [Int]
+        
+        public init(
+            content: String,
+            userId: Int,
+            title: String,
+            url: String,
+            isPublic: Bool,
+            tagIds: [Int]
+        ) {
+            self.content = content
+            self.userId = userId
+            self.title = title
+            self.url = url
+            self.isPublic = isPublic
+            self.tagIds = tagIds
+        }
     }
     
     public init(accessToken: String, body: Body) {

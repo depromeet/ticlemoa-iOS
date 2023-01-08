@@ -46,28 +46,9 @@ extension ArticleData {
              isPublic: true, tagIds: [], createdAt: "2023-04-16T09:15:08.034Z"),
         ].enumerated().map({
             .init(
-                id: $0.offset, title: $0.element.title, url: $0.element.url, content: "링크 \($0.offset) 내용", isPublic: $0.element.isPublic, tagIds: $0.element.tagIds, viewCount: 0, createdAt: $0.element.createdAt, updatedAt: "")
+                id: $0.offset, title: $0.element.title, url: $0.element.url, content: "링크 \($0.offset) 내용", isPublic: $0.element.isPublic, viewCount: 0, createdAt: $0.element.createdAt, updatedAt: "")
         })
     }
-}
-
-extension Article {
-    
-    func uploadArticleRequest(with loginUser: LoginUser) -> UpdateArticleRequest {
-        .init(
-            accessToken: loginUser.accessToken ?? "",
-            articleId: self.id,
-            body: .init(
-                content: self.content,
-                userId: loginUser.userId ?? 0,
-                title: self.title,
-                url: self.url,
-                isPublic: self.isPublic,
-                tagIds: self.tagIds
-            )
-        )
-    }
-    
 }
 
 public final class ArticleModel: ArticleModelProtocol {
@@ -85,27 +66,92 @@ public final class ArticleModel: ArticleModelProtocol {
 
 extension ArticleModel {
     
-    public func fetch() {
-        
-    }
-    
-    public func create(_ item: Article) {
-    
-    }
-    
-    public func read(_ item: Article) {
-        
-    }
-    
-    public func update(_ item: Article) async {
-        let loginUser = LoginUserData(nickName: "테스트", accessToken: "토큰", userId: 0) // TODO: 전달방법 고민 필요 UserDefault?
-        let uploadArticleRequest = item.uploadArticleRequest(with: loginUser)
-        let result = await api.request(by: uploadArticleRequest)
+    public func create(_ item: Article, tagIds: [Int]) async {
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        let request = CreateArticleRequest(
+            accessToken: currentUser.accessToken,
+            body: .init(
+                content: item.content,
+                userId: currentUser.userId,
+                title: item.title,
+                url: item.url,
+                isPublic: item.isPublic,
+                tagIds: tagIds
+            )
+        )
+        let result = await api.request(by: request)
         
         do {
             switch result {
                 case .success(let data):
-                    let response = try JSONDecoder().decode(UpdateArticleResponse.self, from: data)
+                    _ = try JSONDecoder().decode(CreateArticleResponse.self, from: data)
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    public func fetch() async {
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        let request = ReadArticleRequest(
+            accessToken: currentUser.accessToken,
+            userId: currentUser.userId
+        )
+        let result = await api.request(by: request)
+            
+        do {
+            switch result {
+                case .success(let data):
+                    let response = try JSONDecoder().decode(ReadArticleResponse.self, from: data)
+                    self.items = response.articles.map({
+                        ArticleData(
+                            id: $0.id,
+                            title: $0.title,
+                            url: $0.url,
+                            content: $0.content,
+                            isPublic: $0.isPublic,
+                            viewCount: $0.viewCount,
+                            createdAt: $0.createdAt,
+                            updatedAt: $0.updatedAt
+                        )
+                    })
+                case .failure(let error):
+                    print(error.localizedDescription)
+            }
+        } catch {
+            
+        }
+    }
+    
+    public func update(_ item: Article) async {
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        let request = UpdateArticleRequest(
+            accessToken: currentUser.accessToken,
+            articleId: item.id,
+            body: .init(
+                content: item.content,
+                userId: currentUser.userId,
+                title: item.title,
+                url: item.url,
+                isPublic: item.isPublic,
+                tagIds: []
+            )
+        )
+        let result = await api.request(by: request)
+        
+        do {
+            switch result {
+                case .success(let data):
+                    _ = try JSONDecoder().decode(UpdateArticleResponse.self, from: data)
+                    await self.fetch()
                 case .failure(let error):
                     print(error.description)
             }
@@ -114,8 +160,56 @@ extension ArticleModel {
         }
     }
     
-    public func remove(_ item: Article) {
+    public func removes(_ items: [Article]) async {
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        let request = DeleteArticleRequest(
+            accessToken: currentUser.accessToken,
+            articleIds: items.map({ String($0.id) })
+        )
+        let result = await api.request(by: request)
         
+        switch result {
+            case .success(_):
+                await self.fetch()
+            case .failure(let error):
+                print(error.description)
+        }
+    }
+    
+    public func search(_ keyword: String) async {
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        let request = SearchArticleRequest(
+            accessToken: currentUser.accessToken,
+            search: keyword
+        )
+        let result = await api.request(by: request)
+        
+        do {
+            switch result {
+                case .success(let data):
+                    let response = try JSONDecoder().decode(SearchArticleResponse.self, from: data)
+                    self.items = response.articles.map({
+                        ArticleData(
+                            id: $0.id,
+                            title: $0.title,
+                            url: $0.url,
+                            content: $0.content,
+                            isPublic: $0.isPublic,
+                            viewCount: $0.viewCount,
+                            createdAt: $0.createdAt,
+                            updatedAt: $0.updatedAt
+                        )
+                    })
+                case .failure(let error):
+                    print(error.description)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
 }

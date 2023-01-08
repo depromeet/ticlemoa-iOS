@@ -10,18 +10,18 @@ import Foundation
 
 public struct SearchArticleResponse: Decodable {
     
-    struct SearchArticle: Decodable {
-        let id: Int
-        let createdAt: String
-        let updatedAt: String
-        let url: String
-        let title: String
-        let content: String
-        let viewCount: Int
-        let isPublic: Bool
-        let userId: Int
+    public struct SearchArticle: Decodable {
+        public let id: Int
+        public let createdAt: String
+        public let updatedAt: String
+        public let url: String
+        public let title: String
+        public let content: String
+        public let viewCount: Int
+        public let isPublic: Bool
+        public let userId: Int
     }
     
-    let articles: [SearchArticle]
+    public let articles: [SearchArticle]
     
 }

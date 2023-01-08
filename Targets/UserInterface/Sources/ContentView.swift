@@ -64,12 +64,11 @@ struct MockLoginUser: LoginUser {
 final class MockArticleModel: ArticleModelProtocol {
     @Published var items: [DomainInterface.Article] = []
     var itemsPublisher: Published<[DomainInterface.Article]>.Publisher { $items }
-
-    func fetch() { }
-    func create(_ item: DomainInterface.Article) { }
-    func read(_ item: DomainInterface.Article) { }
+    func fetch() async { }
     func update(_ item: DomainInterface.Article) async { }
-    func remove(_ item: DomainInterface.Article) { }
+    func create(_ item: DomainInterface.Article, tagIds: [Int]) async { }
+    func removes(_ items: [DomainInterface.Article]) async { }
+    func search(_ keyword: String) async { }
 }
 
 final class MockTagModel: TagModelProtocol {
@@ -88,7 +87,6 @@ final class MockLoginModel: LoginModelProtocol {
         nickName: "TestNickname", accessToken: "", userId: 0, mail: "ticlemoa@gmail.com"
     )
     var userDataPublisher: Published<DomainInterface.LoginUser?>.Publisher { $userData }
-    
     func checkKakaoLogin() async -> Bool { false }
     func isKakaoTalkLoginUrl(_ url: URL) -> Bool { return true }
     func authController(url: URL) -> Bool { return true }
