@@ -12,6 +12,6 @@ import Foundation
 
 struct TagData: Tag {
     let id: Int
-    let name: String
-    let created: String
+    let userId: Int
+    let tagName: String
 }

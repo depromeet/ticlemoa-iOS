@@ -59,7 +59,7 @@ private extension HomeView {
                                     HapticManager.instance.impact(style: .light)
                                     viewModel.selectedTag = row
                                 }, label: {
-                                    Text(row.name)
+                                    Text(row.tagName)
                                 }
                             )
                             .pretendFont(.body2)
