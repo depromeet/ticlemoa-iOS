@@ -153,7 +153,13 @@ extension APITests {
             XCTAssertTrue(false)
         }
     }
-    
+}
+
+/* MARK: - Tag Request / Response
+ tagId는 test_readTag를 통해 확인 후 직접 기입
+ */
+
+extension APITests {
     func test_createTag() async {
         // given
         let newItem = CreateTagRequest.Body(tagName: "차요셉 태그")
@@ -220,13 +226,3 @@ extension APITests {
         
     }
 }
-
-// MARK: - Article Request / Response
-/*
-    
- */
-
-extension APITests {
-    
-}
-
