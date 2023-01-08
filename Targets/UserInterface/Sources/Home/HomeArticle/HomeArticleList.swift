@@ -66,7 +66,13 @@ struct HomeArticleList: View {
 
 struct HomeArticleList_Previews: PreviewProvider {
     static let homeViewModel: HomeViewModel = {
-        let vm = HomeViewModel()
+        let vm = HomeViewModel(
+            modelContainer: ModelContainer(
+                articleModel: MockArticleModel(),
+                tagModel: MockTagModel(),
+                loginModel: MockLoginModel()
+            )
+        )
         vm.articles = TemporaryArticle.allArticles
         return vm
     }()
