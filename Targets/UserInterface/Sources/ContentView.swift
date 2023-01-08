@@ -55,10 +55,10 @@ struct MockArticle: Article {
 }
 
 struct MockLoginUser: LoginUser {
-    var userId: Int? = 1
+    var userId: Int = 1
     var nickName: String = ""
     var accessToken: String
-    var userId: Int
+//    var userId: Int
     var mail: String
 }
 
@@ -85,7 +85,7 @@ final class MockTagModel: TagModelProtocol {
 
 final class MockLoginModel: LoginModelProtocol {
     @Published var userData: LoginUser? = MockLoginUser(
-        nickName: "TestNickname", accessToken: "", userId: 0, mail: "ticlemoa@gmail.com"
+        userId: 0, nickName: "TestNickname", accessToken: "", mail: "ticlemoa@gmail.com"
     )
     var userDataPublisher: Published<DomainInterface.LoginUser?>.Publisher { $userData }
     func checkKakaoLogin() async -> Bool { false }
