@@ -7,10 +7,12 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ProfileSettingView: View {
     @ObservedObject var viewModel: ProfileSettingViewModel
     @State private var nickname: String = ""
+    @Environment(\.dismiss) private var dismiss
     
     init(viewModel: ProfileSettingViewModel) {
         self.viewModel = viewModel
@@ -18,27 +20,39 @@ struct ProfileSettingView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Circle()
-                .frame(width: 59, height: 59)
-                .padding(.top, 24)
-                .overlay {
-                    VStack {
+            Group {
+                if let path = viewModel.profileImageURL?.path, let uiImage = UIImage(contentsOfFile: path) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(Circle())
+                } else {
+                    DefaultProfileView()
+                }
+            }
+            .frame(width: 59, height: 59)
+            .padding(.top, 24)
+            .overlay {
+                VStack {
+                    Spacer()
+                    HStack {
                         Spacer()
-                        HStack {
-                            Spacer()
-                            Image(systemName: "gearshape.circle.fill")
-                                .resizable()
-                                .foregroundColor(.gray)
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                                .background {
-                                    Circle()
-                                        .foregroundColor(.white)
-                                        .frame(width: 22, height: 22)
-                                }
+                        Image(systemName: "gearshape.circle.fill")
+                            .resizable()
+                            .foregroundColor(.gray)
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .background {
+                                Circle()
+                                    .foregroundColor(.white)
+                                    .frame(width: 22, height: 22)
+                            }
                         }
                     }
-                }
+            }
+            .onTapGesture {
+                viewModel.profileImageTouched()
+            }
             
             VStack(spacing: 0) {
                 HStack {
@@ -63,24 +77,67 @@ struct ProfileSettingView: View {
             
             Spacer()
         }
+        .confirmationDialog("프로필 사진 설정", isPresented: $viewModel.isConfirmationDialogOpen, titleVisibility: .visible) {
+            Button("앨범에서 사진 선택") {
+                viewModel.selectPhotoInAlbumButtonTouched()
+            }
+            Button("기본 이미지로 변경") {
+                viewModel.resetImage()
+            }
+            Button("취소", role: .cancel) { Void() }
+        }
+        .sheet(isPresented: $viewModel.isImagePickerOpen) {
+            ImagePicker(viewModel: viewModel)
+        }
         .ticlemoaNavigationBar(title: "프로필 설정") {
             Button("완료") {
-                Void()
+                viewModel.saveButtonTouched()
+                dismiss()
             }
             .foregroundColor(.black)
         }
-//        .navigationTitle("프로필 설정")
-//        .navigationBarTitleDisplayMode(.inline)
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//
-//            }
-//        }
     }
 }
 
-struct ProfileSettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileSettingView(viewModel: .init(modelContainer: .dummy))
+struct ImagePicker: UIViewControllerRepresentable {
+    private var sourceType: UIImagePickerController.SourceType = .photoLibrary
+    private weak var viewModel: ProfileSettingViewModel?
+    @Environment(\.dismiss) private var dismiss
+    
+    init(viewModel: ProfileSettingViewModel) {
+        self.viewModel = viewModel
+    }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = sourceType
+        imagePicker.delegate = context.coordinator
+        return imagePicker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
+
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self, viewModel: viewModel)
+    }
+
+    final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        var parent: ImagePicker
+        weak var viewModel: ProfileSettingViewModel?
+
+        init(_ parent: ImagePicker, viewModel: ProfileSettingViewModel?) {
+            self.parent = parent
+            self.viewModel = viewModel
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+                viewModel?.updateProfileImage(fromUrl: url)
+            }
+            parent.dismiss()
+        }
     }
 }
