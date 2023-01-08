@@ -55,7 +55,6 @@ struct MockArticle: Article {
 }
 
 struct MockLoginUser: LoginUser {
-    var userId: Int? = 1
     var nickName: String = ""
     var accessToken: String
     var userId: Int
