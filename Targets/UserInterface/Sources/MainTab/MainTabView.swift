@@ -9,12 +9,13 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject private var modelContainer: ModelContainer
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
     
     var body: some View {
         NavigationView {
             TabView {
-                HomeView()
+                HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
                 //                .setupBackground()
                     .tabItem {
                         Tab.home.imageItem

@@ -15,16 +15,17 @@ import DomainInterface
 
 final class HomeViewModel: ObservableObject {
     
-    @EnvironmentObject var modelContainer: ModelContainer
+    @ObservedObject var modelContainer: ModelContainer
     
     @Published var articles: [TemporaryArticle] = []
     @Published var rows: [[Tag]] = []
     @Published var tags: [Tag] = []
     @Published var tagText = ""
     
-    @Published var selectedTag: Tag!
+    @Published var selectedTag: Tag?
         
-    init() {
+    init(modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
         modelContainer.tagModel.itemsPublisher
             .receive(on: RunLoop.main)
             .assign(to: &self.$tags)
@@ -32,7 +33,7 @@ final class HomeViewModel: ObservableObject {
         // Dummy Data 셋업
         articles = TemporaryArticle.allArticles
 //        getTags()
-        selectedTag = tags.first!
+        selectedTag = tags.first
     }
     
     /// 월별 데이터 정렬 메소드
@@ -90,11 +91,11 @@ final class HomeViewModel: ObservableObject {
 extension HomeViewModel {
     
     func tagButtonColor(by row: Tag) -> Color {
-        self.selectedTag.id == row.id ? Color.white : Color.grey4
+        self.selectedTag?.id == row.id ? Color.white : Color.grey4
     }
     
     func tagBackgroundColor(by row: Tag) -> Color {
-        self.selectedTag.id == row.id ? Color.ticlemoaBlack : Color.grey2
+        self.selectedTag?.id == row.id ? Color.ticlemoaBlack : Color.grey2
     }
     
 }
