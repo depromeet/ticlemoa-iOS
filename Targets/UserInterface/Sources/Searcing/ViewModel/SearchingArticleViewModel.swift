@@ -9,10 +9,10 @@
 import SwiftUI
 
 final class SearchingArticleViewModel: ObservableObject {
-    @Published var recentQueries: [String]
+    @ObservedObject var modelContainer: ModelContainer
     
-    init(recentQueries: [String]) {
-        self.recentQueries = recentQueries
+    init(modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
     }
 }
 
