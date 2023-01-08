@@ -30,10 +30,20 @@ final class HomeViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .assign(to: &self.$tags)
         
+        Task {
+            do {
+                try await modelContainer.tagModel.read(page: 0, take: 0)
+                print(self.tags)
+            } catch {
+                print(self.tags) // TODO: 통신 실패시, TagData의 dummy로 설정됨. 유지할지, 바꿔야할지 고민필요
+            }
+            selectedTag = tags.first
+        }
+    
+        
         // Dummy Data 셋업
         articles = TemporaryArticle.allArticles
 //        getTags()
-        selectedTag = tags.first
     }
     
     /// 월별 데이터 정렬 메소드
