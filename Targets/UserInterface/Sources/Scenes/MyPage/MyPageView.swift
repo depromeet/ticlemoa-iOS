@@ -15,6 +15,14 @@ struct MyPageView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                Text("마이페이지")
+                    .customFont(weight: 700, size: 18, lineHeight: 22, style: .bold)
+                Spacer()
+            }
+            .frame(height: 56)
+            
             NavigationLink {
                 ProfileSettingView(viewModel: ProfileSettingViewModel(modelContainer: modelContainer))
                     .navigationBarBackButtonHidden(true)
@@ -30,7 +38,6 @@ struct MyPageView: View {
                         Text("가나다라마바사")
                             .pretendFont(.subhead3)
                             .foregroundColor(.ticlemoaBlack)
-//                            .fontWeight(.semibold)
                         Image("Pen")
                             .frame(width: 20, height: 20)
                     }
@@ -46,9 +53,6 @@ struct MyPageView: View {
             .padding(.horizontal, 81)
             
             VStack(spacing: 0) {
-//                MyPageNavigationView(imageName: "Bell", title: "알림") {
-//                    AlertSettingView()
-//                }
                 MyPageNavigationView(imageName: "Information", title: "서비스 정보") {
                     ServiceInformationView()
                         .navigationBarBackButtonHidden(true)
@@ -64,58 +68,59 @@ struct MyPageView: View {
             } label: {
                 HStack {
                     Text("앱 버전정보 1.1.1")
-                        .pretendFont(.subhead2)
+                        .customFont(weight: 400, size: 14, lineHeight: 21, style: .medium)
                         .foregroundColor(.grey4)
+                        .padding(.top, 13)
+                        .padding(.bottom, 14)
                     Spacer()
                     Group {
-//                        if true {
-//                            Text("업데이트")
-//                                .pretendFont(.subhead1)
-//                                .foregroundColor(.white)
-//                                .padding(.vertical, 8)
-//                                .padding(.horizontal, 12)
-//                                .background(
-//                                    Capsule()
-//                                        .foregroundColor(.ticlemoaBlack)
-//                                )
-//                                .padding(.vertical, 10)
-//                        } else {
-//                            Text("최신버전")
-//                                .customFont(14, .medium)
-//                                .foregroundColor(.grey3)
-//                                .padding(.vertical, 16.5)
-//                        }
+                        if true {
+                            Text("업데이트")
+                                .customFont(weight: 600, size: 12, lineHeight: 18)
+                                .foregroundColor(.white)
+                                .padding(.vertical, 5)
+                                .padding(.horizontal, 12)
+                                .background(
+                                    Capsule()
+                                        .foregroundColor(.ticlemoaBlack)
+                                )
+                        } else {
+                            Text("최신버전")
+                                .foregroundColor(.grey3)
+                                .customFont(weight: 400, size: 14, lineHeight: 21)
+                        }
                     }
                 }
                 .padding(.horizontal, 20)
             }
-            .padding(.vertical, 16.5)
             
             Button {
                 Void()
             } label: {
                 HStack {
                     Text("로그아웃")
-                        .pretendFont(.subhead2)
+                        .customFont(weight: 400, size: 14, lineHeight: 21, style: .medium)
                         .foregroundColor(.grey4)
+                        .padding(.top, 13)
+                        .padding(.bottom, 14)
                     Spacer()
                 }
                 .padding(.horizontal, 20)
             }
-            .padding(.vertical, 16.5)
             
             Button {
                 isAccountDeleteButtonTouched = true
             } label: {
                 HStack {
                     Text("계정삭제")
+                        .customFont(weight: 400, size: 14, lineHeight: 21, style: .medium)
                         .foregroundColor(.secondaryRed)
-                        .pretendFont(.subhead2)
+                        .padding(.top, 13)
+                        .padding(.bottom, 14)
                     Spacer()
                 }
                 .padding(.horizontal, 20)
             }
-            .padding(.vertical, 16.5)
             
             Spacer()
         }
@@ -146,12 +151,12 @@ fileprivate struct MyPageNavigationView<Destination: View>: View {
                 HStack {
                     Image(imageName)
                     Text(title)
-                        .pretendFont(.subhead3)
+                        .customFont(weight: 400, size: 16, lineHeight: 24, style: .medium)
                     Spacer()
                     Image("Arrow.right")
                 }
                 .foregroundColor(.ticlemoaBlack)
-                .padding(.vertical, 20)
+                .padding(.vertical, 16)
                 Divider()
                     .foregroundColor(.grey2)
             }
