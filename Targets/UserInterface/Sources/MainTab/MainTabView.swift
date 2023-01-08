@@ -11,12 +11,14 @@ import SwiftUI
 struct MainTabView: View {
     @EnvironmentObject private var modelContainer: ModelContainer
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
+    @State private var isNotEmptyArticle = false
+    @State private var attempts: Int = 0
     
     var body: some View {
         NavigationView {
             TabView {
-                HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
-                //                .setupBackground()
+                HomeView(viewModel: HomeViewModel(modelContainer: modelContainer), isNotEmptyArticle: $isNotEmptyArticle)
+
                     .tabItem {
                         Tab.home.imageItem
                         Tab.home.textItem
@@ -61,8 +63,12 @@ struct MainTabView: View {
             .toolbar(content: {
                 // 네비게이션 제목
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Text("TICLEMOA")
-//                        .customFont(14, .bold)
+                    Image("ticlemoa_logo")
+                        .modifier(Shake(animatableData: CGFloat(attempts)))
+                        .onTapGesture {
+                            HapticManager.instance.impact(style: .heavy)
+                            withAnimation { attempts += 1 }
+                        }
                 }
                 
                 // 종모양 & 마이프로필
@@ -101,3 +107,5 @@ struct MainTabView_Previews: PreviewProvider {
         MainTabView()
     }
 }
+
+

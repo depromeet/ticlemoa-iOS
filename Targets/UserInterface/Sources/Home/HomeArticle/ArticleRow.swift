@@ -45,9 +45,14 @@ struct ArticleRow: View {
             }
             Spacer()
             VStack {
-                Text("...")
+                Image("article_setting_icon")
                     .padding(.top, 14)
                 Spacer()
+            }
+            .onTapGesture {
+                // TODO: 아티클 설정화면으로 이동
+                HapticManager.instance.impact(style: .light)
+                print("세팅버튼 누름")
             }
             .padding(.trailing, 20)
         }
