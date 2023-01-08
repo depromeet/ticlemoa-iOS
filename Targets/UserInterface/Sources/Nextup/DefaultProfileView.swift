@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+// icon 사용예시
+// DefaultProfileView()
+//    .frame(width: 25.45, height: 25.45)
+
 struct DefaultProfileView: View {
     var body: some View {
         Circle()
