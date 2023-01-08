@@ -38,6 +38,9 @@ struct LoginView: View {
             socialLoginButtons
             Spacer()
                 .frame(maxHeight: 58)
+            Button("임시 로그인 버튼") {
+                isLoggedIn = true
+            }
         }
     }
 }
