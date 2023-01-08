@@ -21,8 +21,8 @@ struct ServiceInformationView: View {
             }
             Spacer()
         }
+        .ticlemoaNavigationBar(title: "서비스 정보")
         .setupBackground()
-        .navigationTitle("서비스 정보")
     }
 }
 

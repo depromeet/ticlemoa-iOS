@@ -16,7 +16,6 @@ struct MainTabView: View {
         NavigationView {
             TabView {
                 HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
-                //                .setupBackground()
                     .tabItem {
                         Tab.home.imageItem
                         Tab.home.textItem
@@ -51,32 +50,16 @@ struct MainTabView: View {
                             }
                         }
                     }
-                CommunityView()
-                //                .setupBackground()
+                MyPageView(viewModel: .init(modelContainer: modelContainer))
                     .tabItem {
-                        Tab.community.imageItem
-                        Tab.community.textItem
+                        Tab.myPage.imageItem
+                        Tab.myPage.textItem
                     }
             }
             .toolbar(content: {
-                // 네비게이션 제목
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Text("TICLEMOA")
 //                        .customFont(14, .bold)
-                }
-                
-                // 종모양 & 마이프로필
-                // 종모양 & 마이프로필
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    NavigationLink(
-                        destination: AlarmView(),
-                        label: {
-                            Image("Bell")
-                        })
-                    NavigationLink(destination: MyPageView(), label: {
-                        DefaultProfileView()
-                            .frame(width: 25.45, height: 25.45)
-                    })
                 }
             })
             .overlay {

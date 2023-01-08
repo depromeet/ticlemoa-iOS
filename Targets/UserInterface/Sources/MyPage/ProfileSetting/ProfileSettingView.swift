@@ -9,7 +9,12 @@
 import SwiftUI
 
 struct ProfileSettingView: View {
+    @ObservedObject var viewModel: ProfileSettingViewModel
     @State private var nickname: String = ""
+    
+    init(viewModel: ProfileSettingViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -58,28 +63,24 @@ struct ProfileSettingView: View {
             
             Spacer()
         }
-        .navigationTitle("프로필 설정")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("완료") {
-                    Void()
-                }
-                .foregroundColor(.black)
+        .ticlemoaNavigationBar(title: "프로필 설정") {
+            Button("완료") {
+                Void()
             }
+            .foregroundColor(.black)
         }
+//        .navigationTitle("프로필 설정")
+//        .navigationBarTitleDisplayMode(.inline)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//
+//            }
+//        }
     }
 }
 
 struct ProfileSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            NavigationLink {
-                ProfileSettingView()
-            } label: {
-                Text("Button")
-            }
-        }
-        ProfileSettingView()
+        ProfileSettingView(viewModel: .init(modelContainer: .dummy))
     }
 }
