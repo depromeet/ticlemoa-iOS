@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-struct AlertSettingView: View {
+struct AlramSettingView: View {
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
                 .frame(height: 12)
-            AlertSettingButtonView(title: "푸시알림") { isOn in
+            AlramSettingButtonView(title: "푸시알림") { isOn in
                 print("button tapped with value = \(isOn)")
             }
             Spacer()
@@ -23,7 +23,7 @@ struct AlertSettingView: View {
     }
 }
 
-fileprivate struct AlertSettingButtonView: View {
+fileprivate struct AlramSettingButtonView: View {
     let title: String
     let onTap: (Bool) -> ()
     
