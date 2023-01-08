@@ -10,19 +10,19 @@ import SwiftUI
 
 enum Tab {
     case home
-    case community
+    case myPage
     
     var textItem: Text {
         switch self {
         case .home: return Text("홈")
-        case .community: return Text("모아모아")
+        case .myPage: return Text("마이페이지")
         }
     }
     
     var imageItem: Image {
         switch self {
         case .home: return Image("home")
-        case .community: return Image("community")
+        case .myPage: return Image("community")
         }
     }
 }

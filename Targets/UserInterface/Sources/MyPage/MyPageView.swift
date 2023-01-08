@@ -9,12 +9,15 @@
 import SwiftUI
 
 struct MyPageView: View {
+    @EnvironmentObject var modelContainer: ModelContainer
+    @ObservedObject var viewModel: MyPageViewModel
     @State private var isAccountDeleteButtonTouched: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink {
-                ProfileSettingView()
+                ProfileSettingView(viewModel: ProfileSettingViewModel(modelContainer: modelContainer))
+                    .navigationBarBackButtonHidden(true)
             } label: {
                 VStack(spacing: 0) {
                     Group {
@@ -43,11 +46,12 @@ struct MyPageView: View {
             .padding(.horizontal, 81)
             
             VStack(spacing: 0) {
-                MyPageNavigationView(imageName: "Bell", title: "알림") {
-                    AlertSettingView()
-                }
+//                MyPageNavigationView(imageName: "Bell", title: "알림") {
+//                    AlertSettingView()
+//                }
                 MyPageNavigationView(imageName: "Information", title: "서비스 정보") {
                     ServiceInformationView()
+                        .navigationBarBackButtonHidden(true)
                 }
                 MyPageNavigationView(imageName: "QuestionMark", title: "문의하기") {
                     EmptyView()
@@ -85,6 +89,7 @@ struct MyPageView: View {
                 }
                 .padding(.horizontal, 20)
             }
+            .padding(.vertical, 16.5)
             
             Button {
                 Void()
@@ -114,7 +119,8 @@ struct MyPageView: View {
             
             Spacer()
         }
-        .ticlemoaNavigationBar(title: "마이페이지")
+        .setupBackground()
+//        .ticlemoaNavigationBar(title: "마이페이지")
         .ticlemoaBottomSheet(isPresented: $isAccountDeleteButtonTouched) {
             MyPageAccountDeletingView()
         }
