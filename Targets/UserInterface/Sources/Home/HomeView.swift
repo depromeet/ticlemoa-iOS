@@ -16,10 +16,13 @@ struct HomeView: View {
     @State var isPushSearchView = false
     
     var body: some View {
-        NavigationView {
-            mainBody
-                .setupBackground()
-        }
+        mainBody
+            .setupBackground()
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Text("TICLEMOA")
+                }
+            }
     }
 }
 
