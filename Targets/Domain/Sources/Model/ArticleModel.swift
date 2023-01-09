@@ -66,7 +66,7 @@ public final class ArticleModel: ArticleModelProtocol {
 
 extension ArticleModel {
     
-    public func create(_ item: Article, tagIds: [Int]) async {
+    public func create(_ item: Article, tagIds: [Int]) async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
@@ -81,21 +81,18 @@ extension ArticleModel {
                 tagIds: tagIds
             )
         )
+        
         let result = await api.request(by: request)
         
-        do {
-            switch result {
-                case .success(let data):
-                    _ = try JSONDecoder().decode(CreateArticleResponse.self, from: data)
-                case .failure(let error):
-                    print(error.localizedDescription)
-            }
-        } catch {
-            print(error.localizedDescription)
+        switch result {
+        case .success(let data):
+            _ = try JSONDecoder().decode(CreateArticleResponse.self, from: data)
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
-    public func fetch() async {
+    public func fetch() async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
@@ -105,31 +102,27 @@ extension ArticleModel {
         )
         let result = await api.request(by: request)
             
-        do {
-            switch result {
-                case .success(let data):
-                    let response = try JSONDecoder().decode(ReadArticleResponse.self, from: data)
-                    self.items = response.articles.map({
-                        ArticleData(
-                            id: $0.id,
-                            title: $0.title,
-                            url: $0.url,
-                            content: $0.content,
-                            isPublic: $0.isPublic,
-                            viewCount: $0.viewCount,
-                            createdAt: $0.createdAt,
-                            updatedAt: $0.updatedAt
-                        )
-                    })
-                case .failure(let error):
-                    print(error.localizedDescription)
-            }
-        } catch {
-            
+        switch result {
+        case .success(let data):
+            let response = try JSONDecoder().decode(ReadArticleResponse.self, from: data)
+            self.items = response.articles.map({
+                ArticleData(
+                    id: $0.id,
+                    title: $0.title,
+                    url: $0.url,
+                    content: $0.content,
+                    isPublic: $0.isPublic,
+                    viewCount: $0.viewCount,
+                    createdAt: $0.createdAt,
+                    updatedAt: $0.updatedAt
+                )
+            })
+        case .failure(let network):
+            throw DomainInterfaceError.networkError(code: network.code)
         }
     }
     
-    public func update(_ item: Article) async {
+    public func update(_ item: Article) async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
@@ -147,20 +140,17 @@ extension ArticleModel {
         )
         let result = await api.request(by: request)
         
-        do {
-            switch result {
-                case .success(let data):
-                    _ = try JSONDecoder().decode(UpdateArticleResponse.self, from: data)
-                    await self.fetch()
-                case .failure(let error):
-                    print(error.description)
-            }
-        } catch {
-            print(error.localizedDescription)
+        
+        switch result {
+        case .success(let data):
+            _ = try JSONDecoder().decode(UpdateArticleResponse.self, from: data)
+            try await self.fetch()
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
-    public func removes(_ items: [Article]) async {
+    public func remove(_ items: [Article]) async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
@@ -171,14 +161,14 @@ extension ArticleModel {
         let result = await api.request(by: request)
         
         switch result {
-            case .success(_):
-                await self.fetch()
-            case .failure(let error):
-                print(error.description)
+        case .success(_):
+            try await self.fetch()
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
-    public func search(_ keyword: String) async {
+    public func search(_ keyword: String) async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
@@ -188,27 +178,23 @@ extension ArticleModel {
         )
         let result = await api.request(by: request)
         
-        do {
-            switch result {
-                case .success(let data):
-                    let response = try JSONDecoder().decode(SearchArticleResponse.self, from: data)
-                    self.items = response.articles.map({
-                        ArticleData(
-                            id: $0.id,
-                            title: $0.title,
-                            url: $0.url,
-                            content: $0.content,
-                            isPublic: $0.isPublic,
-                            viewCount: $0.viewCount,
-                            createdAt: $0.createdAt,
-                            updatedAt: $0.updatedAt
-                        )
-                    })
-                case .failure(let error):
-                    print(error.description)
-            }
-        } catch {
-            print(error.localizedDescription)
+        switch result {
+        case .success(let data):
+            let response = try JSONDecoder().decode(SearchArticleResponse.self, from: data)
+            self.items = response.articles.map({
+                ArticleData(
+                    id: $0.id,
+                    title: $0.title,
+                    url: $0.url,
+                    content: $0.content,
+                    isPublic: $0.isPublic,
+                    viewCount: $0.viewCount,
+                    createdAt: $0.createdAt,
+                    updatedAt: $0.updatedAt
+                )
+            })
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
