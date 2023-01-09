@@ -38,7 +38,7 @@ extension UpdateTagRequest: URLRequestMakable {
             cachePolicy: .reloadIgnoringLocalCacheData,
             timeoutInterval: 10
         )
-        request.httpMethod = HTTPMethod.put.rawValue
+        request.httpMethod = HTTPMethod.patch.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.httpBody = try? JSONEncoder().encode(self.body)
