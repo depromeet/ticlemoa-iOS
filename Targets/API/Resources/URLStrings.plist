@@ -5,6 +5,6 @@
 	<key>HOST</key>
 	<string>http://ticlemoa-env-1.eba-6qebrvxf.ap-northeast-2.elasticbeanstalk.com</string>
 	<key>ADMIN_ACCESSTOKEN</key>
-	<string>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjczMDAxNTg4LCJleHAiOjE2NzMxMDE1ODgsInN1YiI6IkFDQ0VTU19UT0tFTiJ9.2TfRKldyUhMLlbvDRbHLA3l8YhKtghIAYzkC-Xwg7S4</string>
+	<string>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjczMTcyNzQ3LCJleHAiOjE2NzMyNzI3NDcsInN1YiI6IkFDQ0VTU19UT0tFTiJ9.19D_eR5q_4NgDaIYEAQvA_coFDiLHBcxmbOdAafvi3w</string>
 </dict>
 </plist>
