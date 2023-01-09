@@ -51,17 +51,14 @@ extension TagModel {
             accessToken: "accessToken",
             body: requestBody
         )
+        
         let result = await api.request(by: uploadTagRequest)
         
-        do {
-            switch result {
-            case .success(_):
-                print("태그 추가 성공")
-            case .failure(let error):
-               throw error
-            }
-        } catch {
-            throw error
+        switch result {
+        case .success(_):
+            print("태그 추가 성공")
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
@@ -69,21 +66,17 @@ extension TagModel {
         let readTagRequest = ReadTagRequest(accessToken: "accessToken", page: page, take: take)
         let result = await api.request(by: readTagRequest)
         
-        do {
-            switch result {
-            case .success(let data):
-                let response = try JSONDecoder().decode(ReadTagResponse.self, from: data)
-                self.items = response.tags.map {
-                    TagData(
-                        id: $0.id,
-                        userId: $0.userId,
-                        tagName: $0.tagName)
-                }
-            case .failure(let error):
-               throw error
+        switch result {
+        case .success(let data):
+            let response = try JSONDecoder().decode(ReadTagResponse.self, from: data)
+            self.items = response.tags.map {
+                TagData(
+                    id: $0.id,
+                    userId: $0.userId,
+                    tagName: $0.tagName)
             }
-        } catch {
-            throw error
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
@@ -93,32 +86,23 @@ extension TagModel {
         let updateTagRequest = UpdateTagRequest(accessToken: "accessToken", tagId: tagId, body: requestBody)
         let result = await api.request(by: updateTagRequest)
         
-        do {
-            switch result {
-            case .success(_):
-                print("태그 업데이트 성공")
-            case .failure(let error):
-               throw error
-            }
-        } catch {
-            throw error
+        switch result {
+        case .success(_):
+            print("태그 업데이트 성공")
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
-        
     }
     
     public func remove(tagId: Int) async throws {
         let deleteTagRequest = DeleteTagRequest(accessToken: "accessToken", tagId: tagId)
         let result = await api.request(by: deleteTagRequest)
         
-        do {
-            switch result {
-            case .success(_):
-                print("태그 제거 성공")
-            case .failure(let error):
-               throw error
-            }
-        } catch {
-            throw error
+        switch result {
+        case .success(_):
+            print("태그 제거 성공")
+        case .failure(let networkError):
+            throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
 }

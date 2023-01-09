@@ -40,12 +40,12 @@ extension TiclemoaAPI: APIDetails {
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
-                return .failure(.validationError)
+                return .failure(.unknownError)
             }
             switch statusCode {
-                case 200, 201:      return .success(data)
-                case 400..<500:     return .failure(.validationError)
-                case 500..<600:     return .failure(.serverError)
+                case 200, 201, 204:      return .success(data)
+                case 400..<500:     return .failure(.validationError(statusCode: statusCode))
+                case 500..<600:     return .failure(.serverError(statusCode: statusCode))
                 default:
                     return .failure(.unknownError)
             }

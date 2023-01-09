@@ -11,8 +11,8 @@ import Foundation
 public enum NetworkError: Error, CustomStringConvertible {
     case inValidURLString
     case notFound
-    case validationError
-    case serverError
+    case validationError(statusCode: Int)
+    case serverError(statusCode: Int)
     case unknownError
     
     public var description: String {
@@ -22,6 +22,21 @@ public enum NetworkError: Error, CustomStringConvertible {
             case .validationError:              return "Validation Errors"
             case .serverError:                  return "Internal Server Error"
             case .unknownError:                 return "Something went wrong."
+        }
+    }
+    
+    public var code: Int {
+        switch self {
+        case .inValidURLString:
+            return 2001
+        case .notFound:
+            return 2002
+        case .validationError(statusCode: let statusCode):
+            return statusCode
+        case .serverError(statusCode: let statusCode):
+            return statusCode
+        case .unknownError:
+            return 2003
         }
     }
 }
