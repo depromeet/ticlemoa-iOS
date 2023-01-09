@@ -23,7 +23,7 @@ extension DeleteTagRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
         let urlComponents = URLComponents(
-            url: baseURL.appendingPathExtension("/tag/\(tagId)"),
+            url: baseURL.appendingPathComponent("/tag/\(tagId)"),
             resolvingAgainstBaseURL: false
         )
         
