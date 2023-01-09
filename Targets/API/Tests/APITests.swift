@@ -65,13 +65,16 @@ extension APITests {
         let request = CreateArticleRequest(accessToken: accessToken, body: newItem)
         // when
         let result = await self.sut.request(by: request)
-        if case .success(let data) = result {
+        
+        switch result {
+        case .success(let data):
             let response = try? JSONDecoder().decode(CreateArticleResponse.self, from: data)
-
-        // then
+            
+            // then
             XCTAssertNotNil(data)
             XCTAssertNotNil(response)
-        } else {
+        case .failure(let networkError):
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
 
@@ -82,18 +85,21 @@ extension APITests {
         let request = ReadArticleRequest(accessToken: accessToken, userId: userId)
         // when
         let result = await self.sut.request(by: request)
-        if case .success(let data) = result {
+        
+        switch result {
+        case .success(let data):
             let response = try? JSONDecoder().decode(ReadArticleResponse.self, from: data)
             
-        // then
+            // then
             XCTAssertNotNil(data)
             XCTAssertTrue(response!.articles.count > 10)
-        } else {
+        case .failure(let networkError):
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
     }
     
-    func test_uploadArticle() async {
+    func test_updateArticle() async {
         // given
         let editedTitle = "김용우 블로그"
         let request = UpdateArticleRequest(
@@ -110,14 +116,16 @@ extension APITests {
         )
         // when
         let result = await self.sut.request(by: request)
-
-        if case .success(let data) = result {
+        
+        switch result {
+        case .success(let data):
             let response = try? JSONDecoder().decode(UpdateArticleResponse.self, from: data)
-
-        // then
+            
+            // then
             XCTAssertNotNil(data)
             XCTAssertEqual(response!.title, editedTitle)
-        } else {
+        case .failure(let networkError):
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
     }
@@ -143,13 +151,16 @@ extension APITests {
         let request = SearchArticleRequest(accessToken: accessToken, search: "1")
         // when
         let result = await self.sut.request(by: request)
-        if case .success(let data) = result {
+        
+        switch result {
+        case .success(let data):
             let response = try? JSONDecoder().decode(SearchArticleResponse.self, from: data)
             
-        // then
+            // then
             XCTAssertNotNil(data)
             XCTAssertTrue(response!.articles.count > 2)
-        } else {
+        case .failure(let networkError):
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
     }
@@ -172,7 +183,7 @@ extension APITests {
         case .success(let data):
             XCTAssertNotNil(data)
         case .failure(let networkError):
-            print(networkError.code)
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
 
@@ -193,7 +204,7 @@ extension APITests {
                 XCTAssertNotNil(data)
                 XCTAssertNotNil(response)
         case .failure(let networkError):
-            print(networkError.code)
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
     }
@@ -211,7 +222,7 @@ extension APITests {
             // then
             XCTAssertNotNil(data)
         case .failure(let networkError):
-            print(networkError.code)
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
     }
@@ -228,7 +239,7 @@ extension APITests {
             // then
             XCTAssertNotNil(data)
         case .failure(let networkError):
-            print(networkError.code)
+            print("statuisCode: \(networkError.code)")
             XCTAssertTrue(false)
         }
     }
