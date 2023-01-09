@@ -48,7 +48,7 @@ extension TagModel {
         let requestBody = CreateTagRequest.Body(tagName: tagName)
         
         let uploadTagRequest = CreateTagRequest(
-            accessToken: "accessToken",
+            accessToken: URLStrings.adminAccesstoken,
             body: requestBody
         )
         
@@ -57,13 +57,14 @@ extension TagModel {
         switch result {
         case .success(_):
             print("태그 추가 성공")
+            try await self.read()
         case .failure(let networkError):
             throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
     public func read() async throws {
-        let readTagRequest = ReadTagRequest(accessToken: "accessToken")
+        let readTagRequest = ReadTagRequest(accessToken: URLStrings.adminAccesstoken)
         let result = await api.request(by: readTagRequest)
         
         switch result {
@@ -83,24 +84,26 @@ extension TagModel {
     public func update(tagId: Int, tagName: String) async throws {
         let requestBody = UpdateTagRequest.Body(tagName: tagName)
         
-        let updateTagRequest = UpdateTagRequest(accessToken: "accessToken", tagId: tagId, body: requestBody)
+        let updateTagRequest = UpdateTagRequest(accessToken: URLStrings.adminAccesstoken, tagId: tagId, body: requestBody)
         let result = await api.request(by: updateTagRequest)
         
         switch result {
         case .success(_):
             print("태그 업데이트 성공")
+            try await self.read()
         case .failure(let networkError):
             throw DomainInterfaceError.networkError(code: networkError.code)
         }
     }
     
     public func remove(tagId: Int) async throws {
-        let deleteTagRequest = DeleteTagRequest(accessToken: "accessToken", tagId: tagId)
+        let deleteTagRequest = DeleteTagRequest(accessToken: URLStrings.adminAccesstoken, tagId: tagId)
         let result = await api.request(by: deleteTagRequest)
         
         switch result {
         case .success(_):
             print("태그 제거 성공")
+            try await self.read()
         case .failure(let networkError):
             throw DomainInterfaceError.networkError(code: networkError.code)
         }
