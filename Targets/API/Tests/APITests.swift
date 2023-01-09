@@ -162,15 +162,17 @@ extension APITests {
 extension APITests {
     func test_createTag() async {
         // given
-        let newItem = CreateTagRequest.Body(tagName: "차요셉 태그")
+        let newItem = CreateTagRequest.Body(tagName: "차요셉 태그123")
         let request = CreateTagRequest(accessToken: accessToken, body: newItem)
         
         // when
         let result = await self.sut.request(by: request)
-        if case .success(let data) = result {
-        // then
+        
+        switch result {
+        case .success(let data):
             XCTAssertNotNil(data)
-        } else {
+        case .failure(let networkError):
+            print(networkError.code)
             XCTAssertTrue(false)
         }
 
@@ -178,17 +180,20 @@ extension APITests {
     
     func test_readTag() async {
         // given
-        let request = ReadTagRequest(accessToken: accessToken, page: 1, take: 1)
+        let request = ReadTagRequest(accessToken: accessToken)
         
         // when
         let result = await self.sut.request(by: request)
-        if case .success(let data) = result {
+        
+        switch result {
+        case .success(let data):
             let response = try? JSONDecoder().decode(ReadTagResponse.self, from: data)
-
-        // then
-            XCTAssertNotNil(data)
-            XCTAssertNotNil(response)
-        } else {
+            
+            // then
+                XCTAssertNotNil(data)
+                XCTAssertNotNil(response)
+        case .failure(let networkError):
+            print(networkError.code)
             XCTAssertTrue(false)
         }
     }
@@ -200,11 +205,13 @@ extension APITests {
         
         // when
         let result = await self.sut.request(by: request)
-        if case .success(let data) = result {
-
-        // then
+        
+        switch result {
+        case .success(let data):
+            // then
             XCTAssertNotNil(data)
-        } else {
+        case .failure(let networkError):
+            print(networkError.code)
             XCTAssertTrue(false)
         }
     }
@@ -215,14 +222,14 @@ extension APITests {
         
         // when
         let result = await self.sut.request(by: request)
-        var success: Bool
+        
         switch result {
-            case .success(_): success = true
-            case .failure(_): success = false
+        case .success(let data):
+            // then
+            XCTAssertNotNil(data)
+        case .failure(let networkError):
+            print(networkError.code)
+            XCTAssertTrue(false)
         }
-        
-        // then
-        XCTAssertTrue(success)
-        
     }
 }
