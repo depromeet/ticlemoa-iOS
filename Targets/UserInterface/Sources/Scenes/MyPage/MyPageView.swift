@@ -29,9 +29,16 @@ struct MyPageView: View {
             } label: {
                 VStack(spacing: 0) {
                     Group {
-                        DefaultProfileView()
-                            .frame(width: 59, height: 59)
+                        if let path = viewModel.profileImageURL?.path, let uiImage = UIImage(contentsOfFile: path) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .clipShape(Circle())
+                        } else {
+                            DefaultProfileView()
+                        }
                     }
+                    .frame(width: 59, height: 59)
                     .padding(.top, 24)
                     .padding(.bottom, 12)
                     HStack(spacing: 2) {
@@ -123,6 +130,9 @@ struct MyPageView: View {
             }
             
             Spacer()
+        }
+        .onAppear {
+            viewModel.updateProfile()
         }
         .setupBackground()
 //        .ticlemoaNavigationBar(title: "마이페이지")
