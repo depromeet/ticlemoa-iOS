@@ -184,10 +184,7 @@ fileprivate struct MyPageAccountDeletingView: View {
                 .padding(.top, 20.5)
                 .padding(.bottom, 30.5)
             
-            Rectangle()
-                .border(.red)
-                .foregroundColor(.secondaryRed)
-                .frame(height: 133)
+            Image("SadImage")
                 .padding(.horizontal, 36)
             
             VStack(spacing: 0) {
