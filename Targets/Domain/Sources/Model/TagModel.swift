@@ -62,8 +62,8 @@ extension TagModel {
         }
     }
     
-    public func read(page: Int, take: Int) async throws {
-        let readTagRequest = ReadTagRequest(accessToken: "accessToken", page: page, take: take)
+    public func read() async throws {
+        let readTagRequest = ReadTagRequest(accessToken: "accessToken")
         let result = await api.request(by: readTagRequest)
         
         switch result {

@@ -11,13 +11,9 @@ import Foundation
 public struct ReadTagRequest {
     
     let accessToken: String
-    let page: Int
-    let take: Int
     
-    public init(accessToken: String, page: Int, take: Int) {
+    public init(accessToken: String) {
         self.accessToken = accessToken
-        self.page = page
-        self.take = take
     }
 }
 
@@ -25,8 +21,7 @@ extension ReadTagRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var request = URLRequest(
-            url: baseURL.appendingPathComponent("/tag").appendingPathComponent("/\(page)")
-                .appendingPathComponent("/\(take)"),
+            url: baseURL.appendingPathComponent("/tag"),
             cachePolicy: .reloadIgnoringLocalCacheData,
             timeoutInterval: 10
         )
