@@ -25,7 +25,7 @@ struct LoginView: View {
                     _ = viewModel.authControllerHandleOpen(url: url)
                 }
             }
-            .setupBackground()
+            .background(Color.grey1)
     }
     
     var mainBody: some View {
@@ -42,13 +42,33 @@ struct LoginView: View {
                 circleMargin: 8.0
             )
                 
-            socialLoginButtons
-                .padding(.top, 60)
+            // 소셜 로그인 구현 시, 사용 예정
+//            socialLoginButtons
+//                .padding(.top, 60)
+//            Button("임시 로그인 버튼") {
+//                isLoggedIn = true
+//            }
+            Button(
+                action: {
+                isLoggedIn = true
+            }, label: {
+                RoundedButton(
+                    "시작하기",
+                    foregroundColor: Color.white,
+                    Color.ticlemoaBlack,
+                    imageName: "", action: {
+                        Task {
+                            HapticManager.instance.impact(style: .light)
+                            let isSuccess = await viewModel.getAccessToken()
+                            isLoggedIn = isSuccess
+                        }
+                    }
+                )
+            })
+            
             Spacer()
                 .frame(maxHeight: 58)
-            Button("임시 로그인 버튼") {
-                isLoggedIn = true
-            }
+            
         }
     }
 }
@@ -157,7 +177,7 @@ private extension LoginView {
                 Rectangle()
                     .fill(backgorund)
                     .frame(maxHeight: 56)
-                    .cornerRadius(4)
+//                    .cornerRadius(4)
                 HStack {
                     Image(imageName)
                         .padding(.leading, 21)
@@ -172,31 +192,31 @@ private extension LoginView {
                         )
                         .foregroundColor(foregroundColor))
             }
-        })
+        }).padding(.top, 20)
         
     }
 }
-//
-//#if DEBUG
-//import Domain
-//
-//struct LoginView_Previews: PreviewProvider {
-//    static var modelContainer = ModelContainer(
-//        articleModel: ArticleModel(),
-//        tagModel: TagModel(),
-//        loginModel: LoginModel()
-//    )
-//    @State static  var isLoggedIn: Bool = false
-//    
-//    static var previews: some View {
-//        LoginView(
-//            viewModel:
-//                LoginViewModel(
-//                    modelContainer: modelContainer
-//                ),
-//            isLoggedIn: $isLoggedIn
-//        )
-//    }
-//}
-//
-//#endif
+import Domain
+#if DEBUG
+
+
+struct LoginView_Previews: PreviewProvider {
+    static var modelContainer = ModelContainer(
+        articleModel: ArticleModel(),
+        tagModel: TagModel(),
+        loginModel: LoginModel()
+    )
+    @State static  var isLoggedIn: Bool = false
+    
+    static var previews: some View {
+        LoginView(
+            viewModel:
+                LoginViewModel(
+                    modelContainer: modelContainer
+                ),
+            isLoggedIn: $isLoggedIn
+        )
+    }
+}
+
+#endif
