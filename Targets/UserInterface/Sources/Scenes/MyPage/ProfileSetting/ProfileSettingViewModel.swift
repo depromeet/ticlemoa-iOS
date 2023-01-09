@@ -17,6 +17,7 @@ final class ProfileSettingViewModel: ObservableObject {
     
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
+        self.profileImageURL = userProfileImageURL
     }
     
     func profileImageTouched() {
