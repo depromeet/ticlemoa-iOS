@@ -63,12 +63,14 @@ extension TagModel {
         }
     }
     
+
     public func read() async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
         
         let readTagRequest = ReadTagRequest(accessToken: currentUser.accessToken)
+
         let result = await api.request(by: readTagRequest)
         
         switch result {
