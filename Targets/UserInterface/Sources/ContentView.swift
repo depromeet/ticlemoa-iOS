@@ -68,7 +68,7 @@ final class MockArticleModel: ArticleModelProtocol {
     func fetch() async { }
     func update(_ item: DomainInterface.Article) async { }
     func create(_ item: DomainInterface.Article, tagIds: [Int]) async { }
-    func removes(_ items: [DomainInterface.Article]) async { }
+    func remove(_ items: [DomainInterface.Article]) async throws {}
     func search(_ keyword: String) async { }
 }
 
@@ -78,7 +78,7 @@ final class MockTagModel: TagModelProtocol {
     
     func fetch() { }
     func create(tagName: String) async throws {}
-    func read(page: Int, take: Int) async throws {}
+    func read() async throws {}
     func update(tagId: Int, tagName: String) async throws {}
     func remove(tagId: Int) async throws {}
 }

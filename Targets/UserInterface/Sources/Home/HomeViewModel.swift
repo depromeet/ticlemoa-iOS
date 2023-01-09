@@ -32,7 +32,7 @@ final class HomeViewModel: ObservableObject {
         
         Task {
             do {
-                try await modelContainer.tagModel.read(page: 0, take: 0)
+                try await modelContainer.tagModel.read()
                 print(self.tags)
             } catch {
                 print(self.tags) // TODO: 통신 실패시, TagData의 dummy로 설정됨. 유지할지, 바꿔야할지 고민필요
