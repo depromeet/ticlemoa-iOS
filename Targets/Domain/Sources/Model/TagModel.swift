@@ -67,7 +67,7 @@ extension TagModel {
     }
     
     public func read(page: Int, take: Int) async throws {
-        let readTagRequest = ReadTagRequest(accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjczMTcyNzQ3LCJleHAiOjE2NzMyNzI3NDcsInN1YiI6IkFDQ0VTU19UT0tFTiJ9.19D_eR5q_4NgDaIYEAQvA_coFDiLHBcxmbOdAafvi3w", page: page, take: take)
+        let readTagRequest = ReadTagRequest(accessToken: "accessToken", page: page, take: take)
         let result = await api.request(by: readTagRequest)
         
         do {
