@@ -26,7 +26,7 @@ extension View {
         isPresented: Binding<Bool>,
         title: String,
         style: AlertStyle,
-        completion: @escaping (String?) -> Void
+        completion: @escaping (String?) async -> (Bool, String)
     ) -> some View {
         let keyWindow = keyWindow()
         let alertViewController = {
@@ -75,8 +75,10 @@ public struct TiclemoaAlert: View {
     @Binding var isPresented: Bool
     let title: String
     let style: AlertStyle
-    let completion: (String?) -> Void
+    let completion: (String?) async -> (Bool, String)
     @State var inputText: String = ""
+    @State var isError: Bool = false
+    @State var errorMessage: String = ""
 
     public var body: some View {
         ZStack{
@@ -105,7 +107,12 @@ public struct TiclemoaAlert: View {
         }
         .onChange(of: inputText) { newValue in // FIXME: ViewModel Logic 인가 고민하기
             if inputText.count > 8 {
+                isError = true
+                errorMessage = "태그명은 8자까지 입력할 수 있습니다"
                 self.inputText = inputText.map({ String($0) })[0..<8].joined()
+            } else if inputText.count <= 7{
+                isError = false
+                errorMessage = ""
             }
         }
     }
@@ -124,14 +131,26 @@ public struct TiclemoaAlert: View {
                     ZStack {
                         Rectangle()
                             .fill(.white)
-                            .border(.black)
+                            .border(isError ? Color.secondaryRed : Color.ticlemoaBlack)
                             .padding(.horizontal, 24)
-                        TextField("InputText", text: $inputText)
+                        TextField("", text: $inputText)
+                            .placeholder("태그명을 입력해주세요", when: inputText.isEmpty, color: .grey3)
                             .padding(.horizontal, 40)
+                            
                     }
+                    .padding(.top, 16)
                     
                     .frame(height: 58)
-                    HStack {
+                    HStack(spacing: 0) {
+                        if isError {
+                            Image("tag_name_error")
+                                .frame(width: 14.67, height: 14.67)
+                                .padding(.leading, 24.67)
+                            Text(errorMessage)
+                                .foregroundColor(.secondaryRed)
+                                .customFont(weight: 400, size: 12, lineHeight: 18)
+                                .padding(.leading, 6.67)
+                        }
                         Spacer()
                         Text("\(inputText.count)/8")
                             .font(.system(size: 12))
@@ -162,22 +181,32 @@ public struct TiclemoaAlert: View {
         Button(
             action: {
                 switch style {
-                    case .confirm(_):
-                        completion(nil)
-                    case .inputText:
-                        completion(inputText)
+                case .confirm(_):
+                    Task {
+                        _ = await completion(nil)
+                        self.isPresented.toggle()
+                    }
+                case .inputText:
+                    Task {
+                        let (isError, errorMessage) = await completion(inputText)
+                        self.isError = isError
+                        self.errorMessage = errorMessage
+                        if !isError {
+                            self.isPresented.toggle()
+                        }
+                    }
                 }
-                self.isPresented.toggle()
             }, label: {
                 HStack {
                     Spacer()
                     Text("확인")
-                        .foregroundColor(.primary)
+                        .foregroundColor(inputText.isEmpty ? .grey3 : .ticlemoaPrimary)
                         .font(.system(size: 16, weight: .semibold))
                     Spacer()
                 }
             }
         )
+        .disabled(inputText.isEmpty)
     }
 
 }
