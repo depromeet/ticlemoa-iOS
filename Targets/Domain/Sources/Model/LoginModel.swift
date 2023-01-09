@@ -7,10 +7,8 @@
 //
 
 import Foundation
-
 import API
 import DomainInterface
-
 import KakaoSDKUser
 import KakaoSDKAuth
 import KakaoSDKCommon
@@ -44,6 +42,36 @@ public final class LoginModel: LoginModelProtocol {
 }
 
 extension LoginModel {
+    
+    // 최초 접속 1 회만, 호출됩니다.
+    public func requestAccessToken() async -> (String, Int)? {
+        let request = GetUserTokenRequest()
+        let result = await api.request(by: request)
+        
+        do {
+            switch result {
+                case .success(let data):
+                    let response = try JSONDecoder().decode(GetUserTokenResponse.self, from: data)
+                
+                LoginUserData.shared = .init(
+                    nickName: "",
+                    accessToken: response.accessToken,
+                    userId: response.userId,
+                    mail: ""
+                )
+                
+                return (response.accessToken, response.userId)
+                
+                case .failure(let error):
+                    print(error.description)
+                    return nil
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
     
     public func isKakaoTalkLoginUrl(_ url: URL) -> Bool {
         AuthApi.isKakaoTalkLoginUrl(url)
