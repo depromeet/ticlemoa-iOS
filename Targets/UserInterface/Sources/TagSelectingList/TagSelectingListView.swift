@@ -118,7 +118,21 @@ extension TagSelectingListView {
             title: "새 태그 만들기",
             style: .inputText,
             completion: { result in
-                print(result)
+                guard let result = result else { return (true, "") }
+                do {
+                    try await modelContainer.tagModel.create(tagName: result)
+                    return (false, "")
+                } catch let domainInterFaceError as DomainInterfaceError {
+                    switch domainInterFaceError {
+                    case .networkError(let code):
+                        if code == 400 {
+                            return (true, "이미 존재하는 태그입니다.")
+                        }
+                        return (true, "알 수 없는 에러입니다.") // FIXME: 스웨거 기준 statusCode 세분화 필요
+                    }
+                } catch {
+                    return (true, "알 수 없는 에러입니다.")
+                }
             })
     }
     
