@@ -49,7 +49,7 @@ struct AddingLinkView: View {
         }
         .hideKeyboard()
         .padding(.horizontal, 20)
-        .navigationTitle("링크 추가")
+        .navigationTitle("아티클 추가")
         .navigationBarTitleDisplayMode(.inline)
         .ticlemoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
             TagSelectingListView(
