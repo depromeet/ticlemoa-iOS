@@ -20,9 +20,7 @@ struct MainTabView: View {
     var body: some View {
         NavigationView {
             TabView {
-                NavigationView {
-                    HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
-                }
+                HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
                 .tabItem {
                     Tab.home.imageItem
                     Tab.home.textItem
