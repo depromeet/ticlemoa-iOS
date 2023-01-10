@@ -101,19 +101,19 @@ struct MyPageView: View {
                 .padding(.horizontal, 20)
             }
             
-            Button {
-                Void()
-            } label: {
-                HStack {
-                    Text("로그아웃")
-                        .customFont(weight: 400, size: 14, lineHeight: 21, style: .medium)
-                        .foregroundColor(.grey4)
-                        .padding(.top, 13)
-                        .padding(.bottom, 14)
-                    Spacer()
-                }
-                .padding(.horizontal, 20)
-            }
+//            Button {
+//                Void()
+//            } label: {
+//                HStack {
+//                    Text("로그아웃")
+//                        .customFont(weight: 400, size: 14, lineHeight: 21, style: .medium)
+//                        .foregroundColor(.grey4)
+//                        .padding(.top, 13)
+//                        .padding(.bottom, 14)
+//                    Spacer()
+//                }
+//                .padding(.horizontal, 20)
+//            }
             
             Button {
                 isAccountDeletionBottomsheetPresented = true
