@@ -70,11 +70,13 @@ extension TagModel {
         switch result {
         case .success(let data):
             let response = try JSONDecoder().decode(ReadTagResponse.self, from: data)
-            self.items = response.tags.map {
-                TagData(
-                    id: $0.id,
-                    userId: $0.userId,
-                    tagName: $0.tagName)
+            DispatchQueue.main.async {
+                self.items = response.tags.map {
+                    TagData(
+                        id: $0.id,
+                        userId: $0.userId,
+                        tagName: $0.tagName)
+                }
             }
         case .failure(let networkError):
             throw DomainInterfaceError.networkError(code: networkError.code)
