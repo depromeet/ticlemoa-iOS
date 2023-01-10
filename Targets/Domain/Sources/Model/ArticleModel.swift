@@ -87,6 +87,7 @@ extension ArticleModel {
         switch result {
         case .success(let data):
             _ = try JSONDecoder().decode(CreateArticleResponse.self, from: data)
+            try await self.fetch()
         case .failure(let networkError):
             throw DomainInterfaceError.networkError(code: networkError.code)
         }
