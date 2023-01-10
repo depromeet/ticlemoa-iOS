@@ -11,7 +11,7 @@ import XCTest
 
 extension APITests {
     var accessToken: String { URLStrings.adminAccesstoken }
-    var userId: Int { 1 }
+    var userId: Int { 8 }
 }
 
 final class APITests: XCTestCase {
@@ -55,9 +55,9 @@ extension APITests {
     func test_createArticle() async {
         // given
         let newItem = CreateArticleRequest.Body.init(
-            content: "테스트 용 업로드",
+            content: "",
             userId: userId,
-            title: "김용우 블로그",
+            title: "",
             url: "https://keeplo.tistory.com/",
             isPublic: false,
             tagIds: []
