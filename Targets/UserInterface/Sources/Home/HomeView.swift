@@ -39,7 +39,7 @@ private extension HomeView {
                 
                 Spacer()
                     .frame(minHeight: 0, maxHeight: isFolding ? 35 : 250)
-                HomeArticleList(viewModel: .init(modelContainer: modelContainer))
+                HomeArticleList(viewModel: viewModel)
                     .padding(.top, 0)
                     .animation(.default)
                     .transition(.slide)
