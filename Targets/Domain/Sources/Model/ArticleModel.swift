@@ -105,18 +105,20 @@ extension ArticleModel {
         switch result {
         case .success(let data):
             let response = try JSONDecoder().decode(ReadArticleResponse.self, from: data)
-            self.items = response.articles.map({
-                ArticleData(
-                    id: $0.id,
-                    title: $0.title,
-                    url: $0.url,
-                    content: $0.content,
-                    isPublic: $0.isPublic,
-                    viewCount: $0.viewCount,
-                    createdAt: $0.createdAt,
-                    updatedAt: $0.updatedAt
-                )
-            })
+            DispatchQueue.main.async {
+                self.items = response.articles.map({
+                    ArticleData(
+                        id: $0.id,
+                        title: $0.title,
+                        url: $0.url,
+                        content: $0.content,
+                        isPublic: $0.isPublic,
+                        viewCount: $0.viewCount,
+                        createdAt: $0.createdAt,
+                        updatedAt: $0.updatedAt
+                    )
+                })
+            }
         case .failure(let network):
             throw DomainInterfaceError.networkError(code: network.code)
         }
