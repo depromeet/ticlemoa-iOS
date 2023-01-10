@@ -87,6 +87,7 @@ final class MockLoginModel: LoginModelProtocol {
         nickName: "TestNickname", accessToken: "", userId: 0, mail: "ticlemoa@gmail.com"
     )
     var userDataPublisher: Published<DomainInterface.LoginUser?>.Publisher { $userData }
+    func requestAccessToken() async -> Bool { true }
     func checkKakaoLogin() async -> Bool { false }
     func isKakaoTalkLoginUrl(_ url: URL) -> Bool { return true }
     func authController(url: URL) -> Bool { return true }
