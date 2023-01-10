@@ -36,10 +36,21 @@ public final class LoginModel: LoginModelProtocol {
     private let api: APIDetails = TiclemoaAPI()
     
     public init() {
+        #if DEBUG
+        self.prepareForDebugEnvorinment()
+        #endif
         self.userData = LoginUserData.shared
     }
     
 }
+
+#if DEBUG
+extension LoginModel {
+    private func prepareForDebugEnvorinment() {
+        LoginUserData.shared = LoginUserData(nickName: "가나다라마바사", accessToken: "accessToken", userId: 1, mail: "gd051234@gmail.com")
+    }
+}
+#endif
 
 extension LoginModel {
     
@@ -89,6 +100,18 @@ extension LoginModel {
                 print(error.localizedDescription)
                 return false
         }
+    }
+    
+    public func nicknameChangeTo(_ nickname: String) {
+        guard let oldValue = userData else { return } // TODO: 에러처리 필요
+        let newValue = LoginUserData(
+            nickName: nickname,
+            accessToken: oldValue.accessToken,
+            userId: oldValue.userId,
+            mail: oldValue.mail
+        )
+        userData = newValue
+        LoginUserData.shared = newValue
     }
     
     private func kakaoAccessToken() async -> Result<OAuthToken, Error> {

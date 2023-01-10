@@ -83,6 +83,10 @@ final class MockTagModel: TagModelProtocol {
 }
 
 final class MockLoginModel: LoginModelProtocol {
+    func nicknameChangeTo(_ nickname: String) {
+        Void()
+    }
+    
     @Published var userData: LoginUser? = MockLoginUser(
         nickName: "TestNickname", accessToken: "", userId: 0, mail: "ticlemoa@gmail.com"
     )

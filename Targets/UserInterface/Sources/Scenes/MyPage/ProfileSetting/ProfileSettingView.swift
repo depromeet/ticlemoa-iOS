@@ -7,11 +7,11 @@
 //
 
 import SwiftUI
+import Combine
 import PhotosUI
 
 struct ProfileSettingView: View {
     @ObservedObject var viewModel: ProfileSettingViewModel
-    @State private var nickname: String = ""
     @Environment(\.dismiss) private var dismiss
     
     init(viewModel: ProfileSettingViewModel) {
@@ -62,13 +62,16 @@ struct ProfileSettingView: View {
                     Spacer()
                 }
                 .padding(.bottom, 12)
-                TextField("닉네임을 입력해주세요.", text: self.$nickname)
+                TextField("닉네임을 입력해주세요.", text: $viewModel.nickname)
                     .padding(.bottom, 8)
+                    .onChange(of: viewModel.nickname.count) { _ in
+                        viewModel.nicknameTextfieldChanged()
+                    }
                 Divider()
                     .padding(.bottom, 8.8)
                 HStack {
                     Spacer()
-                    Text("\(nickname.count)/10")
+                    Text("\(viewModel.nickname.count)/10")
                         .foregroundColor(.grey4)
                         .font(.system(size: 14))
                 }

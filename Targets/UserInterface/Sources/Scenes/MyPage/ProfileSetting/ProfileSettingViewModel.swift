@@ -13,6 +13,7 @@ final class ProfileSettingViewModel: ObservableObject {
     @Published var isConfirmationDialogOpen: Bool = false
     @Published var isImagePickerOpen: Bool = false
     @Published var profileImageURL: URL?
+    @Published var nickname: String = ""
     @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
     
     init(modelContainer: ModelContainer) {
@@ -22,6 +23,10 @@ final class ProfileSettingViewModel: ObservableObject {
     
     func profileImageTouched() {
         isConfirmationDialogOpen = true
+    }
+    
+    func nicknameTextfieldChanged() {
+        nickname = String(nickname.prefix(10))
     }
     
     func selectPhotoInAlbumButtonTouched() {
@@ -38,5 +43,6 @@ final class ProfileSettingViewModel: ObservableObject {
     
     func saveButtonTouched() {
         userProfileImageURL = profileImageURL
+        modelContainer.loginModel.nicknameChangeTo(nickname)
     }
 }
