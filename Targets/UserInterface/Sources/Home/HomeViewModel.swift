@@ -24,7 +24,8 @@ final class HomeViewModel: ObservableObject {
     
     @ObservedObject var modelContainer: ModelContainer
     
-    @Published var articles: [TemporaryArticle] = []
+    @Published var articles: [Article] = []
+    var isArticlesEmpty: Bool { articles.isEmpty }
     @Published var rows: [[Tag]] = []
     @Published var tags: [Tag] = []
     @Published var tagText = ""
@@ -36,6 +37,10 @@ final class HomeViewModel: ObservableObject {
     
     @Published var selectedTag: HomeTag? {
         didSet {
+//            Task {
+//                // 1. 태그를 통한 검색 API -> [Article]
+//                articles = await modelContainer.articleModel.fetch(tagName) // return Article
+//            }
             print("선택한 태그: \(selectedTag!.tag.tagName)")
             // TODO: 태그에 맞는 검색어 겸색 Netoworking...
         }
@@ -66,7 +71,7 @@ final class HomeViewModel: ObservableObject {
         }
         
         // Dummy Data 셋업
-        articles = TemporaryArticle.allArticles
+//        articles = TemporaryArticle.allArticles
         
         func setupTagList() {
             getTags(self.homeTags)
