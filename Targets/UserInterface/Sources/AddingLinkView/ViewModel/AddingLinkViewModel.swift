@@ -32,4 +32,28 @@ final class AddingLinkViewModel: ObservableObject {
             self.link = copiedlink
         }
     }
+    
+    func addingButtondidTapped() async -> (message: String, isSuccess: Bool)  {
+        do {
+            try await modelContainer.articleModel.create(
+                AddingArticle(content: memo,
+                              title: articleTitle,
+                              url: link,
+                              isPublic: isPublicSetting),
+                tagIds: selectedTags.map { $0.id } )
+            return ("추가 완료되었습니다.", true)
+        } catch let domainInterfaceError as DomainInterfaceError {
+            switch domainInterfaceError {
+            case .networkError(code: let code):
+                switch code {
+                case 400..<500:
+                    return ("링크 URL 형식을 맞춰 주세요.", false)
+                default:
+                    return ("통신에 문제가 있습니다.", false)
+                }
+            }
+        } catch {
+            return ("통신에 문제가 있습니다.", false)
+        }
+    }
 }
