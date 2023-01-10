@@ -14,5 +14,5 @@ public protocol ArticleModelProtocol {
     func fetch() async throws
     func update(_ item: Article) async throws
     func remove(_ items: [Article]) async throws
-    func search(_ keyword: String) async throws
+    func search(_ keyword: String) async
 }

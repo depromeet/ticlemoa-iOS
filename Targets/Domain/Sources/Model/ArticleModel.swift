@@ -168,7 +168,7 @@ extension ArticleModel {
         }
     }
     
-    public func search(_ keyword: String) async throws {
+    public func search(_ keyword: String) async {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
@@ -178,23 +178,27 @@ extension ArticleModel {
         )
         let result = await api.request(by: request)
         
-        switch result {
-        case .success(let data):
-            let response = try JSONDecoder().decode(SearchArticleResponse.self, from: data)
-            self.items = response.articles.map({
-                ArticleData(
-                    id: $0.id,
-                    title: $0.title,
-                    url: $0.url,
-                    content: $0.content,
-                    isPublic: $0.isPublic,
-                    viewCount: $0.viewCount,
-                    createdAt: $0.createdAt,
-                    updatedAt: $0.updatedAt
-                )
-            })
-        case .failure(let networkError):
-            throw DomainInterfaceError.networkError(code: networkError.code)
+        do {
+            switch result {
+                case .success(let data):
+                    let response = try JSONDecoder().decode(SearchArticleResponse.self, from: data)
+                    self.items = response.articles.map({
+                        ArticleData(
+                            id: $0.id,
+                            title: $0.title,
+                            url: $0.url,
+                            content: $0.content,
+                            isPublic: $0.isPublic,
+                            viewCount: $0.viewCount,
+                            createdAt: $0.createdAt,
+                            updatedAt: $0.updatedAt
+                        )
+                    })
+                case .failure(let error):
+                    print(error.description)
+            }
+        } catch {
+            print(error.localizedDescription)
         }
     }
     
