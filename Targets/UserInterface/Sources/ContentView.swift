@@ -68,7 +68,7 @@ final class MockArticleModel: ArticleModelProtocol {
     func update(_ item: DomainInterface.Article) async { }
     func create(_ item: DomainInterface.Article, tagIds: [Int]) async { }
     func remove(_ items: [DomainInterface.Article]) async throws {}
-    func search(_ keyword: String) async { }
+    func search(_ keyword: String) async -> [Article] { [] }
 }
 
 final class MockTagModel: TagModelProtocol {

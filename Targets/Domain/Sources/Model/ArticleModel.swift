@@ -168,9 +168,9 @@ extension ArticleModel {
         }
     }
     
-    public func search(_ keyword: String) async {
+    public func search(_ keyword: String) async -> [Article] {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
-            return
+            return []
         }
         let request = SearchArticleRequest(
             accessToken: currentUser.accessToken,
@@ -182,7 +182,7 @@ extension ArticleModel {
             switch result {
                 case .success(let data):
                     let response = try JSONDecoder().decode(SearchArticleResponse.self, from: data)
-                    self.items = response.articles.map({
+                    return response.articles.map({
                         ArticleData(
                             id: $0.id,
                             title: $0.title,
@@ -196,9 +196,11 @@ extension ArticleModel {
                     })
                 case .failure(let error):
                     print(error.description)
+                    return []
             }
         } catch {
             print(error.localizedDescription)
+            return []
         }
     }
     
