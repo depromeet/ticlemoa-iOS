@@ -12,18 +12,19 @@ struct TagSelectingListRow: View {
     
     static let cellHeight: CGFloat = 42
     
-    @Binding var tag: TagSelectingListViewModel
+    let selectedTagsCount : Int
+    @Binding var checkableTag: CheckableTag
     
     // FIXME: font 및 icon 변경 필요
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text(tag.title)
+                Text(checkableTag.tagName)
 //                    .customFont(16, .medium)
                     .foregroundColor(.ticlemoaBlack)
                     .padding(.leading, 36)
                 Spacer()
-                Image(tag.isSelected ? "radio_on" : "radio_off")
+                Image(checkableTag.isSelected ? "radio_on" : "radio_off")
                     .padding(.trailing, 27)
             }
             .frame(height: TagSelectingListRow.cellHeight)
@@ -36,15 +37,24 @@ struct TagSelectingListRow: View {
         .listRowBackground(Color.clear)
         .contentShape(Rectangle())
         .onTapGesture {
-            self.tag.isSelected.toggle()
+            if selectedTagsCount < 2 || checkableTag.isSelected {
+                self.checkableTag.isSelected.toggle()
+            }
         }
     }
 }
 
 struct SelectableTagListRow_Previews: PreviewProvider {
     static var previews: some View {
-        TagSelectingListRow(tag: .constant(
-                .init(id: .init(), title: "새로운 태그", isSelected: Bool.random())
+        TagSelectingListRow(
+            selectedTagsCount: 1,
+            checkableTag: .constant(
+                .init(
+                    id: 1,
+                    userId: 1,
+                    tagName: "새로운 태그",
+                    isSelected: Bool.random()
+                )
             )
         )
         .previewLayout(.sizeThatFits)

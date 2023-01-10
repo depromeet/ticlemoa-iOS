@@ -9,6 +9,8 @@
 import SwiftUI
 import Combine
 
+import DomainInterface
+
 enum FromWhichButton {
     case naviBar
     case snackBar
@@ -20,16 +22,19 @@ private enum TextFieldType: String {
 }
 
 struct AddingLinkView: View {
-    let fromWhichButton: FromWhichButton
+    @EnvironmentObject private var modelContainer: ModelContainer
     @ObservedObject private var viewModel: AddingLinkViewModel
-    @FocusState private var isArticleTitleFocused: Bool // 간혹 preview에서 동작 잘안됨, 시뮬레이터에선 잘됨
+    @FocusState private var isArticleTitleFocused: Bool
     @State private var isPublicSettingsHelpClicked: Bool = false
     @State private var isTagAddingButtonTouched: Bool = false
-    @State var tags = TagSelectingListViewModel.dummy
     
-    init(fromWhere fromWhichButton: FromWhichButton) {
-        self.fromWhichButton = fromWhichButton
-        self.viewModel = AddingLinkViewModel(fromWhichButton: fromWhichButton)
+    init(
+        modelContainer: ModelContainer,
+        fromWhere fromWhichButton: FromWhichButton
+    ) {
+        self.viewModel = AddingLinkViewModel(
+            modelContainer: modelContainer,
+            fromWhichButton: fromWhichButton)
     }
     
     var body: some View {
@@ -47,7 +52,11 @@ struct AddingLinkView: View {
         .navigationTitle("링크 추가")
         .navigationBarTitleDisplayMode(.inline)
         .ticlemoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
-            TagSelectingListView(tags: $tags)
+            TagSelectingListView(
+                modelContainer: modelContainer,
+                selectedTags: $viewModel.selectedTags,
+                isTagAddingButtonTouched: $isTagAddingButtonTouched
+            )
         }
     }
 }
@@ -86,7 +95,7 @@ extension AddingLinkView {
                     .frame(height: 1.2)
                     .padding(.top, 12)
             } else {
-                if fromWhichButton == .naviBar && UIPasteboard.general.string != nil {
+                if viewModel.fromWhichButton == .naviBar && UIPasteboard.general.string != nil {
                     HStack {
                         Button {
                             viewModel.link = UIPasteboard.general.string ?? ""
@@ -121,12 +130,12 @@ extension AddingLinkView {
                 Spacer()
             }
             HStack(spacing: 10) {
-                ForEach(viewModel.tags, id: \.self) { tagName in
-                    if !tagName.isEmpty {
-                        AddedTagView(tags: $viewModel.tags, tagName: tagName)
+                ForEach(viewModel.selectedTags, id: \.id) {
+                    if !$0.tagName.isEmpty {
+                        AddedTagView(selectedTags: $viewModel.selectedTags, tagName: $0.tagName)
                     }
                 }
-                if viewModel.tags.count < 2 {
+                if viewModel.selectedTags.count < 2 {
                     Button {
                         isTagAddingButtonTouched = true
                     } label: {
@@ -263,7 +272,7 @@ private struct CommonTextFieldView: View {
 }
 
 private struct AddedTagView: View {
-    @Binding var tags: [String]
+    @Binding var selectedTags: [Tag]
     var tagName: String
     
     var body: some View {
@@ -272,7 +281,7 @@ private struct AddedTagView: View {
                 .font(.system(size: 14))
                 .foregroundColor(.grey1)
             Button {
-                tags = tags.filter({ $0 != tagName })
+                selectedTags = selectedTags.filter({ $0.tagName != tagName })
             } label: {
                 Image("ClearButtonGrey4")
                     .frame(width: 16.5, height: 16.5)
@@ -289,19 +298,22 @@ struct LinkAddingView_Previews: PreviewProvider {
         NavigationView {
             VStack(spacing: 100) {
                 NavigationLink {
-                    AddingLinkView(fromWhere: .snackBar)
+                    AddingLinkView(
+                        modelContainer: ModelContainer.dummy,
+                        fromWhere: .snackBar
+                    )
                 } label: {
                     Text("snackBar")
                 }
                 NavigationLink {
-                    AddingLinkView(fromWhere: .naviBar)
+                    AddingLinkView(modelContainer: ModelContainer.dummy, fromWhere: .naviBar)
                 } label: {
                     Text("naviBar")
                 }
             }
         }
         
-        AddingLinkView(fromWhere: .naviBar)
-        AddingLinkView(fromWhere: .snackBar)
+        AddingLinkView(modelContainer: ModelContainer.dummy, fromWhere: .naviBar)
+        AddingLinkView(modelContainer: ModelContainer.dummy, fromWhere: .snackBar)
     }
 }

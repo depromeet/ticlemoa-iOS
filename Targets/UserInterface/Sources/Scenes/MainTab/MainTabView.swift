@@ -31,7 +31,7 @@ struct MainTabView: View {
                     Spacer()
                     if isSnackBarButtonExisting {
                         NavigationLink(
-                            destination: AddingLinkView(fromWhere: .snackBar),
+                            destination: AddingLinkView(modelContainer: modelContainer, fromWhere: .snackBar),
                             label: {
                                 HStack {
                                     Text("복사한 링크 추가하기")
@@ -68,7 +68,7 @@ struct MainTabView: View {
             VStack {
                 Spacer()
                 NavigationLink(
-                    destination: AddingLinkView(fromWhere: .naviBar),
+                    destination: AddingLinkView(modelContainer: modelContainer, fromWhere: .naviBar),
                     label: {
                         Image("add")
                     })

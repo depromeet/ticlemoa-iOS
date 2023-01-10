@@ -7,31 +7,32 @@
 //
 
 import SwiftUI
+import Combine
+import DomainInterface
 
-protocol Checkable {
-    var isSelected: Bool { get set }
-}
-
-// FIXME: - Example 타입 변경필요
-public struct TagSelectingListViewModel: Identifiable, Checkable {
-    public let id: UUID
-    let title: String
-    var isSelected: Bool
-    
-    public init(id: UUID, title: String, isSelected: Bool) {
-        self.id = id
-        self.title = title
-        self.isSelected = isSelected
-    }
+struct CheckableTag: Tag, Identifiable {
+    let id: Int
+    let userId: Int
+    let tagName: String
+    var isSelected: Bool = false
 }
 
 public struct TagSelectingListView: View {
-    
-    @Binding var tags: [TagSelectingListViewModel]
+    @ObservedObject private var modelContainer: ModelContainer
+    @State private var chekableTags: [CheckableTag] = []
     @State private var isMakingTagButtonTapped: Bool = false
     
-    public init(tags: Binding<[TagSelectingListViewModel]>) {
-        self._tags = tags
+    @Binding var selectedTags: [Tag]
+    @Binding var isTagAddingButtonTouched: Bool
+    
+    public init(
+        modelContainer: ModelContainer,
+        selectedTags: Binding<[Tag]>,
+        isTagAddingButtonTouched: Binding<Bool>
+    ) {
+        self.modelContainer = modelContainer
+        self._selectedTags = selectedTags
+        self._isTagAddingButtonTouched = isTagAddingButtonTouched
     }
     
     // FIXME: font 및 icon 변경 필요
@@ -43,8 +44,15 @@ public struct TagSelectingListView: View {
             completeButton
         }
         .gesture(DragGesture())
+        .onReceive(self.modelContainer.tagModel.itemsPublisher) { tags in
+            chekableTags = tags.map {
+                CheckableTag(
+                    id: $0.id,
+                    userId: $0.userId,
+                    tagName: $0.tagName)
+            }
+        }
     }
-    
 }
 
 extension TagSelectingListView {
@@ -56,33 +64,36 @@ extension TagSelectingListView {
     }
     
     var tagList: some View {
-        Group {
-//            if tags.isEmpty {
-//                HStack {
-//                    Text("저장된 태그가 없어요.")
-//                        .customFont(16, .medium)
-//                        .font(.system(size: 16))
-//                        .foregroundColor(.grey4)
-//                        .padding(.vertical, 12)
-//                        .padding(.leading, 36)
-//                    Spacer()
-//                }
-//            } else if (1...3).contains(tags.count) {
-//                tagView
-//            } else {
-//                ScrollView {
-//                    tagView
-//                }
-//                .frame(height: 178)
-//            }
+        LazyVStack {
+            if chekableTags.isEmpty {
+                HStack {
+                    Text("저장된 태그가 없어요.")
+                        .customFont(weight: 400, size: 16, lineHeight: 24)
+                        .font(.system(size: 16))
+                        .foregroundColor(.grey4)
+                        .padding(.vertical, 12)
+                        .padding(.leading, 36)
+                    Spacer()
+                }
+            } else if (1...3).contains(chekableTags.count) {
+                tagView
+            } else {
+                ScrollView {
+                    tagView
+                }
+                .frame(height: 178)
+            }
         }
         .listStyle(.plain)
         .environment(\.defaultMinListRowHeight, 10)
     }
     
     var tagView: some View {
-        ForEach($tags) { $tag in
-            TagSelectingListRow(tag: $tag)
+        ForEach($chekableTags, id: \.id) { $tag in
+            TagSelectingListRow(
+                selectedTagsCount: chekableTags.filter{$0.isSelected}.count,
+                checkableTag: $tag
+            )
         }
     }
     
@@ -114,7 +125,11 @@ extension TagSelectingListView {
     var completeButton: some View {
         Button(
             action: {
+                selectedTags = chekableTags
+                    .filter { $0.isSelected }
+                    .map { $0 as Tag }
                 
+                isTagAddingButtonTouched = false
             }, label: {
                 HStack {
                     Spacer()
@@ -140,26 +155,14 @@ extension TagSelectingListView {
 
 struct SelectableTagListView_Previews: PreviewProvider {
     
-    @State static var tags = TagSelectingListViewModel.dummy
+    @State private static var selectedTags: [Tag] = []
+    @State private static var isTagAddingButtonTouched: Bool = false
     
     static var previews: some View {
-        TagSelectingListView(tags: $tags)
-    }
-    
-}
-
-#if DEBUG
-
-extension TagSelectingListViewModel {
-    public static var dummy: [Self] {
-        [
-            .init(id: .init(), title: "첫번째 태그", isSelected: Bool.random()),
-            .init(id: .init(), title: "두번째 태그", isSelected: Bool.random()),
-            .init(id: .init(), title: "세번째 태그", isSelected: Bool.random()),
-            .init(id: .init(), title: "네번째 태그", isSelected: Bool.random()),
-            .init(id: .init(), title: "다섯번째 태그", isSelected: Bool.random())
-        ]
+        TagSelectingListView(
+            modelContainer: ModelContainer.dummy,
+            selectedTags: $selectedTags,
+            isTagAddingButtonTouched: $isTagAddingButtonTouched
+        )
     }
 }
-
-#endif
