@@ -27,10 +27,7 @@ class LoginViewModel: ObservableObject {
 extension LoginViewModel {
     
     func getAccessToken() async -> Bool {
-        // TODO: 싱글톤에 저장
-        let response = await modelContainer.loginModel.requestAccessToken()
-        return (response != nil)
-        
+        await modelContainer.loginModel.requestAccessToken()
     }
     
     func isKakaoTalkLogin(_ url: URL) -> Bool {
