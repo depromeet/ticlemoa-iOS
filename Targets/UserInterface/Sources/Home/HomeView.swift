@@ -20,7 +20,7 @@ struct HomeView: View {
             .setupBackground()
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Text("TICLEMOA")
+                    Image("ticlemoa_logo")
                 }
             }
     }
@@ -37,7 +37,7 @@ private extension HomeView {
                 Spacer()
                     .frame(
                         minHeight: 0,
-                        maxHeight: isFolding ? 80 : 35 + CGFloat((35 * viewModel.homeTags.count))
+                        maxHeight: isFolding ? 80 : 80 + CGFloat((45 * viewModel.homeRows.count))
                     )
                 HomeArticleList(viewModel: viewModel)
                     .padding(.top, 0)
@@ -86,7 +86,7 @@ private extension HomeView {
                     .padding(.vertical, 10)
                 }
                 
-                // 태그 관리
+                // TODO: 태그 관리 (1차 업데이트 예정사항)
                 Button(
                     action: {
                         // TODO: 태그관리 화면으로 이동
@@ -107,7 +107,7 @@ private extension HomeView {
                             
                             Image("left_chevron")
                                 .padding(.top, 10)
-                        }
+                        }.opacity(0)
                     }
                 )
                 

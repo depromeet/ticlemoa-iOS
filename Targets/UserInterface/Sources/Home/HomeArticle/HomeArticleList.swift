@@ -15,67 +15,51 @@ struct HomeArticleList: View {
     var body: some View {
         VStack {
             Divider()
-            HStack {
-                NavigationLink {
-                    SearchingArticleView(viewModel: .init(modelContainer: modelContainer))
-                        .navigationBarBackButtonHidden(true)
-                } label: {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .pretendFont(.title3)
-                        Text("검색")
-                            .pretendFont(.title1)
-                            .foregroundColor(Color.ticlemoaBlack)
-                    }
-                    .background { Color.grey1 }
-                    .foregroundColor(.black)
-                    .padding(.horizontal, 16)
-                }
-                Spacer()
-                Button(
-                    action: {
-                        
-                    }, label: {
-                        Text("최신순")  // MARK: Menu 제안
-                            .pretendFont(.title1)
-                            .foregroundColor(Color.ticlemoaBlack)
-                    }
-                )
-            }
-            Divider()
             
             Group {
-                if (viewModel.articles.isEmpty) {
+                if (viewModel.isArticlesEmpty) {
                     
-                    NavigationLink {
-                        // TODO: 검색 화면으로 이동
-                    } label: {
-                        HStack {
-                            Image("glass_icon")
-                                .pretendFont(.title3)
-                            Text("검색")
-                                .customFont(weight: 700, size: 14, lineHeight: 21, style: .bold)
-                                .foregroundColor(Color.ticlemoaBlack)
-                            
-                            Spacer()
-                            Group {
-                                Text((viewModel.filterType.rawValue))
-                                    .customFont(weight: 700, size: 14, lineHeight: 21, style: .bold)
+                    HStack {
+                        NavigationLink {
+                            SearchingArticleView(viewModel: .init(modelContainer: modelContainer))
+                                .navigationBarBackButtonHidden(true)
+                        } label: {
+                            HStack {
+                                Image("glass_icon")
+//                                    .pretendFont(.title3)
+                                Text("검색")
+                                    .customFont(weight: 700, size: 14, lineHeight: 21)
                                     .foregroundColor(Color.ticlemoaBlack)
-                                Image("filter_icon")
                             }
-                            .onTapGesture {
-                                if (viewModel.filterType == .createdBy) {
-                                    viewModel.filterType = .popularBy
-                                } else {
-                                    viewModel.filterType = .createdBy
-                                }
-                                
-                            }
+                            .background { Color.grey1 }
+                            .foregroundColor(.black)
+                            .padding(.horizontal, 16)
                         }
-                        .background { Color.grey1 }
-                        .foregroundColor(.black)
-                        .padding(.horizontal, 21)
+                        Spacer()
+                        Button(
+                            action: {
+                                withAnimation {
+                                    if (viewModel.filterType == FilterType.createdBy) {
+                                        viewModel.filterType = FilterType.popularBy
+                                        return
+                                    }
+                                    viewModel.filterType = FilterType.createdBy
+                                }
+                            }, label: {
+                                HStack {
+                                    // MARK: Menu 제안
+                                    Text(viewModel.filterType == FilterType.createdBy
+                                         ? FilterType.createdBy.rawValue
+                                         : FilterType.popularBy.rawValue
+                                    )
+                                    .customFont(weight: 700, size: 14, lineHeight: 21)
+                                    .animation(.default)
+                                    .foregroundColor(Color.ticlemoaBlack)
+                                    Image("up_down_icon")
+                                        .padding(.trailing, 20)
+                                }
+                            }
+                        )
                     }
                     
                     Divider()
@@ -119,7 +103,7 @@ struct HomeArticleList: View {
                             .customFont(weight: 400, size: 14, lineHeight: 21, style: .medium)
                         Spacer()
                     }.background(Color.grey1)
-                        
+                    
                 }
             }
         }
