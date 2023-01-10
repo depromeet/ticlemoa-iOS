@@ -14,4 +14,5 @@ public protocol LoginModelProtocol {
     func isKakaoTalkLoginUrl(_ url: URL) -> Bool
     func authController(url: URL) -> Bool
     func requestAccessToken() async -> Bool
+    func nicknameChangeTo(_ nickname: String)
 }

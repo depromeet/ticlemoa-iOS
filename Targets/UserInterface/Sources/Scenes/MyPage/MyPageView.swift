@@ -42,13 +42,13 @@ struct MyPageView: View {
                     .padding(.top, 24)
                     .padding(.bottom, 12)
                     HStack(spacing: 2) {
-                        Text("가나다라마바사")
+                        Text(viewModel.nickName ?? "확인할 수 없음")
                             .pretendFont(.subhead3)
                             .foregroundColor(.ticlemoaBlack)
                         Image("Pen")
                             .frame(width: 20, height: 20)
                     }
-                    Text("asdf12345@gmail.com")
+                    Text(viewModel.email ?? "확인할 수 없음")
                         .pretendFont(.subhead2)
                         .tint(.grey3)
                         .padding(.top, 4)
