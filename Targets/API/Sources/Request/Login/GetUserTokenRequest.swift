@@ -8,11 +8,11 @@
 
 import Foundation
 
-public struct GetUserTokenRequest {
+public struct UserTokenRequest {
     public init() {}
 }
 
-extension GetUserTokenRequest: URLRequestMakable {
+extension UserTokenRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
         var request = URLRequest(
