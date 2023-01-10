@@ -1,8 +1,8 @@
 //
 //  DomainInterfaceError.swift
-//  DomainInterface
+//  Domain
 //
-//  Created by Joseph Cha on 2023/01/09.
+//  Created by Joseph Cha on 2023/01/10.
 //  Copyright © 2023 nyongnyong. All rights reserved.
 //
 
