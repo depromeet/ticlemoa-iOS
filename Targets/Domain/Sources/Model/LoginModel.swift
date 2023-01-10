@@ -45,13 +45,13 @@ extension LoginModel {
     
     // 최초 접속 1 회만, 호출됩니다.
     public func requestAccessToken() async -> Bool {
-        let request = GetUserTokenRequest()
+        let request = UserTokenRequest()
         let result = await api.request(by: request)
         
         do {
             switch result {
                 case .success(let data):
-                    let response = try JSONDecoder().decode(GetUserTokenResponse.self, from: data)
+                    let response = try JSONDecoder().decode(UserTokenRespons.self, from: data)
                 
                 LoginUserData.shared = .init(
                     nickName: "",
