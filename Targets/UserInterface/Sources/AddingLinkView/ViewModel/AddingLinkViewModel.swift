@@ -20,7 +20,9 @@ final class AddingLinkViewModel: ObservableObject {
     @Published var memo: String = ""
     @Published var isPublicSetting: Bool = false
     @Published var selectedTags: [Tag] = []
+    
     let fromWhichButton: FromWhichButton
+    var isModifying: Bool = false
     
     // TODO: userId = LoginUserData.shared 참고
     
@@ -28,20 +30,36 @@ final class AddingLinkViewModel: ObservableObject {
         self.modelContainer = modelContainer
         self.fromWhichButton = fromWhichButton
         
-        if let copiedlink = UIPasteboard.general.string, fromWhichButton == .snackBar {
-            self.link = copiedlink
+        switch fromWhichButton {
+        case .snackBar:
+            self.link = UIPasteboard.general.string ?? ""
+        case .modifyingButton(let article):
+            self.isModifying = true
+            self.link = article.url
+            self.articleTitle = article.title
+            self.memo = article.content
+            self.isPublicSetting = article.isPublic
+            self.selectedTags = [] // FIXME: 서버의 아티클 값 내려 주면 추가 예정
+        default:
+            break
         }
     }
     
     func addingButtondidTapped() async -> (message: String, isSuccess: Bool)  {
         do {
-            try await modelContainer.articleModel.create(
-                AddingArticle(content: memo,
-                              title: articleTitle,
-                              url: link,
-                              isPublic: isPublicSetting),
-                tagIds: selectedTags.map { $0.id } )
-            return ("추가 완료되었습니다.", true)
+            let addingArticle = AddingArticle(
+                content: memo,
+                title: articleTitle,
+                url: link,
+                isPublic: isPublicSetting
+            )
+            
+            if isModifying {
+                try await modelContainer.articleModel.update(addingArticle)
+            } else {
+                try await modelContainer.articleModel.create(addingArticle, tagIds: selectedTags.map { $0.id } )
+            }
+            return (isModifying ? "수정이 완료되었습니다." : "추가 완료되었습니다.", true)
         } catch let domainInterfaceError as DomainInterfaceError {
             switch domainInterfaceError {
             case .networkError(code: let code):

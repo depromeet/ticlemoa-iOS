@@ -11,9 +11,21 @@ import Combine
 
 import DomainInterface
 
-enum FromWhichButton {
+enum FromWhichButton: Equatable {
     case naviBar
     case snackBar
+    case modifyingButton(article: Article)
+    
+    static func == (lhs: FromWhichButton, rhs: FromWhichButton) -> Bool {
+        switch (lhs, rhs) {
+        case (.naviBar, .naviBar),
+            (.snackBar, .snackBar): return true
+        case (.modifyingButton(let lhsString), .modifyingButton(let rhsString)):
+            return lhsString.url == rhsString.url
+        default:
+            return false
+        }
+    }
 }
 
 private enum TextFieldType: String {
@@ -62,7 +74,7 @@ struct AddingLinkView: View {
         .hideKeyboard()
         .padding(.horizontal, 20)
         .navigationBarHidden(true)
-        .ticlemoaNavigationBar(title: "아티클 추가")
+        .ticlemoaNavigationBar(title: viewModel.isModifying ? "수정하기" : "아티클 추가")
         .ticlemoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
             TagSelectingListView(
                 modelContainer: modelContainer,
@@ -223,7 +235,6 @@ extension AddingLinkView {
     
     var AddingButton: some View {
         Button {
-            print("추가하기 버튼!")
             Task {
                 let (message, isSuccess) = await viewModel.addingButtondidTapped()
                 if isSuccess {
@@ -234,7 +245,7 @@ extension AddingLinkView {
                 }
             }
         } label: {
-            Text("추가하기")
+            Text(viewModel.isModifying ? "완료" : "추가하기")
                 .tint(viewModel.link.isEmpty ? .grey3 : .ticlemoaWhite)
         }
         .frame(maxWidth: .infinity)
