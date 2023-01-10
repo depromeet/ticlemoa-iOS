@@ -196,15 +196,14 @@ private extension LoginView {
         
     }
 }
-import Domain
-#if DEBUG
 
+#if DEBUG
 
 struct LoginView_Previews: PreviewProvider {
     static var modelContainer = ModelContainer(
-        articleModel: ArticleModel(),
-        tagModel: TagModel(),
-        loginModel: LoginModel()
+        articleModel: MockArticleModel(),
+        tagModel: MockTagModel(),
+        loginModel: MockLoginModel()
     )
     @State static  var isLoggedIn: Bool = false
     
