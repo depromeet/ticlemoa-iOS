@@ -86,6 +86,9 @@ struct SearchingArticleView: View {
                 self.recentQueries.insert(searchedQuery, at: 0)
             }
         }
+        .onAppear {
+            self.recentQueries = (UserDefaults.standard.array(forKey: "searchQueries") as? [String] ?? [])
+        }
     }
 }
 
