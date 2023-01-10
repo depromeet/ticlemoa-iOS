@@ -44,7 +44,7 @@ public final class LoginModel: LoginModelProtocol {
 extension LoginModel {
     
     // 최초 접속 1 회만, 호출됩니다.
-    public func requestAccessToken() async -> (String, Int)? {
+    public func requestAccessToken() async -> Bool {
         let request = GetUserTokenRequest()
         let result = await api.request(by: request)
         
@@ -60,16 +60,16 @@ extension LoginModel {
                     mail: ""
                 )
                 
-                return (response.accessToken, response.userId)
+                return true
                 
                 case .failure(let error):
                     print(error.description)
-                    return nil
+                    return false
             }
         } catch {
             print(error.localizedDescription)
+            return false
         }
-        return nil
     }
     
     
