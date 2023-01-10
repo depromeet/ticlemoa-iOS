@@ -19,7 +19,7 @@ public struct ContentView: View {
     public var body: some View {
         Group {
             if isLoggedIn {
-                MainTabView()
+                MainTabView(isLogin: $isLoggedIn)
                     .transition(.scale)
             } else {
                 LoginView(
@@ -83,6 +83,10 @@ final class MockTagModel: TagModelProtocol {
 }
 
 final class MockLoginModel: LoginModelProtocol {
+    func deleteAccount() async -> Bool {
+        return false
+    }
+    
     func nicknameChangeTo(_ nickname: String) {
         Void()
     }

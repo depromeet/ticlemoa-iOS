@@ -47,7 +47,7 @@ public final class LoginModel: LoginModelProtocol {
 #if DEBUG
 extension LoginModel {
     private func prepareForDebugEnvorinment() {
-        LoginUserData.shared = LoginUserData(nickName: "가나다라마바사", accessToken: "accessToken", userId: 1, mail: "gd051234@gmail.com")
+        LoginUserData.shared = LoginUserData(nickName: "가나다라마바사", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTY3MzI3NzU3MiwiZXhwIjoxMTY3MzI3NzU3Miwic3ViIjoiQUNDRVNTX1RPS0VOIn0.aOK2_TSGVdZyJvfVoUIzNSA5LBgozpQj7Wl2OAOtWtA", userId: 1, mail: "gd051234@gmail.com")
     }
 }
 #endif
@@ -112,6 +112,16 @@ extension LoginModel {
         )
         userData = newValue
         LoginUserData.shared = newValue
+    }
+    
+    public func deleteAccount() async -> Bool {
+        guard let accessToken = userData?.accessToken else { return false }
+        let accountDeletionRequest = AccountDeletionRequest(accessToken: accessToken)
+        let result = await api.request(by: accountDeletionRequest)
+        switch result {
+        case .success: return true
+        case .failure: return false
+        }
     }
     
     private func kakaoAccessToken() async -> Result<OAuthToken, Error> {

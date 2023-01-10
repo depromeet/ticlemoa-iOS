@@ -11,7 +11,7 @@ import SwiftUI
 struct MyPageView: View {
     @EnvironmentObject var modelContainer: ModelContainer
     @ObservedObject var viewModel: MyPageViewModel
-    @State private var isAccountDeleteButtonTouched: Bool = false
+    @State private var isAccountDeletionBottomsheetPresented: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -116,7 +116,7 @@ struct MyPageView: View {
             }
             
             Button {
-                isAccountDeleteButtonTouched = true
+                isAccountDeletionBottomsheetPresented = true
             } label: {
                 HStack {
                     Text("계정삭제")
@@ -136,8 +136,8 @@ struct MyPageView: View {
         }
         .setupBackground()
 //        .ticlemoaNavigationBar(title: "마이페이지")
-        .ticlemoaBottomSheet(isPresented: $isAccountDeleteButtonTouched) {
-            MyPageAccountDeletingView()
+        .ticlemoaBottomSheet(isPresented: $isAccountDeletionBottomsheetPresented) {
+            MyPageAccountDeletingView(viewModel: viewModel, isPresented: $isAccountDeletionBottomsheetPresented)
         }
     }
 }
@@ -176,6 +176,14 @@ fileprivate struct MyPageNavigationView<Destination: View>: View {
 }
 
 fileprivate struct MyPageAccountDeletingView: View {
+    @ObservedObject var viewModel: MyPageViewModel
+    @Binding var isPresented: Bool
+    
+    init(viewModel: MyPageViewModel, isPresented: Binding<Bool>) {
+        self.viewModel = viewModel
+        self._isPresented = isPresented
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             Text("계정삭제")
@@ -210,7 +218,7 @@ fileprivate struct MyPageAccountDeletingView: View {
             .padding(.horizontal, 36)
             HStack(spacing: 11) {
                 Button {
-                    Void()
+                    isPresented = false
                 } label: {
                     HStack {
                         Spacer()
@@ -227,7 +235,8 @@ fileprivate struct MyPageAccountDeletingView: View {
                     )
                 }
                 Button {
-                    Void()
+                    isPresented = false
+                    viewModel.accountDeletionConfirmButtonTouched()
                 } label: {
                     HStack {
                         Spacer()
