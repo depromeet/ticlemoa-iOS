@@ -21,12 +21,24 @@ private enum TextFieldType: String {
     case memo = "메모"
 }
 
+struct AddingArticle: Article {
+    let content: String
+    let title: String
+    let url: String
+    let isPublic: Bool
+    let id: Int = 0
+    let viewCount: Int = 0
+    let createdAt: String = ""
+    let updatedAt: String = ""
+}
+
 struct AddingLinkView: View {
     @EnvironmentObject private var modelContainer: ModelContainer
     @ObservedObject private var viewModel: AddingLinkViewModel
     @FocusState private var isArticleTitleFocused: Bool
     @State private var isPublicSettingsHelpClicked: Bool = false
     @State private var isTagAddingButtonTouched: Bool = false
+    @Environment(\.dismiss) private var dismiss
     
     init(
         modelContainer: ModelContainer,
@@ -212,6 +224,15 @@ extension AddingLinkView {
     var AddingButton: some View {
         Button {
             print("추가하기 버튼!")
+            Task {
+                let (message, isSuccess) = await viewModel.addingButtondidTapped()
+                if isSuccess {
+                    print(message)
+                    dismiss()
+                } else {
+                    print(message)
+                }
+            }
         } label: {
             Text("추가하기")
                 .tint(viewModel.link.isEmpty ? .grey3 : .ticlemoaWhite)
