@@ -15,15 +15,29 @@ final class MyPageViewModel: ObservableObject {
     @Published var email: String?
     @Published var profileImageURL: URL?
     @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
+    @Binding var isLogin: Bool
     private var anyCancellables: [AnyCancellable] = []
     
-    init(modelContainer: ModelContainer) {
+    init(modelContainer: ModelContainer, isLogin: Binding<Bool>) {
         self.modelContainer = modelContainer
+        self._isLogin = isLogin
         self.setupBinding()
     }
     
     func updateProfile() {
         profileImageURL = userProfileImageURL
+    }
+    
+    func accountDeletionConfirmButtonTouched() {
+        Task {
+            let isDeletionSucceed = await modelContainer.loginModel.deleteAccount()
+            if isDeletionSucceed {
+                isLogin = false
+                userProfileImageURL = nil
+            } else {
+
+            }
+        }
     }
     
     private func setupBinding() {

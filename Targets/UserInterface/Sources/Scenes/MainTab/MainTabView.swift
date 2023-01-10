@@ -11,6 +11,11 @@ import SwiftUI
 struct MainTabView: View {
     @EnvironmentObject private var modelContainer: ModelContainer
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
+    @Binding var isLogin: Bool
+    
+    init(isLogin: Binding<Bool>) {
+        self._isLogin = isLogin
+    }
     
     var body: some View {
         TabView {
@@ -52,7 +57,7 @@ struct MainTabView: View {
                 }
             }
             NavigationView {
-                MyPageView(viewModel: .init(modelContainer: modelContainer))
+                MyPageView(viewModel: .init(modelContainer: modelContainer, isLogin: $isLogin))
             }
             .tabItem {
                 Tab.myPage.imageItem
@@ -76,6 +81,6 @@ struct MainTabView: View {
 
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
-        MainTabView()
+        MainTabView(isLogin: .constant(true))
     }
 }

@@ -15,4 +15,5 @@ public protocol LoginModelProtocol {
     func authController(url: URL) -> Bool
     func requestAccessToken() async -> Bool
     func nicknameChangeTo(_ nickname: String)
+    func deleteAccount() async -> Bool
 }
