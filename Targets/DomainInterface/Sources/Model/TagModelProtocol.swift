@@ -10,7 +10,6 @@ import Combine
 
 public protocol TagModelProtocol {
     var itemsPublisher: Published<[Tag]>.Publisher { get }
-    func fetch()
     func create(tagName: String) async throws
     func read() async throws
     func update(tagId: Int, tagName: String) async throws

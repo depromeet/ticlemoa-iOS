@@ -40,15 +40,15 @@ public final class TagModel: TagModelProtocol {
 
 extension TagModel {
     
-    public func fetch() {
-        
-    }
-    
     public func create(tagName: String) async throws {
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        
         let requestBody = CreateTagRequest.Body(tagName: tagName)
         
         let uploadTagRequest = CreateTagRequest(
-            accessToken: URLStrings.adminAccesstoken,
+            accessToken: currentUser.accessToken,
             body: requestBody
         )
         
@@ -64,7 +64,11 @@ extension TagModel {
     }
     
     public func read() async throws {
-        let readTagRequest = ReadTagRequest(accessToken: URLStrings.adminAccesstoken)
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        
+        let readTagRequest = ReadTagRequest(accessToken: currentUser.accessToken)
         let result = await api.request(by: readTagRequest)
         
         switch result {
@@ -84,9 +88,13 @@ extension TagModel {
     }
     
     public func update(tagId: Int, tagName: String) async throws {
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        
         let requestBody = UpdateTagRequest.Body(tagName: tagName)
         
-        let updateTagRequest = UpdateTagRequest(accessToken: URLStrings.adminAccesstoken, tagId: tagId, body: requestBody)
+        let updateTagRequest = UpdateTagRequest(accessToken: currentUser.accessToken, tagId: tagId, body: requestBody)
         let result = await api.request(by: updateTagRequest)
         
         switch result {
@@ -99,7 +107,11 @@ extension TagModel {
     }
     
     public func remove(tagId: Int) async throws {
-        let deleteTagRequest = DeleteTagRequest(accessToken: URLStrings.adminAccesstoken, tagId: tagId)
+        guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
+            return
+        }
+        
+        let deleteTagRequest = DeleteTagRequest(accessToken: currentUser.accessToken, tagId: tagId)
         let result = await api.request(by: deleteTagRequest)
         
         switch result {
