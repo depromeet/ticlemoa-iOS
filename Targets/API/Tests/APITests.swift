@@ -60,7 +60,7 @@ extension APITests {
             title: "",
             url: "https://keeplo.tistory.com/",
             isPublic: false,
-            tagIds: []
+            tagIds: [2, 4]
         )
         let request = CreateArticleRequest(accessToken: accessToken, body: newItem)
         // when
@@ -99,15 +99,34 @@ extension APITests {
         }
     }
     
+    func test_readArticleByTagId() async {
+        // given
+        let request = ReadArticleRequest(accessToken: accessToken, userId: userId, tagId: 2)
+        // when
+        let result = await self.sut.request(by: request)
+        
+        switch result {
+        case .success(let data):
+            let response = try? JSONDecoder().decode(ReadArticleResponse.self, from: data)
+            
+            // then
+            XCTAssertNotNil(data)
+            XCTAssertTrue(response!.articles.count > 10)
+        case .failure(let networkError):
+            print("statuisCode: \(networkError.code)")
+            XCTAssertTrue(false)
+        }
+    }
+    
     func test_updateArticle() async {
         // given
         let editedTitle = "김용우 블로그"
         let request = UpdateArticleRequest(
             accessToken: accessToken,
-            articleId: 41,
+            articleId: 140,
             body: .init(
-                content: "테스트 블로그",
-                userId: 1,
+                content: "업데이트 테스트",
+                userId: userId,
                 title: editedTitle,
                 url: "https://keeplo.tistory.com/",
                 isPublic: false,
@@ -148,7 +167,7 @@ extension APITests {
 
     func test_searchArticle() async {
         // given
-        let request = SearchArticleRequest(accessToken: accessToken, search: "1")
+        let request = SearchArticleRequest(accessToken: accessToken, search: "차요셉")
         // when
         let result = await self.sut.request(by: request)
         
