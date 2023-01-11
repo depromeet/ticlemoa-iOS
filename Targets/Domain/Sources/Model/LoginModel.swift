@@ -13,6 +13,7 @@ import KakaoSDKUser
 import KakaoSDKAuth
 import KakaoSDKCommon
 
+
 extension KakaoLoginResponse {
     func updateLoginUser() -> LoginUserData? {
         guard let baseData = LoginUserData.shared else {
@@ -36,10 +37,9 @@ public final class LoginModel: LoginModelProtocol {
     private let api: APIDetails = TiclemoaAPI()
     
     public init() {
-        #if DEBUG
-        self.prepareForDebugEnvorinment()
-        #endif
-        self.userData = LoginUserData.shared
+#if DEBUG
+        //        self.prepareForDebugEnvorinment()
+#endif
     }
     
 }
@@ -61,21 +61,25 @@ extension LoginModel {
         
         do {
             switch result {
-                case .success(let data):
-                    let response = try JSONDecoder().decode(UserTokenRespons.self, from: data)
+            case .success(let data):
+                let response = try JSONDecoder().decode(UserTokenRespons.self, from: data)
+                let accessToken = response.accessToken
+                let userId = response.userId
                 
-                LoginUserData.shared = .init(
-                    nickName: "",
-                    accessToken: response.accessToken,
-                    userId: response.userId,
+                let userData = LoginUserData.init(
+                    nickName: "태산이",
+                    accessToken: accessToken,
+                    userId: userId,
                     mail: ""
                 )
+                self.userData = userData
+                LoginUserData.shared = userData
                 
                 return true
                 
-                case .failure(let error):
-                    print(error.description)
-                    return false
+            case .failure(let error):
+                print(error.description)
+                return false
             }
         } catch {
             print(error.localizedDescription)
@@ -94,11 +98,11 @@ extension LoginModel {
     
     public func checkKakaoLogin() async -> Bool {
         switch await kakaoAccessToken() {
-            case .success(let token):
-                return await requestKakaoLogin(token.accessToken)
-            case .failure(let error):
-                print(error.localizedDescription)
-                return false
+        case .success(let token):
+            return await requestKakaoLogin(token.accessToken)
+        case .failure(let error):
+            print(error.localizedDescription)
+            return false
         }
     }
     
@@ -116,6 +120,7 @@ extension LoginModel {
     
     public func deleteAccount() async -> Bool {
         guard let accessToken = userData?.accessToken else { return false }
+        userData = nil
         let accountDeletionRequest = AccountDeletionRequest(accessToken: accessToken)
         let result = await api.request(by: accountDeletionRequest)
         switch result {
@@ -136,7 +141,7 @@ extension LoginModel {
                     continuation.resume(returning: .success(token))
                 }
                 
-            // 웹 로그인
+                // 웹 로그인
             } else {
                 UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                     guard let token = oauthToken else {
@@ -155,13 +160,13 @@ extension LoginModel {
         
         do {
             switch result {
-                case .success(let data):
-                    let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
-                    self.userData = response.updateLoginUser()
-                    return true
-                case .failure(let error):
-                    print(error.description)
-                    return false
+            case .success(let data):
+                let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
+                self.userData = response.updateLoginUser()
+                return true
+            case .failure(let error):
+                print(error.description)
+                return false
             }
         } catch {
             print(error.localizedDescription)

@@ -28,7 +28,7 @@ struct TiclemoaApp: App {
 	
 	var body: some Scene {
 		WindowGroup {
-            ContentView()
+            ContentView(modelContainer)
                 .environmentObject(modelContainer)
                 .preferredColorScheme(.light)
 		}

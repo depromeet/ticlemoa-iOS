@@ -30,6 +30,8 @@ extension ArticleModel {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
+        print("DEBUG: \(currentUser.accessToken)")
+        print("DEBUG: \(currentUser.userId)")
         let request = CreateArticleRequest(
             accessToken: currentUser.accessToken,
             body: .init(
@@ -45,7 +47,7 @@ extension ArticleModel {
         let result = await api.request(by: request)
         
         switch result {
-        case .success(let data):
+        case .success(let data): 
             _ = try JSONDecoder().decode(CreateArticleResponse.self, from: data)
             try await self.fetch()
         case .failure(let networkError):

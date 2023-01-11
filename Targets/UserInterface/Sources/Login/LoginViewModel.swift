@@ -8,13 +8,18 @@
 
 import Foundation
 import SwiftUI
+import DomainInterface
 
 class LoginViewModel: ObservableObject {
-    
+    @Published var isLoggedIn: LoginUser? = nil
     @ObservedObject var modelContainer: ModelContainer
     
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
+        modelContainer
+            .loginModel
+            .userDataPublisher
+            .assign(to: &self.$isLoggedIn)
     }
     
     public func kakaoButtonDidTap() async throws -> Bool {
