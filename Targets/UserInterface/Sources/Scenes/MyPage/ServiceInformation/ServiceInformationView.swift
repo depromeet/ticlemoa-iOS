@@ -13,42 +13,54 @@ struct ServiceInformationView: View {
         VStack(spacing: 0) {
             Spacer()
                 .frame(height: 12)
-            ServiceInformationNavigationLink(title: "개인정보 처리방침") {
-                EmptyView()
+            Link(destination: URL(string: "https://www.notion.so/Ticlemoa-d7a3fca0886b4508b2fba46b60c4616b")!) {
+                ServiceInformationLabel(title: "개인정보 처리방침")
             }
-            ServiceInformationNavigationLink(title: "오픈소스") {
-                EmptyView()
+            NavigationLink {
+                VStack {
+                    Text("Swift Collection")
+                        .pretendFont(.title1)
+                    Text(swiftCollection)
+                        .pretendFont(.body1)
+                }
+                .navigationBarBackButtonHidden(true)
+                .ticlemoaNavigationBar(title: "오픈소스", image: "arrow")
+            } label: {
+                ServiceInformationLabel(title: "오픈소스")
             }
             Spacer()
         }
         .ticlemoaNavigationBar(title: "서비스 정보", image: "arrow")
         .setupBackground()
     }
+    
+    var swiftCollection: String = """
+    // This source file is part of the Swift Collections open source project
+    //
+    // Copyright (c) 2021 Apple Inc. and the Swift project authors
+    // Licensed under Apache License v2.0 with Runtime Library Exception
+    //
+    // See https://swift.org/LICENSE.txt for license information
+    """
 }
 
-fileprivate struct ServiceInformationNavigationLink<Destination: View>: View {
+fileprivate struct ServiceInformationLabel: View {
     let title: String
-    let destination: () -> Destination
     
-    init(title: String, destination: @escaping () -> Destination) {
+    init(title: String) {
         self.title = title
-        self.destination = destination
     }
     
     var body: some View {
-        NavigationLink {
-            destination()
-        } label: {
-            HStack {
-                Text(title)
-                    .font(.system(size: 16))
-                    .fontWeight(.medium)
-                Spacer()
-                Image("Arrow.right")
-            }
-            .foregroundColor(.black)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+        HStack {
+            Text(title)
+                .font(.system(size: 16))
+                .fontWeight(.medium)
+            Spacer()
+            Image("Arrow.right")
         }
+        .foregroundColor(.black)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 20)
     }
 }
