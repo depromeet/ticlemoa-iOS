@@ -9,6 +9,7 @@
 import Collections
 import SwiftUI
 import DomainInterface
+import Combine
 
 struct HomeTag {
     var tag: Tag
@@ -25,7 +26,6 @@ final class HomeViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
     
     @Published var articles: [Article] = []
-    var isArticlesEmpty: Bool { articles.isEmpty }
     @Published var rows: [[Tag]] = []
     @Published var tags: [Tag] = []
     @Published var tagText = ""
@@ -37,41 +37,54 @@ final class HomeViewModel: ObservableObject {
     
     @Published var selectedTag: HomeTag? {
         didSet {
-//            Task {
-//                // 1. 태그를 통한 검색 API -> [Article]
-//                articles = await modelContainer.articleModel.fetch(tagName) // return Article
-//            }
-            print("선택한 태그: \(selectedTag!.tag.tagName)")
-            // TODO: 태그에 맞는 검색어 겸색 Netoworking...
+            print("선택한 태그: \(selectedTag!.tag)")
+            if selectedTag?.tag.tagName == "전체" {
+                Task {
+                    do {
+                        try await modelContainer.articleModel.fetch(tagId: nil)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            } else {
+                Task {
+                    do {
+                        try await modelContainer.articleModel.fetch(tagId: selectedTag?.tag.id)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
         }
     }
     
-    // Home TagList
+    private var anyCancellables: [AnyCancellable] = []
+    
     @Published var homeRows: [[HomeTag]] = []
-    @Published var homeTags: [HomeTag] = []
+    @Published var homeTags: [HomeTag] = [ ]
     
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
-        modelContainer.tagModel.itemsPublisher
-            .receive(on: RunLoop.main)
-            .map { tags in
-                return tags.map { HomeTag(tag: $0) }
+        self.modelContainer.tagModel.itemsPublisher
+            .sink { tags in
+                self.homeTags = [HomeTag(tag: WholeTag())]
+                self.homeTags.append(contentsOf: tags.map { HomeTag(tag: $0 )})
             }
-            .assign(to: &self.$homeTags)
+            .store(in: &anyCancellables)
+        
+        self.modelContainer.articleModel.itemsPublisher
+            .sink { self.articles = $0 }
+            .store(in: &anyCancellables)
         
         Task {
             do {
                 try await modelContainer.tagModel.read()
+                try await modelContainer.articleModel.fetch(tagId: nil)
                 setupTagList()
             } catch {
-                print("DEBUG: ", self.homeTags) // TODO: 통신 실패시, TagData의 dummy로 설정됨. 유지할지, 바꿔야할지 고민필요
-                // 개발용 - 추후 삭제 필요
                 setupTagList()
             }
         }
-        
-        // Dummy Data 셋업
-//        articles = TemporaryArticle.allArticles
         
         func setupTagList() {
             getTags(self.homeTags)
@@ -82,11 +95,12 @@ final class HomeViewModel: ObservableObject {
     }
     
     /// 월별 데이터 정렬 메소드
-    func groupArticlesByMonth(articles: [TemporaryArticle]) -> ArticleGroup {
+    func groupArticlesByMonth(articles: [Article]) -> ArticleGroup {
         guard !articles.isEmpty else { return [:] }
         
-        let groupedArticles = ArticleGroup(grouping: articles) { $0.month }
-        return groupedArticles
+        let groupedArticles = articles.map { GroupedArticle(id: $0.id, title: $0.title, content: $0.content, urlString: $0.url) }
+        
+        return ArticleGroup(grouping: groupedArticles) { $0.month }
     }
     
     func getTags(_ tagList: [HomeTag]){
@@ -147,25 +161,10 @@ extension HomeViewModel {
     
 }
 
-extension HomeViewModel {
-    
-    func addTag(){
-        // modelContainer.tagModel.create()
-        tagText = ""
-//        getTags()
+private extension HomeViewModel {
+    struct WholeTag: Tag {
+        let id: Int = 0
+        let userId: Int = 0
+        let tagName: String = "전체"
     }
-    
-    func removeTag(by id: Int) {
-        Task {
-            do {
-                try await modelContainer.tagModel.remove(tagId: id)
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        
-//        getTags()
-    }
-    
 }
-
