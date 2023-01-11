@@ -11,7 +11,6 @@ import AuthenticationServices
 
 struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
-    @Binding var isLoggedIn: Bool
     @Environment(\.window) var window: UIWindow?
     @State var appleSignInDelegates: SignInWithAppleDelegates! = nil
     
@@ -41,30 +40,26 @@ struct LoginView: View {
                 circleDiameter: 8.0,
                 circleMargin: 8.0
             )
-                
+            .padding(.bottom, 100)
+            Spacer()
             // 소셜 로그인 구현 시, 사용 예정
 //            socialLoginButtons
 //                .padding(.top, 60)
 //            Button("임시 로그인 버튼") {
 //                isLoggedIn = true
 //            }
-            Button(
-                action: {
-                isLoggedIn = true
-            }, label: {
-                RoundedButton(
-                    "시작하기",
-                    foregroundColor: Color.white,
-                    Color.ticlemoaBlack,
-                    imageName: "", action: {
-                        Task {
-                            HapticManager.instance.impact(style: .light)
-                            let isSuccess = await viewModel.getAccessToken()
-                            isLoggedIn = isSuccess
-                        }
+            RoundedButton(
+                "시작하기",
+                foregroundColor: Color.white,
+                Color.ticlemoaBlack,
+                imageName: "", action: {
+                    Task {
+                        HapticManager.instance.impact(style: .light)
+                        let isSuccess = await viewModel.getAccessToken()
+                        
                     }
-                )
-            })
+                }
+            )
             
             Spacer()
                 .frame(maxHeight: 58)
@@ -117,14 +112,14 @@ private extension LoginView {
                     
                     Task {
                         let isSuccess = try await viewModel.kakaoButtonDidTap()
-                        withAnimation { isLoggedIn = isSuccess }
+//                        withAnimation { isLoggedIn = isSuccess }
                     }
                 })
             .buttonStyle(ScaleButtonStyle())
             RoundedButton(
                 "Apple으로 로그인",
                 foregroundColor: .white,
-                .black,
+                Color.ticlemoaBlack,
                 imageName: "apple_icon_white",
                 action: {
                     HapticManager.instance.impact(style: .medium)
@@ -150,7 +145,7 @@ private extension LoginView {
         appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
             if success {
                 // update UI
-                withAnimation { isLoggedIn = true }
+//                withAnimation { isLoggedIn = true }
             } else {
                 // show the user an error
             }
@@ -192,6 +187,8 @@ private extension LoginView {
                         )
                         .foregroundColor(foregroundColor))
             }
+            .cornerRadius(6)
+            .padding(.horizontal, 20)
         }).padding(.top, 20)
         
     }
@@ -199,23 +196,23 @@ private extension LoginView {
 
 #if DEBUG
 
-struct LoginView_Previews: PreviewProvider {
-    static var modelContainer = ModelContainer(
-        articleModel: MockArticleModel(),
-        tagModel: MockTagModel(),
-        loginModel: MockLoginModel()
-    )
-    @State static  var isLoggedIn: Bool = false
-    
-    static var previews: some View {
-        LoginView(
-            viewModel:
-                LoginViewModel(
-                    modelContainer: modelContainer
-                ),
-            isLoggedIn: $isLoggedIn
-        )
-    }
-}
+//struct LoginView_Previews: PreviewProvider {
+//    static var modelContainer = ModelContainer(
+//        articleModel: MockArticleModel(),
+//        tagModel: MockTagModel(),
+//        loginModel: MockLoginModel()
+//    )
+//    @State static  var isLoggedIn: Bool = false
+//    
+//    static var previews: some View {
+//        LoginView(
+//            viewModel:
+//                LoginViewModel(
+//                    modelContainer: modelContainer
+//                ),
+//            isLoggedIn: $isLoggedIn
+//        )
+//    }
+//}
 
 #endif

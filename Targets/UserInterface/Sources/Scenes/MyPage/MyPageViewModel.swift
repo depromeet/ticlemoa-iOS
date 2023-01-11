@@ -7,20 +7,20 @@
 //
 
 import SwiftUI
+import DomainInterface
 import Combine
 
 final class MyPageViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
+    @Published var isLoggedIn: LoginUser? = nil
     @Published var nickName: String?
     @Published var email: String?
     @Published var profileImageURL: URL?
     @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
-    @Binding var isLogin: Bool
     private var anyCancellables: [AnyCancellable] = []
     
-    init(modelContainer: ModelContainer, isLogin: Binding<Bool>) {
+    init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
-        self._isLogin = isLogin
         self.setupBinding()
     }
     
@@ -32,7 +32,7 @@ final class MyPageViewModel: ObservableObject {
         Task {
             let isDeletionSucceed = await modelContainer.loginModel.deleteAccount()
             if isDeletionSucceed {
-                isLogin = false
+                
                 userProfileImageURL = nil
             } else {
 
@@ -45,5 +45,11 @@ final class MyPageViewModel: ObservableObject {
             self?.nickName = loginUser?.nickName
             self?.email = loginUser?.mail
         }.store(in: &anyCancellables)
+
+        modelContainer
+            .loginModel
+            .userDataPublisher
+            .receive(on: RunLoop.main)
+            .assign(to: &self.$isLoggedIn)
     }
 }
