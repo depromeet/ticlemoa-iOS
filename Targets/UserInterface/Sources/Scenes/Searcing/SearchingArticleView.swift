@@ -44,7 +44,7 @@ struct SearchingArticleView: View {
                             .padding(.leading, 20)
                             List {
                                 ForEach(items, id: \.id) { item in
-                                    ArticleRow(modelContainer: viewModel.modelContainer, article: item)
+                                    ArticleRow(article: item)
                                 }
                             }
                             .listStyle(.plain)
