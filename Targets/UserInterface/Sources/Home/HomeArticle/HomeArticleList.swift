@@ -17,7 +17,7 @@ struct HomeArticleList: View {
             Divider()
             
             Group {
-                if (viewModel.isArticlesEmpty) {
+                if !viewModel.articles.isEmpty {
                     
                     HStack {
                         NavigationLink {
@@ -66,7 +66,7 @@ struct HomeArticleList: View {
                     
                     List {
                         ForEach(
-                            Array(viewModel.groupArticlesByMonth(articles: TemporaryArticle.allArticles)).reversed(),id: \.key) { month, articles in
+                            Array(viewModel.groupArticlesByMonth(articles: viewModel.articles)).reversed(),id: \.key) { month, articles in
                                 Section {
                                     HStack {
                                         Text(month)
