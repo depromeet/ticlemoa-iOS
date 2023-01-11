@@ -28,49 +28,49 @@ struct SearchingArticleView: View {
             VStack(spacing: 32) {
                 searchBar
                 if case let .searched(items) = viewModel.state {
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text("총 \(items.count)개의 검색결과")
-                                .font(.system(size: 14))
-                            Spacer()
-                        }
-                        .padding(.leading, 20)
-                        List {
-                            ForEach(items, id: \.id) { item in
-                                ArticleRow(title: item.title, imageURLString: "")
+                    if items.isEmpty {
+                        Spacer()
+                        Image("Nothing")
+                        Text("검색 결과가 없습니다")
+                            .font(.system(size: 14))
+                            .foregroundColor(.grey4)
+                    } else {
+                        VStack(spacing: 0) {
+                            HStack {
+                                Text("총 \(items.count)개의 검색결과")
+                                    .font(.system(size: 14))
+                                Spacer()
                             }
-                        }
-                        .listStyle(.plain)
-                        .frame(maxWidth: .infinity)
-                        .onTapGesture {
-                            UIApplication.shared.sendAction(
-                                #selector(UIResponder.resignFirstResponder),
-                                to: nil,
-                                from: nil,
-                                for: nil
-                            )
+                            .padding(.leading, 20)
+                            List {
+                                ForEach(items, id: \.id) { item in
+                                    ArticleRow(title: item.title, imageURLString: "")
+                                }
+                            }
+                            .listStyle(.plain)
+                            .frame(maxWidth: .infinity)
+                            .onTapGesture {
+                                UIApplication.shared.sendAction(
+                                    #selector(UIResponder.resignFirstResponder),
+                                    to: nil,
+                                    from: nil,
+                                    for: nil
+                                )
+                            }
                         }
                     }
                 } else {
-                    recentQueryList
+                    if recentQueries.isEmpty {
+                        Spacer()
+                        Image("Nothing")
+                        Text("최근 검색어가 없습니다")
+                            .font(.system(size: 14))
+                            .foregroundColor(.grey4)
+                    } else {
+                        recentQueryList
+                    }
                 }
                 Spacer()
-            }
-            if case let .searched(items) = viewModel.state,
-               items.isEmpty {
-                VStack {
-                    Image("Nothing")
-                    Text("검색 결과가 없습니다")
-                        .font(.system(size: 14))
-                        .foregroundColor(.grey4)
-                }
-            } else if recentQueries.isEmpty {
-                VStack {
-                    Image("Nothing")
-                    Text("최근 검색어가 없습니다")
-                        .font(.system(size: 14))
-                        .foregroundColor(.grey4)
-                }
             }
         }
         .setupBackground()
