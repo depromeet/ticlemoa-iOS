@@ -117,6 +117,7 @@ extension TagSelectingListView {
             isPresented: $isMakingTagButtonTapped,
             title: "새 태그 만들기",
             style: .inputText,
+            isConfirmAlert: false,
             completion: { result in
                 guard let result = result else { return (true, "") }
                 do {

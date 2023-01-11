@@ -11,8 +11,9 @@ import SwiftUI
 extension View {
     func ticlemoaNavigationBar(
         title: String,
+        image: String,
         @ViewBuilder trailingItem: @escaping () -> (some View) = { EmptyView() }
     ) -> some View {
-        return modifier(TiclemoaNavigationBar(title: title, trailingItem: trailingItem))
+        return modifier(TiclemoaNavigationBar(title: title, image: image, trailingItem: trailingItem))
     }
 }

@@ -63,7 +63,7 @@ struct MockLoginUser: LoginUser {
 }
 
 final class MockArticleModel: ArticleModelProtocol {
-    @Published var items: [DomainInterface.Article] = []
+    @Published var items: [DomainInterface.Article] = [MockArticle(imageUrl: "", id: 1, title: "테스트입니다.", url: "www.naver.com", content: "테스트입니다.", isPublic: false, tagIds: [1, 2], viewCount: 0, createdAt: "", updatedAt: "")]
     var itemsPublisher: Published<[DomainInterface.Article]>.Publisher { $items }
     func fetch(tagId: Int?) async throws {}
     func update(_ item: DomainInterface.Article, tagIds: [Int]) async throws {}

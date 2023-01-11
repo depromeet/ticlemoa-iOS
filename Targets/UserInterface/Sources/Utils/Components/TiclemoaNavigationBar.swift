@@ -12,9 +12,11 @@ struct TiclemoaNavigationBar<Item: View>: ViewModifier {
     @Environment(\.dismiss) private var dismiss
     private let title: String
     private let trailingItem: () -> Item
+    private let image: String
     
-    init(title: String, @ViewBuilder trailingItem: @escaping () -> Item) {
+    init(title: String, image: String, @ViewBuilder trailingItem: @escaping () -> Item) {
         self.title = title
+        self.image = image
         self.trailingItem = trailingItem
     }
     
@@ -25,7 +27,7 @@ struct TiclemoaNavigationBar<Item: View>: ViewModifier {
                     Button {
                         dismiss()
                     } label: {
-                        Image("arrow")
+                        Image(image)
                             .frame(width: 9.29, height: 15.8)
                     }
                     .padding(.leading, 26.52)
