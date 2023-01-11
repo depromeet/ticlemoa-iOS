@@ -7,24 +7,42 @@
 //
 
 import DomainInterface
-
 import SwiftUI
 
-public struct ContentView: View {
-    @EnvironmentObject var modelContainer: ModelContainer
-    @State private var isLoggedIn: Bool = false // MARK: AppStore? UserDefault?
+
+class ContentViewModel: ObservableObject {
+    @Published var isLoggedIn: LoginUser? = nil
+    @ObservedObject var modelContainer: ModelContainer
+    init(modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
+            
+        modelContainer
+            .loginModel
+            .userDataPublisher
+            .receive(on: RunLoop.main)
+            .assign(to: &self.$isLoggedIn)
+    }
     
-    public init() { }
+    
+}
+
+public struct ContentView: View {
+    @ObservedObject var modelContainer: ModelContainer
+    @ObservedObject var viewModel: ContentViewModel
+    
+    public init(_ modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
+        self.viewModel = ContentViewModel(modelContainer: modelContainer)
+    }
     
     public var body: some View {
         Group {
-            if isLoggedIn {
-                MainTabView(isLogin: $isLoggedIn)
+            if (viewModel.isLoggedIn != nil) {
+                MainTabView()
                     .transition(.scale)
             } else {
                 LoginView(
-                    viewModel: .init(modelContainer: modelContainer),
-                    isLoggedIn: $isLoggedIn
+                    viewModel: .init(modelContainer: modelContainer)
                 )
                 .transition(.scale)
                 
@@ -84,6 +102,8 @@ final class MockTagModel: TagModelProtocol {
 }
 
 final class MockLoginModel: LoginModelProtocol {
+    var isLoggedIn: Bool { false }
+    
     func deleteAccount() async -> Bool {
         return false
     }

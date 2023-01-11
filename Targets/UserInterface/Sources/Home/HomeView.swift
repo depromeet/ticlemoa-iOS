@@ -81,6 +81,8 @@ private extension HomeView {
                                 }
                             )
                         }
+                        .padding(.horizontal, 20)
+                        Spacer()
                     }
                     .frame(height: 28)
                     .padding(.vertical, 10)

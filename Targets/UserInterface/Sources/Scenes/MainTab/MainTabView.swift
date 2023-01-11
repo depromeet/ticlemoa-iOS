@@ -11,12 +11,8 @@ import SwiftUI
 struct MainTabView: View {
     @EnvironmentObject private var modelContainer: ModelContainer
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
-    @Binding var isLogin: Bool
     @State private var selection = 0
     
-    init(isLogin: Binding<Bool>) {
-        self._isLogin = isLogin
-    }
     
     var body: some View {
         NavigationView {
@@ -58,7 +54,7 @@ struct MainTabView: View {
                     }
                 }
                 NavigationView {
-                    MyPageView(viewModel: .init(modelContainer: modelContainer, isLogin: $isLogin))
+                    MyPageView(viewModel: .init(modelContainer: modelContainer))
                 }
                 .tabItem {
                     selection == 1 ? Image("moamoa_selected") : Image("moamoa_unselected")
@@ -66,7 +62,7 @@ struct MainTabView: View {
                 }
                 .tag(1)
             }
-            .accentColor(Color.ticlemoaPrimary2)
+            .accentColor(Color.ticlemoaBlack)
             .overlay {
                 VStack {
                     Spacer()
@@ -84,8 +80,8 @@ struct MainTabView: View {
     }
 }
 
-struct MainTabView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainTabView(isLogin: .constant(true))
-    }
-}
+//struct MainTabView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainTabView(isLogin: .constant(true))
+//    }
+//}
