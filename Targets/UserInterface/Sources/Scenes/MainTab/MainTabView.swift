@@ -12,6 +12,7 @@ struct MainTabView: View {
     @EnvironmentObject private var modelContainer: ModelContainer
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
     @Binding var isLogin: Bool
+    @State private var selection = 0
     
     init(isLogin: Binding<Bool>) {
         self._isLogin = isLogin
@@ -19,12 +20,13 @@ struct MainTabView: View {
     
     var body: some View {
         NavigationView {
-            TabView {
+            TabView(selection: $selection) {
                 HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
                 .tabItem {
-                    Tab.home.imageItem
-                    Tab.home.textItem
+                    selection == 0 ? Image("home_selected") : Image("home_unselected")
+                    Text("홈")
                 }
+                .tag(0)
                 .overlay {
                     VStack {
                         Spacer()
@@ -59,10 +61,12 @@ struct MainTabView: View {
                     MyPageView(viewModel: .init(modelContainer: modelContainer, isLogin: $isLogin))
                 }
                 .tabItem {
-                    Tab.myPage.imageItem
-                    Tab.myPage.textItem
+                    selection == 1 ? Image("moamoa_selected") : Image("moamoa_unselected")
+                    Text("마이페이지")
                 }
+                .tag(1)
             }
+            .accentColor(Color.ticlemoaPrimary2)
             .overlay {
                 VStack {
                     Spacer()
