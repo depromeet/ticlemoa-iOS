@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import DomainInterface
+
 struct HomeArticleList: View {
     @EnvironmentObject var modelContainer: ModelContainer
     @ObservedObject var viewModel: HomeViewModel
@@ -15,10 +17,8 @@ struct HomeArticleList: View {
     var body: some View {
         VStack {
             Divider()
-            
             Group {
                 if !viewModel.articles.isEmpty {
-                    
                     HStack {
                         NavigationLink {
                             SearchingArticleView(viewModel: .init(modelContainer: modelContainer))
@@ -64,32 +64,36 @@ struct HomeArticleList: View {
                     
                     Divider()
                     
-                    List {
-                        ForEach(
-                            Array(viewModel.groupArticlesByMonth(articles: viewModel.articles)).reversed(),id: \.key) { month, articles in
-                                Section {
-                                    HStack {
-                                        Text(month)
-                                            .pretendFont(.title3)
-                                        Spacer()
-                                    }
-                                    .listRowBackground(Color.grey1)
-                                    
-                                    ForEach(articles) { article in
-                                        ArticleRow(title: article.title, imageURLString: article.imageURLString)
+                    ScrollView {
+                        VStack {
+                            ForEach(
+                                Array(viewModel.groupArticlesByMonth(articles: viewModel.articles)).reversed(),id: \.key) { month, groupedArticles in
+                                    Section {
+                                        HStack {
+                                            Text(month)
+                                                .pretendFont(.title3)
+                                            Spacer()
+                                        }
+                                        .padding(.leading, 20)
+                                        .padding(.top, 12)
+                                        .listRowBackground(Color.grey1)
+                                        
+                                        ForEach(groupedArticles) { groupedArticle in
+                                            ArticleRow(
+                                                modelContainer: modelContainer,
+                                                article: groupedArticle.article
+                                            )
                                             .onTapGesture {
-                                                if let url = URL(string: article.urlString) {
+                                                if let url = URL(string: groupedArticle.article.url) {
                                                     UIApplication.shared.open(url, options: [:])
                                                 }
                                             }
+                                        }
                                     }
+                                    .listSectionSeparator(.hidden)
                                 }
-                                .listSectionSeparator(.hidden)
-                            }
+                        }
                     }
-                    .listStyle(.plain)
-                    .frame(maxWidth: .infinity)
-                    
                 } else {
                     VStack(alignment: .center) {
                         Spacer()

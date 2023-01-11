@@ -98,7 +98,12 @@ final class HomeViewModel: ObservableObject {
     func groupArticlesByMonth(articles: [Article]) -> ArticleGroup {
         guard !articles.isEmpty else { return [:] }
         
-        let groupedArticles = articles.map { GroupedArticle(id: $0.id, title: $0.title, content: $0.content, urlString: $0.url) }
+        let groupedArticles = articles.map {
+            GroupedArticle(
+                id: $0.id,
+                article: $0
+            )
+        }
         
         return ArticleGroup(grouping: groupedArticles) { $0.month }
     }

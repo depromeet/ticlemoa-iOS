@@ -76,7 +76,7 @@ struct AddingLinkView: View {
         .hideKeyboard()
         .padding(.horizontal, 20)
         .navigationBarHidden(true)
-        .ticlemoaNavigationBar(title: viewModel.isModifying ? "수정하기" : "아티클 추가")
+        .ticlemoaNavigationBar(title: viewModel.isModifying ? "수정하기" : "아티클 추가", image: viewModel.isModifying ? "close_button_black" : "arrow")
         .ticlemoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
             TagSelectingListView(
                 modelContainer: modelContainer,

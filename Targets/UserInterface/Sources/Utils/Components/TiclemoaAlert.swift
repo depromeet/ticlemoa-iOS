@@ -26,6 +26,7 @@ extension View {
         isPresented: Binding<Bool>,
         title: String,
         style: AlertStyle,
+        isConfirmAlert: Bool,
         completion: @escaping (String?) async -> (Bool, String)
     ) -> some View {
         let keyWindow = keyWindow()
@@ -34,7 +35,8 @@ extension View {
                 isPresented: isPresented,
                 title: title,
                 style: style,
-                completion: completion
+                completion: completion,
+                isConfirmAlert: isConfirmAlert
             )
             let viewController = UIHostingController(rootView: alertView)
             viewController.modalTransitionStyle = .crossDissolve
@@ -79,6 +81,7 @@ public struct TiclemoaAlert: View {
     @State var inputText: String = ""
     @State var isError: Bool = false
     @State var errorMessage: String = ""
+    let isConfirmAlert: Bool
 
     public var body: some View {
         ZStack{
@@ -200,13 +203,13 @@ public struct TiclemoaAlert: View {
                 HStack {
                     Spacer()
                     Text("확인")
-                        .foregroundColor(inputText.isEmpty ? .grey3 : .ticlemoaPrimary)
+                        .foregroundColor(inputText.isEmpty && !isConfirmAlert ? .grey3 : .ticlemoaPrimary)
                         .font(.system(size: 16, weight: .semibold))
                     Spacer()
                 }
             }
         )
-        .disabled(inputText.isEmpty)
+        .disabled(inputText.isEmpty && !isConfirmAlert)
     }
 
 }
