@@ -61,16 +61,16 @@ struct MockTag: Tag {
 }
 
 struct MockArticle: Article {
-    var imageUrl: String
-    var id: Int
-    var title: String
-    var url: String
-    var content: String
-    var isPublic: Bool
-    var tagIds: [Int]
-    var viewCount: Int
-    var createdAt: String
-    var updatedAt: String
+    var imageUrl: String = ""
+    var id: Int = 0
+    var title: String = "테스트 아티클 제목"
+    var url: String = ""
+    var content: String = "테스트 아티클"
+    var isPublic: Bool = false
+    var tagIds: [Int] = []
+    var viewCount: Int = 0
+    var createdAt: String = "2023/01/12"
+    var updatedAt: String = "2023/01/12"
 }
 
 struct MockLoginUser: LoginUser {

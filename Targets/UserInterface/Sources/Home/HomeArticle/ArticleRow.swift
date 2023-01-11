@@ -10,7 +10,7 @@ import SwiftUI
 import DomainInterface
 
 struct ArticleRow: View {
-    @ObservedObject var modelContainer: ModelContainer
+    @EnvironmentObject var modelContainer: ModelContainer
     @State private var tagNames: [String] = []
     @State private var isArticleSettingButtonTouched: Bool = false
     @State private var isArticleDeletingButtonTouched: Bool = false
@@ -138,7 +138,6 @@ struct ArticleRow: View {
 
 struct ArticleRow_Previews: PreviewProvider {
     static var previews: some View {
-        ArticleRow(modelContainer: ModelContainer.dummy, article: MockArticle(imageUrl: "", id: 1, title: "아티클아티클아티클아티클아티", url: "", content: "", isPublic: false, tagIds: [1, 2], viewCount: 0, createdAt: "", updatedAt: ""))
+        ArticleRow(article: MockArticle())
     }
-    
 }
