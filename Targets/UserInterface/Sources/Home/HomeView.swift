@@ -39,7 +39,7 @@ private extension HomeView {
                         minHeight: 0,
                         maxHeight: isFolding ? 80 : 80 + CGFloat((45 * viewModel.homeRows.count))
                     )
-                HomeArticleList(viewModel: viewModel)
+                HomeArticleList(viewModel: .init(modelContainer: modelContainer))
                     .padding(.top, 0)
                     .animation(.default)
                     .transition(.slide)
