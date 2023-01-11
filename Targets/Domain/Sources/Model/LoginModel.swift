@@ -9,9 +9,9 @@
 import Foundation
 import API
 import DomainInterface
-import KakaoSDKUser
-import KakaoSDKAuth
-import KakaoSDKCommon
+//import KakaoSDKUser
+//import KakaoSDKAuth
+//import KakaoSDKCommon
 
 
 extension KakaoLoginResponse {
@@ -39,6 +39,74 @@ public final class LoginModel: LoginModelProtocol {
     public init() {
         userData = LoginUserData.shared
     }
+}
+
+// MARK: - Kakao
+extension LoginModel {
+    
+//    public func isKakaoTalkLoginUrl(_ url: URL) -> Bool {
+//        AuthApi.isKakaoTalkLoginUrl(url)
+//    }
+//
+//    public func authController(url: URL) -> Bool {
+//        AuthController.handleOpenUrl(url: url)
+//    }
+//
+//    public func checkKakaoLogin() async -> Bool {
+//        switch await kakaoAccessToken() {
+//        case .success(let token):
+//            return await requestKakaoLogin(token.accessToken)
+//        case .failure(let error):
+//            print(error.localizedDescription)
+//            return false
+//        }
+//    }
+//
+//    private func kakaoAccessToken() async -> Result<OAuthToken, Error> {
+//        await withCheckedContinuation { continuation in
+//            // 앱 로그인
+//            if (UserApi.isKakaoTalkLoginAvailable()) {
+//                UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+//                    guard let token = oauthToken else {
+//                        continuation.resume(returning: .failure(error!))
+//                        return
+//                    }
+//                    continuation.resume(returning: .success(token))
+//                }
+//
+//                // 웹 로그인
+//            } else {
+//                UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+//                    guard let token = oauthToken else {
+//                        continuation.resume(returning: .failure(error!))
+//                        return
+//                    }
+//                    continuation.resume(returning: .success(token))
+//                }
+//            }
+//        }
+//    }
+//
+//    private func requestKakaoLogin(_ accessToken: String) async -> Bool {
+//        let kakaoLoginRequest = KakaoLoginRequest(accessToken: accessToken)
+//        let result = await api.request(by: kakaoLoginRequest)
+//
+//        do {
+//            switch result {
+//            case .success(let data):
+//                let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
+//                self.userData = response.updateLoginUser()
+//                return true
+//            case .failure(let error):
+//                print(error.description)
+//                return false
+//            }
+//        } catch {
+//            print(error.localizedDescription)
+//            return false
+//        }
+//    }
+    
 }
 
 
@@ -77,25 +145,6 @@ extension LoginModel {
         }
     }
     
-    
-    public func isKakaoTalkLoginUrl(_ url: URL) -> Bool {
-        AuthApi.isKakaoTalkLoginUrl(url)
-    }
-    
-    public func authController(url: URL) -> Bool {
-        AuthController.handleOpenUrl(url: url)
-    }
-    
-    public func checkKakaoLogin() async -> Bool {
-        switch await kakaoAccessToken() {
-        case .success(let token):
-            return await requestKakaoLogin(token.accessToken)
-        case .failure(let error):
-            print(error.localizedDescription)
-            return false
-        }
-    }
-    
     public func nicknameChangeTo(_ nickname: String) {
         guard let oldValue = userData else { return } // TODO: 에러처리 필요
         let newValue = LoginUserData(
@@ -118,50 +167,5 @@ extension LoginModel {
         case .failure: return false
         }
     }
-    
-    private func kakaoAccessToken() async -> Result<OAuthToken, Error> {
-        await withCheckedContinuation { continuation in
-            // 앱 로그인
-            if (UserApi.isKakaoTalkLoginAvailable()) {
-                UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                    guard let token = oauthToken else {
-                        continuation.resume(returning: .failure(error!))
-                        return
-                    }
-                    continuation.resume(returning: .success(token))
-                }
-                
-                // 웹 로그인
-            } else {
-                UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                    guard let token = oauthToken else {
-                        continuation.resume(returning: .failure(error!))
-                        return
-                    }
-                    continuation.resume(returning: .success(token))
-                }
-            }
-        }
-    }
-    
-    private func requestKakaoLogin(_ accessToken: String) async -> Bool {
-        let kakaoLoginRequest = KakaoLoginRequest(accessToken: accessToken)
-        let result = await api.request(by: kakaoLoginRequest)
-        
-        do {
-            switch result {
-            case .success(let data):
-                let response = try JSONDecoder().decode(KakaoLoginResponse.self, from: data)
-                self.userData = response.updateLoginUser()
-                return true
-            case .failure(let error):
-                print(error.description)
-                return false
-            }
-        } catch {
-            print(error.localizedDescription)
-            return false
-        }
-    }
-    
+
 }

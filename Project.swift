@@ -107,7 +107,7 @@ let userInterface = makeModule(
     .userInterface,
     dependencies: [
         .target(name: Ticlemoa.domainInterface.name),
-        .external(name: "Collections")
+//        .external(name: "Collections")
     ],
     hasTest: true
 )
@@ -121,7 +121,7 @@ let domain = makeModule(
     dependencies: [
         .target(name: Ticlemoa.api.name),
         .target(name: Ticlemoa.domainInterface.name),
-        .external(name: "KakaoSDK")
+//        .external(name: "KakaoSDK")
     ],
     hasTest: true
 )
@@ -149,10 +149,10 @@ let infoPlist: InfoPlist = .extendingDefault(with: [
         "UISupportedInterfaceOrientations" : ["UIInterfaceOrientationPortrait"],
         "UILaunchStoryboardName": "LaunchScreen",
         "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true],
-        "LSApplicationQueriesSchemes" : [
-            "kakaokompassauth",
-            "kakaolink"
-        ],
+//        "LSApplicationQueriesSchemes" : [
+//            "kakaokompassauth",
+//            "kakaolink"
+//        ],
         "UIAppFonts": [
             "Pretendard-Black.otf",
             "Pretendard-Bold.otf",

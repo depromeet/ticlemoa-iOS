@@ -19,12 +19,12 @@ struct LoginView: View {
     
     var body: some View {
         mainBody
-            .onOpenURL { url in
-                if viewModel.isKakaoTalkLogin(url) {
-                    _ = viewModel.authControllerHandleOpen(url: url)
-                }
-            }
             .background(Color.grey1)
+//            .onOpenURL { url in
+//                if viewModel.isKakaoTalkLogin(url) {
+//                    _ = viewModel.authControllerHandleOpen(url: url)
+//                }
+//            }
     }
     
     var mainBody: some View {
@@ -101,37 +101,37 @@ private extension LoginView {
             )
     }
     
-    var socialLoginButtons: some View {
-        VStack(spacing: 12) {
-            RoundedButton(
-                "카카오톡으로 로그인",
-                Color.kakaoYellow,
-                imageName: "kakao_icon",
-                action: {
-                    HapticManager.instance.impact(style: .medium)
-                    
-                    Task {
-                        let isSuccess = try await viewModel.kakaoButtonDidTap()
+//    var socialLoginButtons: some View {
+//        VStack(spacing: 12) {
+//            RoundedButton(
+//                "카카오톡으로 로그인",
+//                Color.kakaoYellow,
+//                imageName: "kakao_icon",
+//                action: {
+//                    HapticManager.instance.impact(style: .medium)
+//                    
+//                    Task {
+//                        let isSuccess = try await viewModel.kakaoButtonDidTap()
 //                        withAnimation { isLoggedIn = isSuccess }
-                    }
-                })
-            .buttonStyle(ScaleButtonStyle())
-            RoundedButton(
-                "Apple으로 로그인",
-                foregroundColor: .white,
-                Color.ticlemoaBlack,
-                imageName: "apple_icon_white",
-                action: {
-                    HapticManager.instance.impact(style: .medium)
-                    showAppleLogin()
-                })
-            //            SignInWithApple()
-            .onTapGesture(perform: showAppleLogin)
-            
-            .buttonStyle(ScaleButtonStyle())
-        }
-        .padding(.horizontal, 20)
-    }
+//                    }
+//                })
+//            .buttonStyle(ScaleButtonStyle())
+//            RoundedButton(
+//                "Apple으로 로그인",
+//                foregroundColor: .white,
+//                Color.ticlemoaBlack,
+//                imageName: "apple_icon_white",
+//                action: {
+//                    HapticManager.instance.impact(style: .medium)
+//                    showAppleLogin()
+//                })
+//            //            SignInWithApple()
+//            .onTapGesture(perform: showAppleLogin)
+//            
+//            .buttonStyle(ScaleButtonStyle())
+//        }
+//        .padding(.horizontal, 20)
+//    }
     
     
     private func showAppleLogin() {

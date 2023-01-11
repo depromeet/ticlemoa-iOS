@@ -22,9 +22,9 @@ class LoginViewModel: ObservableObject {
             .assign(to: &self.$isLoggedIn)
     }
     
-    public func kakaoButtonDidTap() async throws -> Bool {
-        await modelContainer.loginModel.checkKakaoLogin()
-    }
+//    public func kakaoButtonDidTap() async throws -> Bool {
+//        await modelContainer.loginModel.checkKakaoLogin()
+//    }
     
 }
 
@@ -35,13 +35,13 @@ extension LoginViewModel {
         await modelContainer.loginModel.requestAccessToken()
     }
     
-    func isKakaoTalkLogin(_ url: URL) -> Bool {
-        modelContainer.loginModel.isKakaoTalkLoginUrl(url)
-    }
-    
-    func authControllerHandleOpen(url: URL) -> Bool {
-        modelContainer.loginModel.authController(url: url)
-    }
+//    func isKakaoTalkLogin(_ url: URL) -> Bool {
+//        modelContainer.loginModel.isKakaoTalkLoginUrl(url)
+//    }
+//
+//    func authControllerHandleOpen(url: URL) -> Bool {
+//        modelContainer.loginModel.authController(url: url)
+//    }
     
 }
 
