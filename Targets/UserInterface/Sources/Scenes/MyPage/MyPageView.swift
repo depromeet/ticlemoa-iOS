@@ -60,12 +60,23 @@ struct MyPageView: View {
             .padding(.horizontal, 81)
             
             VStack(spacing: 0) {
-                MyPageNavigationView(imageName: "Information", title: "서비스 정보") {
+                NavigationLink {
                     ServiceInformationView()
                         .navigationBarBackButtonHidden(true)
+                } label: {
+                    MyPageNavigationButton(imageName: "Information", title: "서비스 정보")
                 }
-                MyPageNavigationView(imageName: "QuestionMark", title: "문의하기") {
-                    EmptyView()
+                Button {
+                    viewModel.isMailViewAlertPresented = true
+                } label: {
+                    MyPageNavigationButton(imageName: "QuestionMark", title: "문의하기")
+                }
+                .ticlmoaAlert(isPresented: $viewModel.isMailViewAlertPresented, title: "하단 이메일로 문의바랍니다.", style: .confirm(message: "ticlemoa6@gmail.com"), isConfirmAlert: true) { _ in
+                    viewModel.isMailViewPresented = true
+                    return (true, "")
+                }
+                .sheet(isPresented: $viewModel.isMailViewPresented) {
+                    MailView(result: $viewModel.mailResult)
                 }
             }
             .padding(.bottom, 16)
@@ -142,36 +153,30 @@ struct MyPageView: View {
     }
 }
 
-fileprivate struct MyPageNavigationView<Destination: View>: View {
+fileprivate struct MyPageNavigationButton: View {
     let imageName: String
     let title: String
-    let destination: () -> Destination
     
-    init(imageName: String, title: String, destination: @escaping () -> Destination) {
+    init(imageName: String, title: String) {
         self.imageName = imageName
         self.title = title
-        self.destination = destination
     }
     
     var body: some View {
-        NavigationLink {
-            destination()
-        } label: {
-            VStack(spacing: 0) {
-                HStack {
-                    Image(imageName)
-                    Text(title)
-                        .customFont(weight: 400, size: 16, lineHeight: 24, style: .medium)
-                    Spacer()
-                    Image("Arrow.right")
-                }
-                .foregroundColor(.ticlemoaBlack)
-                .padding(.vertical, 16)
-                Divider()
-                    .foregroundColor(.grey2)
+        VStack(spacing: 0) {
+            HStack {
+                Image(imageName)
+                Text(title)
+                    .customFont(weight: 400, size: 16, lineHeight: 24, style: .medium)
+                Spacer()
+                Image("Arrow.right")
             }
-            .padding(.horizontal, 20)
+            .foregroundColor(.ticlemoaBlack)
+            .padding(.vertical, 16)
+            Divider()
+                .foregroundColor(.grey2)
         }
+        .padding(.horizontal, 20)
     }
 }
 

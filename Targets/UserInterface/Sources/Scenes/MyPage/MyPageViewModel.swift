@@ -8,12 +8,16 @@
 
 import SwiftUI
 import Combine
+import MessageUI
 
 final class MyPageViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
     @Published var nickName: String?
     @Published var email: String?
     @Published var profileImageURL: URL?
+    @Published var isMailViewPresented: Bool = false
+    @Published var isMailViewAlertPresented: Bool = false
+    @Published var mailResult: Result<MFMailComposeResult, Error>? = nil
     @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
     @Binding var isLogin: Bool
     private var anyCancellables: [AnyCancellable] = []
