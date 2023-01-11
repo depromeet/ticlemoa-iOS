@@ -16,9 +16,9 @@ struct MyPageView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Spacer()
                 Text("마이페이지")
-                    .customFont(weight: 700, size: 18, lineHeight: 22, style: .bold)
+                    .padding(.leading, 20)
+                    .customFont(weight: 700, size: 18, lineHeight: 27, style: .bold)
                 Spacer()
             }
             .frame(height: 56)
@@ -141,6 +141,8 @@ struct MyPageView: View {
             }
             
             Spacer()
+            
+            Divider()
         }
         .onAppear {
             viewModel.updateProfile()

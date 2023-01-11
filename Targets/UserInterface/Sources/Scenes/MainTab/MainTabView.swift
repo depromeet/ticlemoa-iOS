@@ -21,7 +21,9 @@ struct MainTabView: View {
     var body: some View {
         NavigationView {
             TabView(selection: $selection) {
-                HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
+                NavigationView {
+                    HomeView(viewModel: HomeViewModel(modelContainer: modelContainer))
+                }
                 .tabItem {
                     selection == 0 ? Image("home_selected") : Image("home_unselected")
                     Text("홈")
