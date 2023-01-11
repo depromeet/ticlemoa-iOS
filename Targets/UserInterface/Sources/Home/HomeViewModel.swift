@@ -16,25 +16,13 @@ struct HomeTag {
     var size: CGFloat = 0
 }
 
-enum FilterType: String {
-    case createdBy = "최신순"
-    case popularBy = "인기순"
-}
-
 final class HomeViewModel: ObservableObject {
     
     @ObservedObject var modelContainer: ModelContainer
     
-    @Published var articles: [Article] = []
     @Published var rows: [[Tag]] = []
     @Published var tags: [Tag] = []
     @Published var tagText = ""
-    @Published var filterType: FilterType = .createdBy {
-        didSet {
-            // TODO: 최신순 / 인기순 으로 재정렬 Networking.. or something...
-        }
-    }
-    
     @Published var selectedTag: HomeTag? {
         didSet {
             print("선택한 태그: \(selectedTag!.tag)")
@@ -72,10 +60,6 @@ final class HomeViewModel: ObservableObject {
             }
             .store(in: &anyCancellables)
         
-        self.modelContainer.articleModel.itemsPublisher
-            .sink { self.articles = $0 }
-            .store(in: &anyCancellables)
-        
         Task {
             do {
                 try await modelContainer.tagModel.read()
@@ -92,20 +76,6 @@ final class HomeViewModel: ObservableObject {
                 selectedTag = firstTag
             }
         }
-    }
-    
-    /// 월별 데이터 정렬 메소드
-    func groupArticlesByMonth(articles: [Article]) -> ArticleGroup {
-        guard !articles.isEmpty else { return [:] }
-        
-        let groupedArticles = articles.map {
-            GroupedArticle(
-                id: $0.id,
-                article: $0
-            )
-        }
-        
-        return ArticleGroup(grouping: groupedArticles) { $0.month }
     }
     
     func getTags(_ tagList: [HomeTag]){

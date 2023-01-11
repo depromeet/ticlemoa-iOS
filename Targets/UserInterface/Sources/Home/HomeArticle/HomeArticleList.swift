@@ -12,7 +12,11 @@ import DomainInterface
 
 struct HomeArticleList: View {
     @EnvironmentObject var modelContainer: ModelContainer
-    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var viewModel: HomeArticleListModel
+    
+    init(viewModel: HomeArticleListModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack {
@@ -26,7 +30,6 @@ struct HomeArticleList: View {
                         } label: {
                             HStack {
                                 Image("glass_icon")
-//                                    .pretendFont(.title3)
                                 Text("검색")
                                     .customFont(weight: 700, size: 14, lineHeight: 21)
                                     .foregroundColor(Color.ticlemoaBlack)
@@ -39,22 +42,15 @@ struct HomeArticleList: View {
                         Button(
                             action: {
                                 withAnimation {
-                                    if (viewModel.filterType == FilterType.createdBy) {
-                                        viewModel.filterType = FilterType.popularBy
-                                        return
-                                    }
-                                    viewModel.filterType = FilterType.createdBy
+                                    viewModel.filterType = viewModel.filterType.next
                                 }
                             }, label: {
                                 HStack {
                                     // MARK: Menu 제안
-                                    Text(viewModel.filterType == FilterType.createdBy
-                                         ? FilterType.createdBy.rawValue
-                                         : FilterType.popularBy.rawValue
-                                    )
-                                    .customFont(weight: 700, size: 14, lineHeight: 21)
-                                    .animation(.default)
-                                    .foregroundColor(Color.ticlemoaBlack)
+                                    Text(viewModel.filterType.description)
+                                        .customFont(weight: 700, size: 14, lineHeight: 21)
+                                        .animation(.default)
+                                        .foregroundColor(Color.ticlemoaBlack)
                                     Image("up_down_icon")
                                         .padding(.trailing, 20)
                                 }
@@ -66,11 +62,10 @@ struct HomeArticleList: View {
                     
                     ScrollView {
                         VStack {
-                            ForEach(
-                                Array(viewModel.groupArticlesByMonth(articles: viewModel.articles)).reversed(),id: \.key) { month, groupedArticles in
+                            ForEach(viewModel.articles, id: \.0) { articleGroup in
                                     Section {
                                         HStack {
-                                            Text(month)
+                                            Text(articleGroup.0)
                                                 .pretendFont(.title3)
                                             Spacer()
                                         }
@@ -78,16 +73,13 @@ struct HomeArticleList: View {
                                         .padding(.top, 12)
                                         .listRowBackground(Color.grey1)
                                         
-                                        ForEach(groupedArticles) { groupedArticle in
-                                            ArticleRow(
-                                                modelContainer: modelContainer,
-                                                article: groupedArticle.article
-                                            )
-                                            .onTapGesture {
-                                                if let url = URL(string: groupedArticle.article.url) {
-                                                    UIApplication.shared.open(url, options: [:])
+                                        ForEach(0..<articleGroup.1.count, id: \.self) { index in
+                                            ArticleRow(article: articleGroup.1[index])
+                                                .onTapGesture {
+                                                    if let url = URL(string: articleGroup.1[index].url) {
+                                                        UIApplication.shared.open(url, options: [:])
+                                                    }
                                                 }
-                                            }
                                         }
                                     }
                                     .listSectionSeparator(.hidden)
