@@ -9,6 +9,7 @@
 import SwiftUI
 import DomainInterface
 import Combine
+import MessageUI
 
 final class MyPageViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
@@ -16,6 +17,9 @@ final class MyPageViewModel: ObservableObject {
     @Published var nickName: String?
     @Published var email: String?
     @Published var profileImageURL: URL?
+    @Published var isMailViewPresented: Bool = false
+    @Published var isMailViewAlertPresented: Bool = false
+    @Published var mailResult: Result<MFMailComposeResult, Error>? = nil
     @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
     private var anyCancellables: [AnyCancellable] = []
     
