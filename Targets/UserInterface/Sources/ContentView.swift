@@ -43,6 +43,7 @@ struct MockTag: Tag {
 }
 
 struct MockArticle: Article {
+    var imageUrl: String
     var id: Int
     var title: String
     var url: String
@@ -64,8 +65,8 @@ struct MockLoginUser: LoginUser {
 final class MockArticleModel: ArticleModelProtocol {
     @Published var items: [DomainInterface.Article] = []
     var itemsPublisher: Published<[DomainInterface.Article]>.Publisher { $items }
-    func fetch() async { }
-    func update(_ item: DomainInterface.Article) async { }
+    func fetch(tagId: Int?) async throws {}
+    func update(_ item: DomainInterface.Article, tagIds: [Int]) async throws {}
     func create(_ item: DomainInterface.Article, tagIds: [Int]) async { }
     func remove(_ items: [DomainInterface.Article]) async throws {}
     func search(_ keyword: String) async -> [Article] { [] }

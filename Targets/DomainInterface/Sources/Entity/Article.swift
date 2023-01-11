@@ -12,9 +12,11 @@ public protocol Article {
     var id: Int { get }
     var title: String { get }
     var url: String { get }
+    var imageUrl: String { get }
     var content: String { get }
     var isPublic: Bool { get }
     var viewCount: Int { get }
     var createdAt: String { get }
     var updatedAt: String { get }
+    var tagIds: [Int] { get }
 }

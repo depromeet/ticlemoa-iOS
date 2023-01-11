@@ -46,7 +46,7 @@ extension ArticleData {
              isPublic: true, tagIds: [], createdAt: "2023-04-16T09:15:08.034Z"),
         ].enumerated().map({
             .init(
-                id: $0.offset, title: $0.element.title, url: $0.element.url, content: "링크 \($0.offset) 내용", isPublic: $0.element.isPublic, viewCount: 0, createdAt: $0.element.createdAt, updatedAt: "")
+                id: $0.offset, title: $0.element.title, url: $0.element.url, imageUrl: "", content: "링크 \($0.offset) 내용", isPublic: $0.element.isPublic, viewCount: 0, createdAt: $0.element.createdAt, updatedAt: "", tagIds: [0, 1])
         })
     }
 }
@@ -93,13 +93,14 @@ extension ArticleModel {
         }
     }
     
-    public func fetch() async throws {
+    public func fetch(tagId: Int? = nil) async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
         let request = ReadArticleRequest(
             accessToken: currentUser.accessToken,
-            userId: currentUser.userId
+            userId: currentUser.userId,
+            tagId: tagId
         )
         let result = await api.request(by: request)
             
@@ -112,11 +113,13 @@ extension ArticleModel {
                         id: $0.id,
                         title: $0.title,
                         url: $0.url,
+                        imageUrl: "",
                         content: $0.content,
                         isPublic: $0.isPublic,
                         viewCount: $0.viewCount,
-                        createdAt: $0.createdAt,
-                        updatedAt: $0.updatedAt
+                        createdAt: "",
+                        updatedAt: "",
+                        tagIds: $0.tagIds
                     )
                 })
             }
@@ -125,7 +128,7 @@ extension ArticleModel {
         }
     }
     
-    public func update(_ item: Article) async throws {
+    public func update(_ item: Article, tagIds: [Int]) async throws {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
@@ -138,7 +141,7 @@ extension ArticleModel {
                 title: item.title,
                 url: item.url,
                 isPublic: item.isPublic,
-                tagIds: []
+                tagIds: tagIds
             )
         )
         let result = await api.request(by: request)
@@ -190,11 +193,13 @@ extension ArticleModel {
                             id: $0.id,
                             title: $0.title,
                             url: $0.url,
+                            imageUrl: "",
                             content: $0.content,
                             isPublic: $0.isPublic,
                             viewCount: $0.viewCount,
                             createdAt: $0.createdAt,
-                            updatedAt: $0.updatedAt
+                            updatedAt: $0.updatedAt,
+                            tagIds: $0.tagIds
                         )
                     })
                 case .failure(let error):

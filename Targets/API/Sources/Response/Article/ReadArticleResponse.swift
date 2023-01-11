@@ -15,12 +15,11 @@ public struct ReadArticleResponse: Decodable {
         public let isPublic: Bool
         public let title: String
         public let url: String
+//        public let imageUrl: String // FIXME : 서버 측과 협의 후 업데이트 해야함
         public let userId: Int
-        public let deletedAt: String?
         public let id: Int
-        public let createdAt: String
-        public let updatedAt: String
         public let viewCount: Int
+        public let tagIds: [Int]
     }
     
     public let articles: [ReadArticle]

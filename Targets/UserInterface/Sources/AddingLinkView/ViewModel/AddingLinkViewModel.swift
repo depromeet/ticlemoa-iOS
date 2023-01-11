@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 import DomainInterface
 
@@ -20,6 +21,7 @@ final class AddingLinkViewModel: ObservableObject {
     @Published var memo: String = ""
     @Published var isPublicSetting: Bool = false
     @Published var selectedTags: [Tag] = []
+    private var anyCancellables: [AnyCancellable] = []
     
     let fromWhichButton: FromWhichButton
     var isModifying: Bool = false
@@ -39,7 +41,11 @@ final class AddingLinkViewModel: ObservableObject {
             self.articleTitle = article.title
             self.memo = article.content
             self.isPublicSetting = article.isPublic
-            self.selectedTags = [] // FIXME: 서버의 아티클 값 내려 주면 추가 예정
+            self.modelContainer.tagModel.itemsPublisher
+                .sink { tags in
+                    self.selectedTags = tags.filter { article.tagIds.contains($0.id) }
+                }
+                .store(in: &anyCancellables)
         default:
             break
         }
@@ -55,7 +61,7 @@ final class AddingLinkViewModel: ObservableObject {
             )
             
             if isModifying {
-                try await modelContainer.articleModel.update(addingArticle)
+                try await modelContainer.articleModel.update(addingArticle, tagIds: selectedTags.map{ $0.id })
             } else {
                 try await modelContainer.articleModel.create(addingArticle, tagIds: selectedTags.map { $0.id } )
             }

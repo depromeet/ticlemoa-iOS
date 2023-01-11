@@ -37,6 +37,7 @@ extension TiclemoaAPI: APIDetails {
     
     public func request(by request: URLRequestMakable) async -> Result<Data, NetworkError> {
         let urlRequest = request.makeURLRequest(by: baseURL)
+        print(urlRequest.url)
         do {
             let (data, response) = try await URLSession.shared.data(for: urlRequest)
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {

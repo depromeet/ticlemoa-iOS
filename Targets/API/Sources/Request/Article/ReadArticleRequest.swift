@@ -12,10 +12,12 @@ public struct ReadArticleRequest {
     
     let accessToken: String
     let userId: Int
+    let tagId: Int?
     
-    public init(accessToken: String, userId: Int) {
+    public init(accessToken: String, userId: Int, tagId: Int? = nil) {
         self.accessToken = accessToken
         self.userId = userId
+        self.tagId = tagId
     }
     
 }
@@ -23,8 +25,17 @@ public struct ReadArticleRequest {
 extension ReadArticleRequest: URLRequestMakable {
     
     public func makeURLRequest(by baseURL: URL) -> URLRequest {
-        var request = URLRequest(
+        var urlComponents = URLComponents(
             url: baseURL.appendingPathComponent("/article").appendingPathComponent("/\(userId)"),
+            resolvingAgainstBaseURL: false
+        )
+        if let tagId = tagId {
+            urlComponents?.queryItems = [
+                .init(name: "tagId", value: "\(tagId)")
+            ]
+        }
+        var request = URLRequest(
+            url: urlComponents?.url ?? baseURL,
             cachePolicy: .reloadIgnoringLocalCacheData,
             timeoutInterval: 10
         )
