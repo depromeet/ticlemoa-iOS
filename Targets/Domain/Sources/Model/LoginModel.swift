@@ -37,20 +37,10 @@ public final class LoginModel: LoginModelProtocol {
     private let api: APIDetails = TiclemoaAPI()
     
     public init() {
-#if DEBUG
-        //        self.prepareForDebugEnvorinment()
-#endif
+        userData = LoginUserData.shared
     }
-    
 }
 
-#if DEBUG
-extension LoginModel {
-    private func prepareForDebugEnvorinment() {
-        LoginUserData.shared = LoginUserData(nickName: "가나다라마바사", accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTY3MzI3NzU3MiwiZXhwIjoxMTY3MzI3NzU3Miwic3ViIjoiQUNDRVNTX1RPS0VOIn0.aOK2_TSGVdZyJvfVoUIzNSA5LBgozpQj7Wl2OAOtWtA", userId: 1, mail: "gd051234@gmail.com")
-    }
-}
-#endif
 
 extension LoginModel {
     
