@@ -157,9 +157,7 @@ extension LoginModel {
             userId: oldValue.userId,
             mail: oldValue.mail
         )
-        DispatchQueue.main.async {
-            self.userData = nil
-        }
+        userData = newValue
         LoginUserData.shared = newValue
     }
     
