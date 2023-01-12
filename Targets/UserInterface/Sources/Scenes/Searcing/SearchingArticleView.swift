@@ -114,6 +114,7 @@ extension SearchingArticleView {
                             self.viewModel.recentQueries.insert(searchedQuery, at: 0)
                         }
                     }
+                
                 if !viewModel.searchQuery.isEmpty {
                     Button {
                         viewModel.searchQuery = ""
@@ -127,8 +128,11 @@ extension SearchingArticleView {
             }
             .frame(height: 42)
             .background(
-                RoundedRectangle(cornerRadius: 6)
-                    .stroke(Color.grey2Line, lineWidth: 1)
+                ZStack {
+                    Color.white
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(Color.grey2Line, lineWidth: 1)
+                }
             )
         }
         .padding(.leading, 24.52)
