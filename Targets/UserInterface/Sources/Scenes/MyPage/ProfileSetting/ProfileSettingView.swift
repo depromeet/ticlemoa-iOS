@@ -92,13 +92,16 @@ struct ProfileSettingView: View {
         .sheet(isPresented: $viewModel.isImagePickerOpen) {
             ImagePicker(viewModel: viewModel)
         }
-        .ticlemoaNavigationBar(title: "프로필 설정",
-                               image: "arrow") {
+        .ticlemoaNavigationBar(title: "프로필 설정", image: "arrow") {
             Button("완료") {
                 viewModel.saveButtonTouched()
+            }
+            .foregroundColor(viewModel.isSavable ? .ticlemoaPrimary : .black)
+        }
+        .onChange(of: viewModel.isPresented) { newValue in
+            if !newValue {
                 dismiss()
             }
-            .foregroundColor(.black)
         }
     }
 }

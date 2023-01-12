@@ -15,6 +15,8 @@ final class ProfileSettingViewModel: ObservableObject {
     @Published var isImagePickerOpen: Bool = false
     @Published var profileImageURL: URL?
     @Published var nickname: String = ""
+    @Published var isPresented: Bool = true
+    @Published var isSavable: Bool = false
     @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
     private var anyCancellables: [AnyCancellable] = []
     
@@ -45,8 +47,13 @@ final class ProfileSettingViewModel: ObservableObject {
     }
     
     func saveButtonTouched() {
-        userProfileImageURL = profileImageURL
-        modelContainer.loginModel.nicknameChangeTo(nickname)
+        if isSavable {
+            userProfileImageURL = profileImageURL
+            modelContainer.loginModel.nicknameChangeTo(nickname)
+            isPresented = false
+        } else {
+            // TODO: 없을 때 어떻게 해야할지 결정해야 함
+        }
     }
     
     private func setupBinding() {
@@ -54,6 +61,11 @@ final class ProfileSettingViewModel: ObservableObject {
             if let savedNickname = loginUser?.nickName {
                 self?.nickname = savedNickname
             }
+        }.store(in: &anyCancellables)
+        
+        $nickname.sink { [weak self] string in
+            guard let self = self else { return }
+            self.isSavable = !self.nickname.isEmpty && !self.nickname.contains(" ")
         }.store(in: &anyCancellables)
     }
 }
