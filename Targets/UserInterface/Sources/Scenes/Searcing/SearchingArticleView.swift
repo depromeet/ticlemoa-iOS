@@ -10,13 +10,6 @@ import SwiftUI
 
 struct SearchingArticleView: View {
     @ObservedObject var viewModel: SearchingArticleViewModel
-    @State var recentQueries: [String] = (UserDefaults.standard
-        .array(forKey: "searchQueries") as? [String] ?? []
-    ) {
-        willSet {
-            UserDefaults.standard.set(newValue, forKey: "searchQueries")
-        }
-    }
     @Environment(\.presentationMode) private var presentationMode
     
     init(viewModel: SearchingArticleViewModel) {
@@ -60,7 +53,7 @@ struct SearchingArticleView: View {
                         }
                     }
                 } else {
-                    if recentQueries.isEmpty {
+                    if viewModel.recentQueries.isEmpty {
                         Spacer()
                         Image("Nothing")
                         Text("최근 검색어가 없습니다")
@@ -80,14 +73,8 @@ struct SearchingArticleView: View {
                 viewModel.state = .idle
             }
         }
-        .onReceive(viewModel.$searchQuery.debounce(for: 3, scheduler: RunLoop.main)) { query in
-            Task {
-                guard let searchedQuery = await self.viewModel.submit(by: query) else { return }
-                self.recentQueries.insert(searchedQuery, at: 0)
-            }
-        }
         .onAppear {
-            self.recentQueries = (UserDefaults.standard.array(forKey: "searchQueries") as? [String] ?? [])
+            _ = self.viewModel.recentQueries
         }
         // MARK: 자동검색 (검색어 입력 후 3초 뒤 요청) - 중복 제어 필요
 //        .onReceive(viewModel.$searchQuery.debounce(for: 3, scheduler: RunLoop.main)) { query in
@@ -123,7 +110,7 @@ extension SearchingArticleView {
                     .onSubmit {
                         Task {
                             guard let searchedQuery = await self.viewModel.submit() else { return }
-                            self.recentQueries.insert(searchedQuery, at: 0)
+                            self.viewModel.recentQueries.insert(searchedQuery, at: 0)
                         }
                     }
                 if !viewModel.searchQuery.isEmpty {
@@ -154,7 +141,7 @@ extension SearchingArticleView {
                     .font(.system(size: 14))
                 Spacer()
                 Button {
-                    self.recentQueries = []
+                    self.viewModel.recentQueries = []
                 } label: {
                     Text("전체삭제")
                         .foregroundColor(.grey3)
@@ -164,11 +151,16 @@ extension SearchingArticleView {
             .padding([.horizontal, .bottom], 20)
             ScrollView {
                 LazyVStack {
-                    ForEach(Array(zip(recentQueries.indices, recentQueries)), id: \.0) { index, recentQuery in
+                    ForEach(Array(zip(viewModel.recentQueries.indices, viewModel.recentQueries)), id: \.0) { index, recentQuery in
                         RecentQueryRow(
                             recentQuery: recentQuery,
-                            searchAction: { self.viewModel.searchQuery = $0 },
-                            removeAction: { self.recentQueries.remove(at: index) }
+                            searchAction: { selectedQuery in
+                                Task {
+                                    guard let searchedQuery = await self.viewModel.submit(by: selectedQuery) else { return }
+                                    self.viewModel.recentQueries.insert(searchedQuery, at: 0)
+                                }
+                            },
+                            removeAction: { self.viewModel.recentQueries.remove(at: index) }
                         )
                         .listRowBackground(Color.clear)
                     }

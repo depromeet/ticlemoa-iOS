@@ -8,6 +8,7 @@
 
 import SwiftUI
 import DomainInterface
+import Combine
 
 final class SearchingArticleViewModel: ObservableObject {
     
@@ -19,9 +20,29 @@ final class SearchingArticleViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
     @Published var state: State = .idle
     @Published var searchQuery: String = ""
+    @Published var loginUser: LoginUser?
+    @Published var recentQueries: [String] = (UserDefaults.standard
+        .array(forKey: "searchQueries") as? [String] ?? []
+    ) {
+        willSet {
+            UserDefaults.standard.set(newValue, forKey: "searchQueries")
+        }
+    }
+    private var cancellableSet: Set<AnyCancellable> = []
     
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
+        
+        modelContainer.loginModel.userDataPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] loginUser in
+                if let user = loginUser {
+                    self?.loginUser = user
+                } else {
+                    self?.recentQueries = []
+                }
+            }
+            .store(in: &cancellableSet)
     }
     
 }
