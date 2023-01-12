@@ -76,7 +76,10 @@ struct AddingLinkView: View {
         .hideKeyboard()
         .padding(.horizontal, 20)
         .navigationBarHidden(true)
-        .ticlemoaNavigationBar(title: viewModel.isModifying ? "수정하기" : "아티클 추가", image: viewModel.isModifying ? "close_button_black" : "arrow")
+        .ticlemoaNavigationBar(
+            title: viewModel.isModifying ? "수정하기" : "아티클 추가",
+            image: viewModel.isModifying ? "close_button_black" : "arrow"
+        )
         .ticlemoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
             TagSelectingListView(
                 modelContainer: modelContainer,
@@ -190,48 +193,48 @@ extension AddingLinkView {
     
     var publicSetting: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                Text("공개설정")
-                    .font(.system(size: 14))
-                    .foregroundColor(.grey4)
-                Button {
-                    isPublicSettingsHelpClicked.toggle()
-                } label: {
-                    Image("ToolTip")
-                }
-                .padding(.leading, 4)
-                Spacer()
-                Toggle("", isOn: $viewModel.isPublicSetting)
-                    .toggleStyle(SwitchToggleStyle(tint: .ticlemoaBlack))
-            }
-            .padding(.top, 46.8)
-            if isPublicSettingsHelpClicked {
-                HStack(spacing: 0) {
-                    HStack(alignment: .top ,spacing: 31.34) {
-                        Text("공개설정시 나의 태그를 다른 사용자가 볼 수 있어요.")
-                            .font(.system(size: 14))
-                            .padding(.leading, 16)
-                            .padding(.vertical, 14)
-                        Button {
-                            isPublicSettingsHelpClicked.toggle()
-                        } label: {
-                            Image("CloseButton")
-                                .frame(width: 16.0, height: 16.0)
-                                .padding(.trailing, 18.34)
-                                .padding(.top, 14)
-                        }
-                    }
-                    .frame(height: 70)
-                    .background(Color.grey2Line)
-                    .cornerRadius(4.0)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4.0)
-                            .stroke(Color.ticlemoaBlack, lineWidth: 1.0)
-                        )
-                    Spacer()
-                }
-                .padding(.trailing, 32)
-            }
+//            HStack(spacing: 0) {
+//                Text("공개설정")
+//                    .font(.system(size: 14))
+//                    .foregroundColor(.grey4)
+//                Button {
+//                    isPublicSettingsHelpClicked.toggle()
+//                } label: {
+//                    Image("ToolTip")
+//                }
+//                .padding(.leading, 4)
+//                Spacer()
+//                Toggle("", isOn: $viewModel.isPublicSetting)
+//                    .toggleStyle(SwitchToggleStyle(tint: .ticlemoaBlack))
+//            }
+//            .padding(.top, 46.8)
+//            if isPublicSettingsHelpClicked {
+//                HStack(spacing: 0) {
+//                    HStack(alignment: .top ,spacing: 31.34) {
+//                        Text("공개설정시 나의 태그를 다른 사용자가 볼 수 있어요.")
+//                            .font(.system(size: 14))
+//                            .padding(.leading, 16)
+//                            .padding(.vertical, 14)
+//                        Button {
+//                            isPublicSettingsHelpClicked.toggle()
+//                        } label: {
+//                            Image("CloseButton")
+//                                .frame(width: 16.0, height: 16.0)
+//                                .padding(.trailing, 18.34)
+//                                .padding(.top, 14)
+//                        }
+//                    }
+//                    .frame(height: 70)
+//                    .background(Color.grey2Line)
+//                    .cornerRadius(4.0)
+//                    .overlay(
+//                        RoundedRectangle(cornerRadius: 4.0)
+//                            .stroke(Color.ticlemoaBlack, lineWidth: 1.0)
+//                        )
+//                    Spacer()
+//                }
+//                .padding(.trailing, 32)
+//            }
         }
     }
     
