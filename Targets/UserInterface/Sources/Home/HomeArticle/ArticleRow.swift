@@ -14,6 +14,7 @@ struct ArticleRow: View {
     @State private var tagNames: [String] = []
     @State private var isArticleSettingButtonTouched: Bool = false
     @State private var isArticleDeletingButtonTouched: Bool = false
+    @State private var isAddingLinkViewPresented: Bool = false
     
     let article: Article
     
@@ -87,8 +88,8 @@ struct ArticleRow: View {
                             .padding(.vertical, 16)
                     }
                     .frame(height: 59)
-                    NavigationLink {
-                        AddingLinkView(modelContainer: modelContainer, fromWhere: .modifyingButton(article: article))
+                    Button {
+                        isAddingLinkViewPresented = true
                     } label: {
                         HStack(spacing: 0) {
                             Text("수정하기")
@@ -102,6 +103,10 @@ struct ArticleRow: View {
                         }
                         .frame(height: 59)
                     }
+                    .fullScreenCover(isPresented: $isAddingLinkViewPresented) {
+                        AddingLinkView(modelContainer: modelContainer, fromWhere: .modifyingButton(article: article))
+                    }
+
                     Button {
                         isArticleDeletingButtonTouched = true
                     } label: {
