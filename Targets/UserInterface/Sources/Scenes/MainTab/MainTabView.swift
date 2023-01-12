@@ -10,8 +10,13 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject private var modelContainer: ModelContainer
-    @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
+    @State private var isSnackBarButtonExisting: Bool = true
     @State private var selection = 0
+    
+    init() {
+        let copiedText: String? = UIPasteboard.general.string
+        UserDefaults.standard.set(copiedText, forKey: "isUIPastePermitted")
+    }
     
     var body: some View {
         NavigationView {
@@ -27,30 +32,32 @@ struct MainTabView: View {
                 .overlay {
                     VStack {
                         Spacer()
-                        if isSnackBarButtonExisting {
-                            NavigationLink(
-                                destination: AddingLinkView(modelContainer: modelContainer, fromWhere: .snackBar),
-                                label: {
-                                    HStack {
-                                        Text("복사한 링크 추가하기")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.grey1)
-                                            .padding(.leading, 16)
-                                        Spacer()
-                                        Button {
-                                            isSnackBarButtonExisting = false
-                                        } label: {
-                                            Image("CloseButton")
-                                                .frame(width: 13.67, height: 13.67)
-                                                .padding(.trailing, 15.19)
+                        if UserDefaults.standard.string(forKey: "isUIPastePermitted") != nil {
+                            if isSnackBarButtonExisting {
+                                NavigationLink(
+                                    destination: AddingLinkView(modelContainer: modelContainer, fromWhere: .snackBar),
+                                    label: {
+                                        HStack {
+                                            Text("복사한 링크 추가하기")
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.grey1)
+                                                .padding(.leading, 16)
+                                            Spacer()
+                                            Button {
+                                                isSnackBarButtonExisting = false
+                                            } label: {
+                                                Image("CloseButton")
+                                                    .frame(width: 13.67, height: 13.67)
+                                                    .padding(.trailing, 15.19)
+                                            }
                                         }
-                                    }
-                                    .frame(height: 44)
-                                    .background(Color.ticlemoaBlack)
-                                })
-                            .cornerRadius(6.0)
-                            .padding(.horizontal, 32)
-                            .padding(.bottom, 32)
+                                        .frame(height: 44)
+                                        .background(Color.ticlemoaBlack)
+                                    })
+                                .cornerRadius(6.0)
+                                .padding(.horizontal, 32)
+                                .padding(.bottom, 32)
+                            }
                         }
                     }
                 }
