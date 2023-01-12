@@ -34,7 +34,7 @@ final class AddingLinkViewModel: ObservableObject {
         
         switch fromWhichButton {
         case .snackBar:
-            self.link = UIPasteboard.general.string ?? ""
+            self.link = UserDefaults.standard.string(forKey: "isUIPastePermitted") ?? ""
         case .modifyingButton(let article):
             self.isModifying = true
             self.link = article.url

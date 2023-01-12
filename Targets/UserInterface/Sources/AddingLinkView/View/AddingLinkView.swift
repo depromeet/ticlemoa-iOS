@@ -121,10 +121,10 @@ extension AddingLinkView {
                     .frame(height: 1.2)
                     .padding(.top, 12)
             } else {
-                if viewModel.fromWhichButton == .naviBar && UIPasteboard.general.string != nil {
+                if viewModel.fromWhichButton == .naviBar && UserDefaults.standard.string(forKey: "isUIPastePermitted") != nil {
                     HStack {
                         Button {
-                            viewModel.link = UIPasteboard.general.string ?? ""
+                            viewModel.link = UserDefaults.standard.string(forKey: "isUIPastePermitted") ?? ""
                         } label: {
                             HStack(spacing: 2) {
                                 Text("복사한 링크 붙여넣기")
