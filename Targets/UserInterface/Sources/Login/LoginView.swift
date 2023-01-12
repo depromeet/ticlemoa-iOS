@@ -41,6 +41,7 @@ struct LoginView: View {
                 circleMargin: 8.0
             )
             .padding(.bottom, 100)
+            
             Spacer()
             // 소셜 로그인 구현 시, 사용 예정
 //            socialLoginButtons
@@ -62,7 +63,7 @@ struct LoginView: View {
             )
             
             Spacer()
-                .frame(maxHeight: 58)
+                .frame(maxHeight: 24)
             
         }
     }
