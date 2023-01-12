@@ -42,6 +42,7 @@ final class AddingLinkViewModel: ObservableObject {
             self.memo = article.content
             self.isPublicSetting = article.isPublic
             self.modelContainer.tagModel.itemsPublisher
+                .receive(on: RunLoop.main)
                 .sink { tags in
                     self.selectedTags = tags.filter { article.tagIds.contains($0.id) }
                 }

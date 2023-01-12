@@ -19,6 +19,7 @@ class LoginViewModel: ObservableObject {
         modelContainer
             .loginModel
             .userDataPublisher
+            .receive(on: RunLoop.main)
             .assign(to: &self.$isLoggedIn)
     }
     

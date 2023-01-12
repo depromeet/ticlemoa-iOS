@@ -69,7 +69,6 @@ extension ArticleModel {
         switch result {
         case .success(let data):
             let response = try JSONDecoder().decode(ReadArticleResponse.self, from: data)
-            DispatchQueue.main.async {
                 self.items = response.articles.map({
                     ArticleData(
                         id: $0.id,
@@ -84,7 +83,6 @@ extension ArticleModel {
                         tagIds: $0.tagIds
                     )
                 })
-            }
         case .failure(let network):
             throw DomainInterfaceError.networkError(code: network.code)
         }
