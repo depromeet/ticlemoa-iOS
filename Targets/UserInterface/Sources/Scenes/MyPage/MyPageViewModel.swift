@@ -45,7 +45,9 @@ final class MyPageViewModel: ObservableObject {
     }
     
     private func setupBinding() {
-        modelContainer.loginModel.userDataPublisher.sink { [weak self] loginUser in
+        modelContainer.loginModel.userDataPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] loginUser in
             self?.nickName = loginUser?.nickName
             self?.email = loginUser?.mail
         }.store(in: &anyCancellables)
