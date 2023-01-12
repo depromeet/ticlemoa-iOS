@@ -16,6 +16,7 @@ class LoginViewModel: ObservableObject {
     
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
+        
         modelContainer
             .loginModel
             .userDataPublisher

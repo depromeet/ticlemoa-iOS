@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>HOST</key>
-	<string>http://nyongnyong-env.eba-cfzmhtvn.ap-northeast-2.elasticbeanstalk.com/</string>
+	<string>http://nyongnyong-env.eba-cfzmhtvn.ap-northeast-2.elasticbeanstalk.com</string>
 </dict>
 </plist>

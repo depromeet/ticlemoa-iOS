@@ -10,10 +10,11 @@ import DomainInterface
 import SwiftUI
 
 
-class ContentViewModel: ObservableObject {
+public class ContentViewModel: ObservableObject {
     @Published var isLoggedIn: LoginUser? = nil
     @ObservedObject var modelContainer: ModelContainer
-    init(modelContainer: ModelContainer) {
+    
+    public init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
             
         modelContainer
@@ -23,29 +24,24 @@ class ContentViewModel: ObservableObject {
             .assign(to: &self.$isLoggedIn)
     }
     
-    
 }
 
 public struct ContentView: View {
-    @ObservedObject var modelContainer: ModelContainer
+    @EnvironmentObject var modelContainer: ModelContainer
     @ObservedObject var viewModel: ContentViewModel
     
-    public init(_ modelContainer: ModelContainer) {
-        self.modelContainer = modelContainer
-        self.viewModel = ContentViewModel(modelContainer: modelContainer)
+    public init(viewModel: ContentViewModel) {
+        self.viewModel = viewModel
     }
     
     public var body: some View {
         Group {
-            if (viewModel.isLoggedIn != nil) {
+            if viewModel.isLoggedIn != nil {
                 MainTabView()
                     .transition(.scale)
             } else {
-                LoginView(
-                    viewModel: .init(modelContainer: modelContainer)
-                )
-                .transition(.scale)
-                
+                LoginView(viewModel: .init(modelContainer: modelContainer))
+                    .transition(.scale)
             }
         }
     }

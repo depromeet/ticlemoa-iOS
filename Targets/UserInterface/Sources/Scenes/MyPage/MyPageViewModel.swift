@@ -36,7 +36,6 @@ final class MyPageViewModel: ObservableObject {
         Task {
             let isDeletionSucceed = await modelContainer.loginModel.deleteAccount()
             if isDeletionSucceed {
-                
                 userProfileImageURL = nil
             } else {
 

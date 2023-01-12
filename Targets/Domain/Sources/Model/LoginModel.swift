@@ -14,31 +14,29 @@ import DomainInterface
 //import KakaoSDKCommon
 
 
-extension KakaoLoginResponse {
-    func updateLoginUser() -> LoginUserData? {
-        guard let baseData = LoginUserData.shared else {
-            return nil
-        }
-        LoginUserData.shared = .init(
-            nickName: baseData.nickName,
-            accessToken: self.accessToken,
-            userId: self.userId,
-            mail: baseData.mail
-        )
-        return LoginUserData.shared
-    }
-}
+//extension KakaoLoginResponse {
+//    func updateLoginUser() -> LoginUserData? {
+//        guard let baseData = LoginUserData.shared else {
+//            return nil
+//        }
+//        LoginUserData.shared = .init(
+//            nickName: baseData.nickName,
+//            accessToken: self.accessToken,
+//            userId: self.userId,
+//            mail: baseData.mail
+//        )
+//        return LoginUserData.shared
+//    }
+//}
 
 public final class LoginModel: LoginModelProtocol {
     
     public var userDataPublisher: Published<LoginUser?>.Publisher { $userData }
     
-    @Published private var userData: LoginUser?
+    @Published private var userData: LoginUser? = LoginUserData.shared
     private let api: APIDetails = TiclemoaAPI()
     
-    public init() {
-        userData = LoginUserData.shared
-    }
+    public init() { }
 }
 
 // MARK: - Kakao
@@ -119,25 +117,31 @@ extension LoginModel {
         
         do {
             switch result {
-            case .success(let data):
-                let response = try JSONDecoder().decode(UserTokenRespons.self, from: data)
-                let accessToken = response.accessToken
-                let userId = response.userId
-                
-                let userData = LoginUserData.init(
-                    nickName: "태산이",
-                    accessToken: accessToken,
-                    userId: userId,
-                    mail: ""
-                )
-                self.userData = userData
-                LoginUserData.shared = userData
-                
-                return true
-                
-            case .failure(let error):
-                print(error.description)
-                return false
+                case .success(let data):
+                    let response = try JSONDecoder().decode(UserTokenRespons.self, from: data)
+                    let accessToken = response.accessToken
+                    let userId = response.userId
+                    
+                    let userData = LoginUserData.init(
+                        nickName: "닉네임을 변경해주세요!",
+                        accessToken: accessToken,
+                        userId: userId,
+                        mail: ""
+                    )
+                    
+                    DispatchQueue.main.async {
+                        self.userData = userData
+                    }
+                    LoginUserData.shared = userData
+                    
+                    print("DEBUG: \(userData.userId)")
+                    print("DEBUG: \(userData.accessToken)")
+                    
+                    return true
+                    
+                case .failure(let error):
+                    print(error.description)
+                    return false
             }
         } catch {
             print(error.localizedDescription)
@@ -153,7 +157,9 @@ extension LoginModel {
             userId: oldValue.userId,
             mail: oldValue.mail
         )
-        userData = newValue
+        DispatchQueue.main.async {
+            self.userData = nil
+        }
         LoginUserData.shared = newValue
     }
     
@@ -163,9 +169,15 @@ extension LoginModel {
         let accountDeletionRequest = AccountDeletionRequest(accessToken: accessToken)
         let result = await api.request(by: accountDeletionRequest)
         switch result {
-        case .success: return true
-        case .failure: return false
+            case .success:
+                DispatchQueue.main.async {
+                    self.userData = nil
+                }
+                LoginUserData.shared = nil
+                return true
+            case .failure:
+                return false
         }
     }
-
+    
 }
