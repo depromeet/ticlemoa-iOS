@@ -85,14 +85,14 @@ struct MyPageView: View {
                 Void()
             } label: {
                 HStack {
-                    Text("앱 버전정보 1.1.1")
+                    Text("앱 버전정보 1.0")
                         .customFont(weight: 400, size: 14, lineHeight: 21, style: .medium)
                         .foregroundColor(.grey4)
                         .padding(.top, 13)
                         .padding(.bottom, 14)
                     Spacer()
                     Group {
-                        if true {
+                        if false {
                             Text("업데이트")
                                 .customFont(weight: 600, size: 12, lineHeight: 18)
                                 .foregroundColor(.white)
