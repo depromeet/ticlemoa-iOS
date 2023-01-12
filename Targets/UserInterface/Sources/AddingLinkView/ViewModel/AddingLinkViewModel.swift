@@ -25,6 +25,7 @@ final class AddingLinkViewModel: ObservableObject {
     
     let fromWhichButton: FromWhichButton
     var isModifying: Bool = false
+    var modifiedArticleId: Int?
     
     // TODO: userId = LoginUserData.shared 참고
     
@@ -41,6 +42,7 @@ final class AddingLinkViewModel: ObservableObject {
             self.articleTitle = article.title
             self.memo = article.content
             self.isPublicSetting = article.isPublic
+            self.modifiedArticleId = article.id
             self.modelContainer.tagModel.itemsPublisher
                 .receive(on: RunLoop.main)
                 .sink { tags in
@@ -58,7 +60,8 @@ final class AddingLinkViewModel: ObservableObject {
                 content: memo,
                 title: articleTitle,
                 url: link,
-                isPublic: isPublicSetting
+                isPublic: isPublicSetting,
+                id: isModifying ? self.modifiedArticleId ?? 0 : 0 
             )
             
             if isModifying {
