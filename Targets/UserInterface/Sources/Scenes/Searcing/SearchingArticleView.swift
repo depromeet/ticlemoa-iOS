@@ -89,6 +89,13 @@ struct SearchingArticleView: View {
         .onAppear {
             self.recentQueries = (UserDefaults.standard.array(forKey: "searchQueries") as? [String] ?? [])
         }
+        // MARK: 자동검색 (검색어 입력 후 3초 뒤 요청) - 중복 제어 필요
+//        .onReceive(viewModel.$searchQuery.debounce(for: 3, scheduler: RunLoop.main)) { query in
+//            Task {
+//                guard let searchedQuery = await self.viewModel.submit(by: query) else { return }
+//                self.recentQueries.insert(searchedQuery, at: 0)
+//            }
+//        }
     }
 }
 
