@@ -35,12 +35,12 @@ struct TiclemoaNavigationBar<Item: View>: ViewModifier {
                     trailingItem().padding(.trailing, 20)
                 }
                 Text(title)
-//                    .customFont(18, .bold)
+                    .customFont(weight: 700, size: 18, lineHeight: 22)
             }
             .frame(height: 56)
             Spacer(minLength: 0)
             content
-//                .toolbar(.hidden)
+                .navigationBarBackButtonHidden(true)
             Spacer(minLength: 0)
         }
         .setupBackground()
