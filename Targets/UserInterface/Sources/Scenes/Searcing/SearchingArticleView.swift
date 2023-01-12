@@ -20,6 +20,7 @@ struct SearchingArticleView: View {
         ZStack {
             VStack(spacing: 32) {
                 searchBar
+                    .padding([.top], 19)
                 if case let .searched(items) = viewModel.state {
                     if items.isEmpty {
                         Spacer()
