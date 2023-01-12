@@ -55,9 +55,7 @@ struct MainTabView: View {
                         }
                     }
                 }
-                NavigationView {
-                    MyPageView(viewModel: .init(modelContainer: modelContainer))
-                }
+                MyPageView(viewModel: .init(modelContainer: modelContainer))
                 .tabItem {
                     selection == 1 ? Image("moamoa_selected") : Image("moamoa_unselected")
                     Text("마이페이지")
