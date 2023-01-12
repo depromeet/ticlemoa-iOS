@@ -16,7 +16,7 @@ final class AddingLinkViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
     
     @Published var link: String = ""
-    @Published var articleTitle: String = ""
+    @Published var articleTitle: String = "아티클 제목을 입력하세요"
     @Published var articleThumbNail: String = "ArticlePlaceholder"
     @Published var memo: String = ""
     @Published var isPublicSetting: Bool = false
