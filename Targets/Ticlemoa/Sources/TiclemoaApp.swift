@@ -11,7 +11,7 @@ import UserInterface
 
 import SwiftUI
 
-import KakaoSDKCommon
+//import KakaoSDKCommon
 
 @main
 struct TiclemoaApp: App {
@@ -23,7 +23,7 @@ struct TiclemoaApp: App {
     )
     
     init() {
-        KakaoSDK.initSDK(appKey: Keys.kakaoappkey)
+//        KakaoSDK.initSDK(appKey: Keys.kakaoappkey)
     }
 	
 	var body: some Scene {
