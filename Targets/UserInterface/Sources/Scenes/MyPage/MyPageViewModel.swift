@@ -20,6 +20,7 @@ final class MyPageViewModel: ObservableObject {
     @Published var isMailViewPresented: Bool = false
     @Published var isMailViewAlertPresented: Bool = false
     @Published var mailResult: Result<MFMailComposeResult, Error>? = nil
+    @Published var numberOfArticles: Int = 0
     @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
     private var anyCancellables: [AnyCancellable] = []
     
@@ -50,6 +51,12 @@ final class MyPageViewModel: ObservableObject {
             self?.nickName = loginUser?.nickName
             self?.email = loginUser?.mail
         }.store(in: &anyCancellables)
+        
+        modelContainer.articleModel.itemsPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] articles in
+                self?.numberOfArticles = articles.count
+            }.store(in: &anyCancellables)
 
         modelContainer
             .loginModel

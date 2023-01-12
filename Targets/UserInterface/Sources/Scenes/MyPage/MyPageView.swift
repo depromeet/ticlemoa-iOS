@@ -213,7 +213,7 @@ fileprivate struct MyPageAccountDeletingView: View {
                 .padding(.bottom, 4)
                 
                 HStack {
-                    Text("N개의 콘텐츠가 모두 삭제되고, 계정은 복구할 수 없어요")
+                    Text("\(viewModel.numberOfArticles)개의 콘텐츠가 모두 삭제되고, 계정은 복구할 수 없어요")
                         .font(.system(size: 14))
                         .fontWeight(.medium)
                         .foregroundColor(.grey4)
