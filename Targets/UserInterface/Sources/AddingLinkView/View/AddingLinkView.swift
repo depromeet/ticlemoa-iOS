@@ -39,7 +39,7 @@ struct AddingArticle: Article {
     let url: String
     let imageUrl: String = ""
     let isPublic: Bool
-    let id: Int = 0
+    var id: Int = 0
     let viewCount: Int = 0
     let createdAt: String = ""
     let updatedAt: String = ""
