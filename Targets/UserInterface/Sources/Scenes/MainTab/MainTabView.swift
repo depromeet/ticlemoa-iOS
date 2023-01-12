@@ -57,7 +57,7 @@ struct MainTabView: View {
                 }
                 MyPageView(viewModel: .init(modelContainer: modelContainer))
                 .tabItem {
-                    selection == 1 ? Image("moamoa_selected") : Image("moamoa_unselected")
+                    selection == 1 ? Image("MypageSelected") : Image("MypageUnselected")
                     Text("마이페이지")
                 }
                 .tag(1)
