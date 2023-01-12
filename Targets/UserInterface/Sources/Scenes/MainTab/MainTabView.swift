@@ -13,7 +13,6 @@ struct MainTabView: View {
     @State private var isSnackBarButtonExisting: Bool = UIPasteboard.general.string != nil // 복사된 텍스트가 있을 경우, true
     @State private var selection = 0
     
-    
     var body: some View {
         NavigationView {
             TabView(selection: $selection) {
@@ -82,8 +81,8 @@ struct MainTabView: View {
     }
 }
 
-//struct MainTabView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainTabView(isLogin: .constant(true))
-//    }
-//}
+struct MainTabView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainTabView()
+    }
+}

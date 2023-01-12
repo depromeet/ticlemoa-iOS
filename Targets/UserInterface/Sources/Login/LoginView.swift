@@ -134,29 +134,29 @@ private extension LoginView {
 //    }
     
     
-    private func showAppleLogin() {
-        let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.fullName, .email]
-        
-        performSignIn(using: [request])
-    }
+//    private func showAppleLogin() {
+//        let request = ASAuthorizationAppleIDProvider().createRequest()
+//        request.requestedScopes = [.fullName, .email]
+//
+//        performSignIn(using: [request])
+//    }
     
-    private func performSignIn(using requests: [ASAuthorizationRequest]) {
-        appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
-            if success {
-                // update UI
+//    private func performSignIn(using requests: [ASAuthorizationRequest]) {
+//        appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
+//            if success {
+//                // update UI
 //                withAnimation { isLoggedIn = true }
-            } else {
-                // show the user an error
-            }
-        }
-        
-        let controller = ASAuthorizationController(authorizationRequests: requests)
-        controller.delegate = appleSignInDelegates
-        controller.presentationContextProvider = appleSignInDelegates
-        
-        controller.performRequests()
-    }
+//            } else {
+//                // show the user an error
+//            }
+//        }
+//
+//        let controller = ASAuthorizationController(authorizationRequests: requests)
+//        controller.delegate = appleSignInDelegates
+//        controller.presentationContextProvider = appleSignInDelegates
+//
+//        controller.performRequests()
+//    }
     
     func RoundedButton(
         _ text: String,
@@ -194,25 +194,8 @@ private extension LoginView {
     }
 }
 
-#if DEBUG
-
-//struct LoginView_Previews: PreviewProvider {
-//    static var modelContainer = ModelContainer(
-//        articleModel: MockArticleModel(),
-//        tagModel: MockTagModel(),
-//        loginModel: MockLoginModel()
-//    )
-//    @State static  var isLoggedIn: Bool = false
-//    
-//    static var previews: some View {
-//        LoginView(
-//            viewModel:
-//                LoginViewModel(
-//                    modelContainer: modelContainer
-//                ),
-//            isLoggedIn: $isLoggedIn
-//        )
-//    }
-//}
-
-#endif
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView(viewModel: LoginViewModel(modelContainer: .dummy))
+    }
+}
