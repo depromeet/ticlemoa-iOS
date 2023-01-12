@@ -11,8 +11,12 @@ import Combine
 import PhotosUI
 
 struct ProfileSettingView: View {
+    enum Field {
+        case nickname
+    }
     @ObservedObject var viewModel: ProfileSettingViewModel
     @Environment(\.dismiss) private var dismiss
+    @FocusState var focusField: Field?
     
     init(viewModel: ProfileSettingViewModel) {
         self.viewModel = viewModel
@@ -63,6 +67,7 @@ struct ProfileSettingView: View {
                 }
                 .padding(.bottom, 12)
                 TextField("닉네임을 입력해주세요.", text: $viewModel.nickname)
+                    .focused($focusField, equals: .nickname)
                     .padding(.bottom, 8)
                     .onChange(of: viewModel.nickname.count) { _ in
                         viewModel.nicknameTextfieldChanged()
@@ -101,6 +106,11 @@ struct ProfileSettingView: View {
         .onChange(of: viewModel.isPresented) { newValue in
             if !newValue {
                 dismiss()
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                focusField = .nickname
             }
         }
     }
