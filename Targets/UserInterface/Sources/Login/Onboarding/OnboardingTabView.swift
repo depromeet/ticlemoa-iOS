@@ -33,7 +33,6 @@ struct OnboardingTabView: View {
                     title: "같은 관심사를 가진 사람들과\n저장한 아티클을 나눠요"
                 )
                 .tag(3)
-                
             }
             .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                 .onEnded({ value in

@@ -30,9 +30,9 @@ struct LoginView: View {
     var mainBody: some View {
         VStack {
             Spacer()
-                .frame(maxHeight: 61)
             
             OnboardingTabView(selectedPage: $selectedPage, pages: pages)
+                .frame(height: 428)
             
             PageControl(
                 selectedPage: $selectedPage,
@@ -40,7 +40,6 @@ struct LoginView: View {
                 circleDiameter: 8.0,
                 circleMargin: 8.0
             )
-            .padding(.bottom, 100)
             
             Spacer()
             // 소셜 로그인 구현 시, 사용 예정
@@ -61,10 +60,7 @@ struct LoginView: View {
                     }
                 }
             )
-            
-            Spacer()
-                .frame(maxHeight: 24)
-            
+            .padding(.bottom, 24)
         }
     }
 }

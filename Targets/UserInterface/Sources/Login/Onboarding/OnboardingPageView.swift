@@ -24,9 +24,8 @@ struct OnboardingPageView: View {
                 .multilineTextAlignment(.center)
             Image(imageName)
                 .padding(.top, 50)
-                .frame(maxHeight: 216.33)
-                
-        }.setupBackground()
+        }
+        .setupBackground()
     }
 }
 
