@@ -249,9 +249,9 @@ extension AddingLinkView {
         } label: {
             Text(viewModel.isModifying ? "완료" : "추가하기")
                 .tint(viewModel.link.isEmpty ? .grey3 : .ticlemoaWhite)
+                .frame(maxWidth: .infinity)
+                .frame(height: 56)
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 56)
         .background(viewModel.link.isEmpty ?  Color.grey2Line : Color.ticlemoaBlack)
         .cornerRadius(6.0)
         .padding(.bottom, 16)
