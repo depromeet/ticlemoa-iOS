@@ -81,9 +81,9 @@ private extension HomeView {
                                 }
                             )
                         }
-                        .padding(.horizontal, 20)
                         Spacer()
                     }
+                    .padding(.horizontal, 20)
                     .frame(height: 28)
                     .padding(.vertical, 10)
                 }
@@ -137,6 +137,7 @@ private extension HomeView {
                 Spacer()
             }
             .onTapGesture {
+                guard viewModel.homeRows.count > 0 else { return }
                 withAnimation { isFolding.toggle() }
             }
         }
@@ -166,6 +167,7 @@ extension String{
         let font = UIFont.systemFont(ofSize: 16)
         let attributes = [NSAttributedString.Key.font: font]
         let size = (self as NSString).size(withAttributes: attributes)
+        print("DEBUG: \(size.width)")
         return size.width
     }
 }
