@@ -68,7 +68,8 @@ struct ProfileSettingView: View {
                     Spacer()
                 }
                 .padding(.bottom, 12)
-                TextField("닉네임을 입력해주세요.", text: $viewModel.nickname)
+                TextField("", text: $viewModel.nickname)
+                    .placeholder("닉네임을 입력해주세요", when: viewModel.nickname.isEmpty, color: .black)
                     .focused($focusField, equals: .nickname)
                     .padding(.bottom, 8)
                     .onChange(of: viewModel.nickname.count) { _ in

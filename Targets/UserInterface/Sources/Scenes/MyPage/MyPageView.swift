@@ -43,7 +43,7 @@ struct MyPageView: View {
                     .padding(.top, 24)
                     .padding(.bottom, 12)
                     HStack(spacing: 2) {
-                        Text(viewModel.nickName ?? "확인할 수 없음")
+                        Text(viewModel.nickName == nil ? "로그인 정보가 없습니다" : viewModel.nickName!.isEmpty ? "닉네임을 입력해주세요" : viewModel.nickName ?? "")
                             .pretendFont(.subhead3)
                             .foregroundColor(.ticlemoaBlack)
                         Image("Pen")

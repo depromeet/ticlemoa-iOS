@@ -123,7 +123,7 @@ extension LoginModel {
                     let userId = response.userId
                     
                     let userData = LoginUserData.init(
-                        nickName: "닉네임을 변경해주세요!",
+                        nickName: "",
                         accessToken: accessToken,
                         userId: userId,
                         mail: ""
@@ -138,6 +138,7 @@ extension LoginModel {
                     print("DEBUG: \(userData.accessToken)")
                     
                     return true
+                    
                     
                 case .failure(let error):
                     print(error.description)
