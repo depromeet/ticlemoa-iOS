@@ -31,7 +31,9 @@ struct ProfileSettingView: View {
                         .scaledToFill()
                         .clipShape(Circle())
                 } else {
-                    DefaultProfileView()
+                    Image("DefaultProfileImage")
+                        .frame(width: 59, height: 59)
+                        .clipShape(Circle())
                 }
             }
             .frame(width: 59, height: 59)
