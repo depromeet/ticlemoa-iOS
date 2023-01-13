@@ -37,13 +37,13 @@ struct AddingArticle: Article {
     let content: String
     let title: String
     let url: String
-    let imageUrl: String = ""
+    let imageUrl: String
     let isPublic: Bool
     var id: Int = 0
     let viewCount: Int = 0
     let createdAt: String = ""
     let updatedAt: String = ""
-    var tagIds: [Int] = []
+    var tagIds: [Int]
 }
 
 struct AddingLinkView: View {
@@ -60,7 +60,8 @@ struct AddingLinkView: View {
     ) {
         self.viewModel = AddingLinkViewModel(
             modelContainer: modelContainer,
-            fromWhichButton: fromWhichButton)
+            fromWhichButton: fromWhichButton
+        )
     }
     
     var body: some View {
@@ -87,6 +88,18 @@ struct AddingLinkView: View {
                 isTagAddingButtonTouched: $isTagAddingButtonTouched
             )
         }
+        .onChange(of: viewModel.link) { newValue in
+            // link 직접 작성 또는 붙여넣기
+            Task {
+                await viewModel.setupArticleInfo(by: newValue)
+            }
+        }
+        .onAppear {
+            // 복사한 값 넣기
+            Task {
+                await viewModel.setupArticleInfo()
+            }
+        }
     }
 }
 
@@ -99,11 +112,25 @@ extension AddingLinkView {
         VStack(spacing: 0) {
             if !viewModel.link.isEmpty {
                 HStack(spacing: 12) {
-                    Image(viewModel.articleThumbNail)
+                    AsyncImage(
+                        url: viewModel.thumbnailURL,
+                        content: { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .cornerRadius(4)
+                        }, placeholder: {
+                            Image("ArticlePlaceholder")
+                        })
                         .frame(width: 57, height: 57)
                     HStack(spacing: 6.75) {
                         //                        TextField("", text: $viewModel.articleTitle, axis: .vertical)
                         TextField("", text: $viewModel.articleTitle)
+                            .placeholder(
+                                "아티클을 입력해주세요",
+                                when: viewModel.articleTitle.isEmpty,
+                                color: .grey4
+                            )
                             .focused($isArticleTitleFocused, equals: true)
                             .font(.system(size: 14))
                             .lineLimit(2)
