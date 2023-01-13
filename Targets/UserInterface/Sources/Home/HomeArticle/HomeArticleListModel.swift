@@ -34,7 +34,12 @@ final class HomeArticleListModel: ObservableObject {
     }
     
     @ObservedObject var modelContainer: ModelContainer
-    @Published var articles: ArticleGroup = []
+    @Published var articles: ArticleGroup = [] {
+        willSet {
+            print(articles)
+            objectWillChange.send()
+        }
+    }
     @Published var filterType: FilterType = .newest {
         willSet {
             
@@ -48,20 +53,20 @@ final class HomeArticleListModel: ObservableObject {
         modelContainer.articleModel.itemsPublisher
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] articles in
-                guard let groupedArticles = self?.groupArticlesByMonth(articles: articles) else {
-                    return
-                }
+                let filteredArticle: [Article]
                 switch self?.filterType {
                     case .newest:
-                        self?.articles = groupedArticles
+                        filteredArticle = articles.reversed()
                     case .oldest:
-                        let reversed: ArticleGroup = groupedArticles.reversed()
-                        self?.articles = reversed.map({ array in
-                            let temp: [Article] = array.1.reversed()
-                            return (array.0, temp)
-                        })
+                        filteredArticle = articles
                     case .none:
-                        break
+                        filteredArticle = []
+                }
+                guard let groupedArticles = self?.groupArticlesByMonth(articles: filteredArticle) else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    self?.articles = groupedArticles
                 }
             })
             .store(in: &cancellableSet)
