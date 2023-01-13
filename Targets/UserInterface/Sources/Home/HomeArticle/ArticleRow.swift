@@ -133,7 +133,7 @@ struct ArticleRow: View {
                     try await modelContainer.articleModel.remove([article])
                     isArticleSettingButtonTouched = false
                 } catch {
-                    print(error.localizedDescription)
+                    print(error.localizedDescription) // TODO: 실패 토스트 메세지 띄우기
                 }
             }
             return (true, "")
