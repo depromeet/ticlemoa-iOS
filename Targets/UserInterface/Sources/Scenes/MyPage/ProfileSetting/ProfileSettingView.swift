@@ -25,7 +25,7 @@ struct ProfileSettingView: View {
     var body: some View {
         VStack(spacing: 0) {
             Group {
-                if let path = viewModel.profileImageURL?.path, let uiImage = UIImage(contentsOfFile: path) {
+                if let path = viewModel.profileImageUrl?.path, let uiImage = UIImage(contentsOfFile: path) {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()

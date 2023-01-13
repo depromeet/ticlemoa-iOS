@@ -18,7 +18,7 @@ public struct CreateArticleRequest {
         let userId: Int
         let title: String
         let url: String
-        let imageURL: String
+        let imageUrl: String
         let isPublic: Bool
         let tagIds: [Int]
         
@@ -27,7 +27,7 @@ public struct CreateArticleRequest {
             userId: Int,
             title: String,
             url: String,
-            imageURL: String,
+            imageUrl: String,
             isPublic: Bool,
             tagIds: [Int]
         ) {
@@ -35,7 +35,7 @@ public struct CreateArticleRequest {
             self.userId = userId
             self.title = title
             self.url = url
-            self.imageURL = imageURL
+            self.imageUrl = imageUrl
             self.isPublic = isPublic
             self.tagIds = tagIds
         }

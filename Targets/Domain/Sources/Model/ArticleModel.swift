@@ -37,7 +37,7 @@ extension ArticleModel {
                 userId: currentUser.userId,
                 title: item.title,
                 url: item.url,
-                imageURL: item.imageUrl,
+                imageUrl: item.imageUrl,
                 isPublic: item.isPublic,
                 tagIds: tagIds
             )
@@ -74,7 +74,7 @@ extension ArticleModel {
                         id: $0.id,
                         title: $0.title,
                         url: $0.url,
-                        imageUrl: $0.imageUrl ?? "빈",
+                        imageUrl: $0.imageUrl ?? "",
                         content: $0.content,
                         isPublic: $0.isPublic,
                         viewCount: $0.viewCount,

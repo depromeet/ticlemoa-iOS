@@ -13,16 +13,16 @@ final class ProfileSettingViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
     @Published var isConfirmationDialogOpen: Bool = false
     @Published var isImagePickerOpen: Bool = false
-    @Published var profileImageURL: URL?
+    @Published var profileImageUrl: URL?
     @Published var nickname: String = ""
     @Published var isPresented: Bool = true
     @Published var isSavable: Bool = false
-    @AppStorage("Moamoa.userProfileImageURL") private var userProfileImageURL: URL?
+    @AppStorage("Moamoa.userProfileImageUrl") private var userProfileImageUrl: URL?
     private var anyCancellables: [AnyCancellable] = []
     
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
-        self.profileImageURL = userProfileImageURL
+        self.profileImageUrl = userProfileImageUrl
         self.setupBinding()
     }
     
@@ -39,16 +39,16 @@ final class ProfileSettingViewModel: ObservableObject {
     }
     
     func updateProfileImage(fromUrl url: URL) {
-        profileImageURL = url
+        profileImageUrl = url
     }
     
     func resetImage() {
-        profileImageURL = nil
+        profileImageUrl = nil
     }
     
     func saveButtonTouched() {
         if isSavable {
-            userProfileImageURL = profileImageURL
+            userProfileImageUrl = profileImageUrl
             modelContainer.loginModel.nicknameChangeTo(nickname)
             isPresented = false
         } else {
