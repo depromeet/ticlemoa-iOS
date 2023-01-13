@@ -35,7 +35,8 @@ struct MyPageView: View {
                                 .scaledToFill()
                                 .clipShape(Circle())
                         } else {
-                            DefaultProfileView()
+                            Image("DefaultProfileImage")
+                                .clipShape(Circle())
                         }
                     }
                     .frame(width: 59, height: 59)
