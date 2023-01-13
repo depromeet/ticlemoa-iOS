@@ -30,8 +30,6 @@ extension ArticleModel {
         guard let currentUser = LoginUserData.shared else { // MARK: 에러처리 필요
             return
         }
-        print("DEBUG: \(currentUser.accessToken)")
-        print("DEBUG: \(currentUser.userId)")
         let request = CreateArticleRequest(
             accessToken: currentUser.accessToken,
             body: .init(
@@ -39,6 +37,7 @@ extension ArticleModel {
                 userId: currentUser.userId,
                 title: item.title,
                 url: item.url,
+                imageURL: item.imageUrl,
                 isPublic: item.isPublic,
                 tagIds: tagIds
             )
@@ -74,7 +73,7 @@ extension ArticleModel {
                         id: $0.id,
                         title: $0.title,
                         url: $0.url,
-                        imageUrl: "",
+                        imageUrl: $0.imageUrl ?? "빈",
                         content: $0.content,
                         isPublic: $0.isPublic,
                         viewCount: $0.viewCount,
@@ -158,7 +157,7 @@ extension ArticleModel {
                             isPublic: $0.isPublic,
                             viewCount: $0.viewCount,
                             createdAt: $0.createdAt,
-                            updatedAt: $0.updatedAt,
+                            updatedAt: "",
                             tagIds: $0.tagIds
                         )
                     })

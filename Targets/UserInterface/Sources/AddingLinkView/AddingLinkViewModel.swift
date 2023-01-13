@@ -91,16 +91,16 @@ final class AddingLinkViewModel: ObservableObject {
 extension AddingLinkViewModel: ExportInfoFeature {
     
     func setupArticleInfo(by stringLink: String? = nil) async {
-        print("\(#function)  \(stringLink ?? "")")
         guard let url = URL(string: stringLink ?? link) else {
             return
         }
         if let thunmbnailPath = try? await findThumnail(url: url),
            let foundThumnailURL = URL(string: thunmbnailPath) {
-            print(foundThumnailURL)
+//            print(foundThumnailURL)
             self.thumbnailURL = foundThumnailURL
         }
         if let foundTitle = try? await findTitle(url: url) {
+//            print(foundTitle)
             self.articleTitle = foundTitle
         }
     }

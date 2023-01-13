@@ -117,14 +117,14 @@ extension AddingLinkView {
                         content: { image in
                             image
                                 .resizable()
+                                .frame(width: 57, height: 57)
                                 .aspectRatio(contentMode: .fill)
                                 .cornerRadius(4)
                         }, placeholder: {
                             Image("ArticlePlaceholder")
                         })
-                        .frame(width: 57, height: 57)
                     HStack(spacing: 6.75) {
-                        //                        TextField("", text: $viewModel.articleTitle, axis: .vertical)
+                        // TextField("", text: $viewModel.articleTitle, axis: .vertical)
                         TextField("", text: $viewModel.articleTitle)
                             .placeholder(
                                 "아티클을 입력해주세요",
