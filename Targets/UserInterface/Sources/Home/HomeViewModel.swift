@@ -6,7 +6,6 @@
 //  Copyright © 2022 nyongnyong. All rights reserved.
 //
 
-import Collections
 import SwiftUI
 import DomainInterface
 import Combine

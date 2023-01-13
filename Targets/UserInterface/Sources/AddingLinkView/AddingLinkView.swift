@@ -351,7 +351,9 @@ private struct AddedTagView: View {
                     .frame(width: 16.5, height: 16.5)
             }
         }
-        .frame(width: 84, height: 37)
+        .padding(.leading, 12)
+        .padding(.trailing, 6)
+        .frame(minWidth: 84, maxHeight: 37)
         .background(Color.ticlemoaBlack)
         .cornerRadius(4.0)
     }

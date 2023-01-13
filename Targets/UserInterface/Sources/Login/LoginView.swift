@@ -33,6 +33,7 @@ struct LoginView: View {
             
             OnboardingTabView(selectedPage: $selectedPage, pages: pages)
                 .frame(height: 428)
+                
             
             PageControl(
                 selectedPage: $selectedPage,
@@ -42,6 +43,7 @@ struct LoginView: View {
             )
             
             Spacer()
+                
             // 소셜 로그인 구현 시, 사용 예정
 //            socialLoginButtons
 //                .padding(.top, 60)

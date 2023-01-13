@@ -111,6 +111,9 @@ extension SearchingArticleView {
                     .onSubmit {
                         Task {
                             guard let searchedQuery = await self.viewModel.submit() else { return }
+                            if let index = viewModel.recentQueries.firstIndex(of: searchedQuery) {
+                                viewModel.recentQueries.remove(at: index)
+                            }
                             self.viewModel.recentQueries.insert(searchedQuery, at: 0)
                         }
                     }
@@ -162,6 +165,9 @@ extension SearchingArticleView {
                             searchAction: { selectedQuery in
                                 Task {
                                     guard let searchedQuery = await self.viewModel.submit(by: selectedQuery) else { return }
+                                    if let index = viewModel.recentQueries.firstIndex(of: searchedQuery) {
+                                        viewModel.recentQueries.remove(at: index)
+                                    }
                                     self.viewModel.recentQueries.insert(searchedQuery, at: 0)
                                 }
                             },

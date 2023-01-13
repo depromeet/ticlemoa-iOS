@@ -17,12 +17,8 @@ struct HomeView: View {
     
     var body: some View {
         mainBody
+            .background(Color.grey1)
             .setupBackground()
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Image("ticlemoa_logo")
-                }
-            }
     }
 }
 
@@ -30,24 +26,51 @@ struct HomeView: View {
 private extension HomeView {
     @ViewBuilder
     var mainBody: some View {
-        ZStack {
-            tagListView
+        VStack(spacing: 0) {
+            HStack {
+                Image("ticlemoa_logo")
+                    .padding(.leading, 20)
+                Spacer()
+            }
+            .frame(height: 56)
             
-            VStack {
-                Spacer()
-                    .frame(
-                        minHeight: 0,
-                        maxHeight: isFolding ? 80 : 80 + CGFloat((45 * viewModel.homeRows.count))
-                    )
-                HomeArticleList(viewModel: .init(modelContainer: modelContainer))
-                    .padding(.top, 0)
-                    .animation(.default)
-                    .transition(.slide)
-                    .environmentObject(viewModel)
-                    .background(Color.grey1)
+            ZStack {
+                tagListView
                 
-                Spacer()
-                Divider()
+                VStack {
+                    Spacer()
+                        .frame(
+                            minHeight: 0,
+                            maxHeight: isFolding ? 58 : 58 + CGFloat((45 * viewModel.homeRows.count))
+                        )
+                    HomeArticleList(viewModel: .init(modelContainer: modelContainer))
+                        .padding(.top, 0)
+                        .animation(.default)
+                        .transition(.slide)
+                        .environmentObject(viewModel)
+                        .background(Color.grey1)
+                    
+                    Spacer()
+                    Divider()
+                }
+            }
+        }
+        .onAppear {
+            guard let selectedTag = viewModel.selectedTag else { return }
+            /*
+             홈화면에서 태그 관리 페이지로 이동 시,
+             화면 전체에서 공용으로 사용하고 있는 articleModel의 itemPublisher에 전체 아티클들을 넣어줘야 하는데,
+             다시 홈화면으로 올때, 클릭 되어 있던 태그의 아티클들을 articleModel의 itemPublisher에 넣어 UI에 표시해 주어야함
+             */
+            if selectedTag.tag.tagName != "전체" {
+                Task {
+                    do {
+                        try await modelContainer.articleModel.fetch(tagId: selectedTag.tag.id)
+                        print(viewModel.homeTags)
+                    } catch {
+                        print(error.localizedDescription) // TODO: 실패 토스트 메세지 띄우기
+                    }
+                }
             }
         }
     }
@@ -81,18 +104,15 @@ private extension HomeView {
                                 }
                             )
                         }
-                        .padding(.horizontal, 20)
                         Spacer()
                     }
+                    .padding(.horizontal, 20)
                     .frame(height: 28)
                     .padding(.vertical, 10)
                 }
-                
-                // TODO: 태그 관리 (1차 업데이트 예정사항)
-                Button(
-                    action: {
-                        // TODO: 태그관리 화면으로 이동
-                        HapticManager.instance.impact(style: .light)
+                NavigationLink(
+                    destination: {
+                        TagManagingView()
                     },
                     label: {
                         
@@ -115,7 +135,7 @@ private extension HomeView {
                 
 //                Spacer()
             }
-            .padding(.top, 24)
+            .padding(.top, 5)
             .padding(.trailing, 65)
             
             // Fold - UnFold Button
@@ -133,10 +153,11 @@ private extension HomeView {
                     Spacer()
                         .frame(maxWidth: 20)
                 }
-                .padding(.top, 30)
+                .padding(.top, 18)
                 Spacer()
             }
             .onTapGesture {
+                guard viewModel.homeRows.count > 1 else { return }
                 withAnimation { isFolding.toggle() }
             }
         }
@@ -166,6 +187,8 @@ extension String{
         let font = UIFont.systemFont(ofSize: 16)
         let attributes = [NSAttributedString.Key.font: font]
         let size = (self as NSString).size(withAttributes: attributes)
-        return size.width
+        print("DEBUG: \(size.width)")
+        // 24 : leading trailing default padding value
+        return size.width + 24
     }
 }
