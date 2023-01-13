@@ -2,9 +2,12 @@
 # Ticlemoa 티클모아
 
 ## 📱 앱 소개
-[<img src="https://user-images.githubusercontent.com/31057849/211729765-97839bfa-72c0-4d48-99b4-9d854a415649.png" width="150" height="150">](https://apps.apple.com/kr/app/id1642134370/) 
+![KakaoTalk_Photo_2023-01-13-23-18-37](https://user-images.githubusercontent.com/24707229/212341314-c36b9e97-1e12-4830-a324-334d2aac9f45.png)
 
-***아티클을 모아 지식을 태산처럼***
+
+
+|***아티클을 모아 지식을 태산처럼***|<img src="https://user-images.githubusercontent.com/31057849/211729765-97839bfa-72c0-4d48-99b4-9d854a415649.png" width="100" height="100">|<img src="https://user-images.githubusercontent.com/24707229/212341802-de3776b0-411d-429a-88f3-0383632b373e.png" width="100" height="100">|
+|:-:|:-:|:-:|
 
 ## 🗂 프로젝트 소개
 <img src="https://i.imgur.com/30aszgR.png" height=100>
