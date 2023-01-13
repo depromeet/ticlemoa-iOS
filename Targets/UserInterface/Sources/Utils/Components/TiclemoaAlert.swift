@@ -105,7 +105,7 @@ public struct TiclemoaAlert: View {
                 width: UIScreen.main.bounds.width * 328/375,
                 height: UIScreen.main.bounds.height * style.alertHeight/812
             )
-            .background(.white)
+            .background(Color.grey1)
             .cornerRadius(10)
         }
         .onChange(of: inputText) { newValue in // FIXME: ViewModel Logic 인가 고민하기
@@ -174,6 +174,7 @@ public struct TiclemoaAlert: View {
                     Spacer()
                     Text("취소")
                         .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.ticlemoaBlack)
                     Spacer()
                 }
             }
