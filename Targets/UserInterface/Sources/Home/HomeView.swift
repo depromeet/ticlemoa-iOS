@@ -49,7 +49,7 @@ private extension HomeView {
                             LazyHStack(spacing: 10) {
                                 ForEach(viewModel.tags.indices, id: \.self) { index in
                                     Text(viewModel.tags[index].tagName)
-                                        .foregroundColor(viewModel.tags[index].id == (viewModel.selectedTag?.id ?? 0) ? .white : .grey4)
+                                        .foregroundColor(viewModel.tags[index].id == (viewModel.selectedTag?.id ?? 0) ? .grey1 : .grey4)
                                         .padding(.vertical, 8)
                                         .padding(.horizontal, 12)
                                         .background(
@@ -69,7 +69,7 @@ private extension HomeView {
                             HStack {
                                 Spacer()
                                 Rectangle().fill(
-                                    LinearGradient(gradient: Gradient(colors: [.clear, .white]), startPoint: .leading, endPoint: .trailing)
+                                    LinearGradient(gradient: Gradient(colors: [.clear, Color.grey1]), startPoint: .leading, endPoint: .trailing)
                                 )
                                 .frame(width: 102, height: 37)
                             }
