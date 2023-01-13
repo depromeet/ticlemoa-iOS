@@ -71,6 +71,9 @@ final class AddingLinkViewModel: ObservableObject {
             } else {
                 try await modelContainer.articleModel.create(addingArticle, tagIds: selectedTags.map { $0.id } )
             }
+            
+            self.resetView()
+            
             return (isModifying ? "수정이 완료되었습니다." : "추가 완료되었습니다.", true)
         } catch let domainInterfaceError as DomainInterfaceError {
             switch domainInterfaceError {
@@ -85,6 +88,11 @@ final class AddingLinkViewModel: ObservableObject {
         } catch {
             return ("통신에 문제가 있습니다.", false)
         }
+    }
+    
+    private func resetView() {
+        self.articleTitle = ""
+        self.selectedTags = []
     }
     
 }
