@@ -62,6 +62,7 @@ final class AddingLinkViewModel: ObservableObject {
                 url: link,
                 imageUrl: thumbnailURL?.absoluteString ?? "",
                 isPublic: isPublicSetting,
+                id: self.modifiedArticleId ?? 0,
                 tagIds: selectedTags.map({ $0.id })
             )
             
