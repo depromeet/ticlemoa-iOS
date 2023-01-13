@@ -26,23 +26,6 @@ final class HomeViewModel: ObservableObject {
     @Published var selectedTag: HomeTag? {
         didSet {
             print("선택한 태그: \(selectedTag!.tag)")
-            if selectedTag?.tag.tagName == "전체" {
-                Task {
-                    do {
-                        try await modelContainer.articleModel.fetch(tagId: nil)
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
-            } else {
-                Task {
-                    do {
-                        try await modelContainer.articleModel.fetch(tagId: selectedTag?.tag.id)
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
-            }
         }
     }
     
@@ -71,10 +54,31 @@ final class HomeViewModel: ObservableObject {
             }
         }
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchArticle),
+            name: .filterArticleList,
+            object: nil
+        )
+        
         func setupTagList() {
             getTags(self.homeTags)
             if let firstTag = homeTags.first {
                 selectedTag = firstTag
+            }
+        }
+    }
+    
+    @objc private func fetchArticle(notification: Notification? = nil) {
+        Task {
+            do {
+                if selectedTag?.tag.tagName == "전체" {
+                    try await modelContainer.articleModel.fetch(tagId: nil)
+                } else {
+                    try await modelContainer.articleModel.fetch(tagId: selectedTag?.tag.id)
+                }
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }

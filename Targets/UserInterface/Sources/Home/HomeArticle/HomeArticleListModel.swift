@@ -42,7 +42,7 @@ final class HomeArticleListModel: ObservableObject {
     }
     @Published var filterType: FilterType = .newest {
         willSet {
-            
+            NotificationCenter.default.post(name: .filterArticleList, object: nil)
         }
     }
     var cancellableSet: Set<AnyCancellable> = []
