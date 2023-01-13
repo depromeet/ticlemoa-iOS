@@ -15,7 +15,7 @@ public struct ReadArticleResponse: Decodable {
         public let isPublic: Bool
         public let title: String
         public let url: String
-//        public let imageUrl: String // FIXME : 서버 측과 협의 후 업데이트 해야함
+        public let imageUrl: String?
         public let userId: Int
         public let id: Int
         public let viewCount: Int

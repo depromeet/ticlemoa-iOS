@@ -34,10 +34,15 @@ final class HomeArticleListModel: ObservableObject {
     }
     
     @ObservedObject var modelContainer: ModelContainer
-    @Published var articles: ArticleGroup = []
+    @Published var articles: ArticleGroup = [] {
+        willSet {
+            print(articles)
+            objectWillChange.send()
+        }
+    }
     @Published var filterType: FilterType = .newest {
         willSet {
-            
+            NotificationCenter.default.post(name: .filterArticleList, object: nil)
         }
     }
     var cancellableSet: Set<AnyCancellable> = []
@@ -48,20 +53,20 @@ final class HomeArticleListModel: ObservableObject {
         modelContainer.articleModel.itemsPublisher
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] articles in
-                guard let groupedArticles = self?.groupArticlesByMonth(articles: articles) else {
-                    return
-                }
+                let filteredArticle: [Article]
                 switch self?.filterType {
                     case .newest:
-                        self?.articles = groupedArticles
+                        filteredArticle = articles.reversed()
                     case .oldest:
-                        let reversed: ArticleGroup = groupedArticles.reversed()
-                        self?.articles = reversed.map({ array in
-                            let temp: [Article] = array.1.reversed()
-                            return (array.0, temp)
-                        })
+                        filteredArticle = articles
                     case .none:
-                        break
+                        filteredArticle = []
+                }
+                guard let groupedArticles = self?.groupArticlesByMonth(articles: filteredArticle) else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    self?.articles = groupedArticles
                 }
             })
             .store(in: &cancellableSet)
@@ -99,51 +104,6 @@ extension Article {
         let year = dateParsed.formatted(.dateTime.year())
         let month = dateParsed.formatted(.dateTime.month(.twoDigits))
         return year + "." + month
-    }
-    
-    // TODO: 2. 이미지 추출해서 이미지 URL 혹은 Image 전달
-    var imageURLString: String {
-        guard let url = URL(string: "") else { return "" }
-        Task {
-            if let imageURLString = try await findThumnail(url: url) {
-                if let resultString = stringParsing(text: imageURLString) {
-                    return resultString.1
-                }
-                
-            }
-            return ""
-        }
-        return ""
-    }
-    
-    func stringParsing(text:String) -> (String,String,String)? {
-        let index0 = text.startIndex
-        let indexE = text.endIndex
-        let result = text[index0 ..< indexE]
-        
-        guard text.contains("http") else { return nil }
-        
-        if let range0 = text.range(of: "content=") {
-            let startWord = text.index(text[range0].endIndex, offsetBy: 1)
-            let endWord = text.endIndex
-            let w0 = text[text.startIndex ..< startWord]
-            let w1 = text[startWord ..< text.index(text.endIndex, offsetBy: -3)]
-            let w2 = text[endWord ..< text.endIndex]
-            
-            return (String(w0),String(w1),String(w2))
-        } else {
-         return nil
-        }
-    }
-    
-    // TODO: 1. 썸네일 추출 하는 방법 조사 필요
-    func findThumnail(url: URL) async throws ->  String? {
-        for try await line in url.lines {
-            if line.contains("og:image") {
-                return line.trimmingCharacters(in: .whitespaces)
-            }
-        }
-        return nil
     }
     
 }

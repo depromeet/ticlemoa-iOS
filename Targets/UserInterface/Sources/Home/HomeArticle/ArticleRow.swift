@@ -20,11 +20,19 @@ struct ArticleRow: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            Image("home_article_placeholder")
+            AsyncImage(
+                url: URL(string: article.imageUrl),
+                content: { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .cornerRadius(4)
+                }, placeholder: {
+                    Image("home_article_placeholder")
+                })
                 .frame(width: 88, height: 88)
                 .padding(.leading, 20)
                 .padding(.trailing, 12)
-                .cornerRadius(4)
             VStack(spacing: 12) {
                 HStack(spacing: 0) {
                     Text(article.title)
