@@ -31,7 +31,7 @@ final class HomeViewModel: ObservableObject {
                     do {
                         try await modelContainer.articleModel.fetch(tagId: nil)
                     } catch {
-                        print(error.localizedDescription)
+                        print(error.localizedDescription) // TODO: 실패 토스트 메세지 띄우기
                     }
                 }
             } else {
@@ -39,7 +39,7 @@ final class HomeViewModel: ObservableObject {
                     do {
                         try await modelContainer.articleModel.fetch(tagId: selectedTag?.tag.id)
                     } catch {
-                        print(error.localizedDescription)
+                        print(error.localizedDescription) // TODO: 실패 토스트 메세지 띄우기
                     }
                 }
             }
