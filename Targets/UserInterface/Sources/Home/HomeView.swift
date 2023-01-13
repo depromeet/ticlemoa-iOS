@@ -18,11 +18,7 @@ struct HomeView: View {
     var body: some View {
         mainBody
             .background(Color.grey1)
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Image("ticlemoa_logo")
-                }
-            }
+            .setupBackground()
     }
 }
 
@@ -30,24 +26,33 @@ struct HomeView: View {
 private extension HomeView {
     @ViewBuilder
     var mainBody: some View {
-        ZStack {
-            tagListView
+        VStack(spacing: 0) {
+            HStack {
+                Image("ticlemoa_logo")
+                    .padding(.leading, 20)
+                Spacer()
+            }
+            .frame(height: 56)
             
-            VStack {
-                Spacer()
-                    .frame(
-                        minHeight: 0,
-                        maxHeight: isFolding ? 80 : 80 + CGFloat((45 * viewModel.homeRows.count))
-                    )
-                HomeArticleList(viewModel: .init(modelContainer: modelContainer))
-                    .padding(.top, 0)
-                    .animation(.default)
-                    .transition(.slide)
-                    .environmentObject(viewModel)
-                    .background(Color.grey1)
+            ZStack {
+                tagListView
                 
-                Spacer()
-                Divider()
+                VStack {
+                    Spacer()
+                        .frame(
+                            minHeight: 0,
+                            maxHeight: isFolding ? 58 : 58 + CGFloat((45 * viewModel.homeRows.count))
+                        )
+                    HomeArticleList(viewModel: .init(modelContainer: modelContainer))
+                        .padding(.top, 0)
+                        .animation(.default)
+                        .transition(.slide)
+                        .environmentObject(viewModel)
+                        .background(Color.grey1)
+                    
+                    Spacer()
+                    Divider()
+                }
             }
         }
     }
@@ -115,7 +120,7 @@ private extension HomeView {
                 
 //                Spacer()
             }
-            .padding(.top, 24)
+            .padding(.top, 5)
             .padding(.trailing, 65)
             
             // Fold - UnFold Button
@@ -133,7 +138,7 @@ private extension HomeView {
                     Spacer()
                         .frame(maxWidth: 20)
                 }
-                .padding(.top, 30)
+                .padding(.top, 18)
                 Spacer()
             }
             .onTapGesture {
