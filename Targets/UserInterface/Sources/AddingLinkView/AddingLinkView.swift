@@ -52,6 +52,8 @@ struct AddingLinkView: View {
     @FocusState private var isArticleTitleFocused: Bool
     @State private var isPublicSettingsHelpClicked: Bool = false
     @State private var isTagAddingButtonTouched: Bool = false
+    @State private var showToast: Bool = false
+    @State private var toastMessage: String = ""
     @Environment(\.dismiss) private var dismiss
     
     init(
@@ -82,6 +84,9 @@ struct AddingLinkView: View {
             title: viewModel.isModifying ? "수정하기" : "아티클 추가",
             image: viewModel.isModifying ? "close_button_black" : "arrow"
         )
+        .toast(message: toastMessage,
+               isShowing: $showToast,
+               duration: Toast.short)
         .ticlemoaBottomSheet(isPresented: $isTagAddingButtonTouched) {
             TagSelectingListView(
                 modelContainer: modelContainer,
@@ -270,11 +275,12 @@ extension AddingLinkView {
         Button {
             Task {
                 let (message, isSuccess) = await viewModel.addingButtondidTapped()
+                showToast = true
+                toastMessage = message
                 if isSuccess {
-                    print(message)
-                    dismiss()
-                } else {
-                    print(message)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        dismiss()
+                    }
                 }
             }
         } label: {
