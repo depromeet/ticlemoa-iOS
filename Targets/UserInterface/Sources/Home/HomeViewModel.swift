@@ -54,11 +54,10 @@ final class HomeViewModel: ObservableObject {
         self.modelContainer = modelContainer
         self.modelContainer.tagModel.itemsPublisher
             .receive(on: RunLoop.main)
-            .sink { [weak self] tags in
-                self?.homeTags = [HomeTag(tag: WholeTag())]
-                self?.getTags(tags.map{ tag in
-                    HomeTag(tag: tag)
-                })
+            .sink { tags in
+                self.homeTags = [HomeTag(tag: WholeTag())]
+                self.homeTags.append(contentsOf: tags.map { HomeTag(tag: $0 )})
+                self.getTags(self.homeTags)
             }
             .store(in: &anyCancellables)
         
