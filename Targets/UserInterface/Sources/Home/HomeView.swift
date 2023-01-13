@@ -17,7 +17,7 @@ struct HomeView: View {
     
     var body: some View {
         mainBody
-            .setupBackground()
+            .background(Color.grey1)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Image("ticlemoa_logo")
