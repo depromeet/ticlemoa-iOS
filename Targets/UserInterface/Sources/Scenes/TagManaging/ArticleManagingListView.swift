@@ -21,6 +21,8 @@ struct ArticleManagingListView: View {
     @EnvironmentObject private var modelContainer: ModelContainer
     @State private var chekableArticles: [CheckableArticle] = []
     @State private var isArticlesDeletingButtonTouched: Bool = false
+    @State private var showToast: Bool = false
+    @State private var toastMessage: String = ""
     
     let tag: Tag
     var cancellableSet: Set<AnyCancellable> = []
@@ -52,6 +54,9 @@ struct ArticleManagingListView: View {
                 }
             }
         }
+        .toast(message: toastMessage,
+               isShowing: $showToast,
+               duration: Toast.short)
         .onReceive(self.modelContainer.articleModel.itemsPublisher) { articles in
             self.chekableArticles = articles
                 .filter { $0.tagIds.contains(tag.id) }
@@ -100,6 +105,8 @@ extension ArticleManagingListView {
                     .map { $0.article }
                 do {
                     try await modelContainer.articleModel.remove(deletingArticles)
+                    showToast = true
+                    toastMessage = "삭제가 완료되었습니다."
                 } catch {
                     print("식제 실패")
                     print(error.localizedDescription) // TODO: 실패 토스트 메세지 띄우기
