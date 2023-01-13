@@ -42,7 +42,30 @@ final class HomeViewModel: ObservableObject {
             try? await modelContainer.articleModel.fetch(tagId: nil)
             self?.selectedTag = tags.first
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchArticle),
+            name: .filterArticleList,
+            object: nil
+        )
+        
     }
+    
+    @objc private func fetchArticle(notification: Notification? = nil) {
+        Task {
+            do {
+                if selectedTag?.tagName == "전체" {
+                    try await modelContainer.articleModel.fetch(tagId: nil)
+                } else {
+                    try await modelContainer.articleModel.fetch(tagId: selectedTag?.id)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+
 }
 
 // MARK: UI Configure
