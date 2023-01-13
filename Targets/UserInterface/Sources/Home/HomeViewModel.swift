@@ -48,15 +48,17 @@ final class HomeViewModel: ObservableObject {
     private var anyCancellables: [AnyCancellable] = []
     
     @Published var homeRows: [[HomeTag]] = []
-    @Published var homeTags: [HomeTag] = [ ]
+    @Published var homeTags: [HomeTag] = []
     
     init(modelContainer: ModelContainer) {
         self.modelContainer = modelContainer
         self.modelContainer.tagModel.itemsPublisher
             .receive(on: RunLoop.main)
-            .sink { tags in
-                    self.homeTags = [HomeTag(tag: WholeTag())]
-                    self.homeTags.append(contentsOf: tags.map { HomeTag(tag: $0 )})
+            .sink { [weak self] tags in
+                self?.homeTags = [HomeTag(tag: WholeTag())]
+                self?.getTags(tags.map{ tag in
+                    HomeTag(tag: tag)
+                })
             }
             .store(in: &anyCancellables)
         
@@ -83,23 +85,23 @@ final class HomeViewModel: ObservableObject {
         var tags = tagList
         var rows: [[HomeTag]] = []
         var currentRow: [HomeTag] = []
-
+        
         var totalWidth: CGFloat = 0
-
+        
         let screenWidth = UIScreen.screenWidth - 10
         //        let tagSpaceing: CGFloat = 14 /*Leading Padding*/ + 30 /*Trailing Padding*/ + 6 + 6 /*Leading & Trailing 6, 6 Spacing*/
         let tagSpaceing: CGFloat = 16 /*Leading Padding*/ + 16 /*Trailing Padding*/ + 6 + 6 /*Leading & Trailing 6, 6 Spacing*/
-
+        
         if !tags.isEmpty {
-
+            
             for index in 0..<tags.count {
                 tags[index].size = tags[index].tag.tagName.getSize()
             }
-
+            
             tags.forEach { tag in
-
+                
                 totalWidth += (tag.size + tagSpaceing)
-
+                
                 if totalWidth > screenWidth{
                     totalWidth = (tag.size + tagSpaceing)
                     rows.append(currentRow)
@@ -109,17 +111,17 @@ final class HomeViewModel: ObservableObject {
                     currentRow.append(tag)
                 }
             }
-
+            
             if !currentRow.isEmpty {
                 rows.append(currentRow)
                 currentRow.removeAll()
             }
-
+            
             self.homeRows = rows
         } else {
             self.homeRows = []
         }
-
+        
     }
 }
 
