@@ -11,7 +11,8 @@
 
 ## 🗂 프로젝트 소개
 <img src="https://i.imgur.com/30aszgR.png" height=100>
-Depromeet 12th 디자이너와 프로그래머가 만났을때
+Depromeet 12th 디자이너와 프로그래머가 만났을때   
+
 활동 기간 : 21.09.24 ~ 23.01.14 + `v1.0.0 MVP` 출시 목표 개발중
 
 ## 🥇 프로젝트팀 소개
