@@ -43,7 +43,7 @@ private extension HomeView {
             ZStack {
 //                tagListView
                 
-                VStack {
+                VStack(spacing: 0) {
                     ZStack {
                         ScrollView(.horizontal, showsIndicators: false) {
                             LazyHStack(spacing: 10) {
@@ -76,10 +76,33 @@ private extension HomeView {
                             
                             HStack {
                                 Spacer()
-                                Image("arrow.down")
+                                Button {
+                                    withAnimation {
+                                        isFolding.toggle()
+                                    }
+                                } label: {
+                                    Group {
+                                        isFolding ? Image("arrow.up") : Image("arrow.down")
+                                    }
                                     .padding(.trailing, 26.1)
+                                }
                             }
                         }
+                    }
+                    
+                    if isFolding {
+                        NavigationLink(isActive: $viewModel.isTagManagingViewPresented) {
+                            TagManagingView()
+                        } label: {
+                            HStack(spacing: 6.82) {
+                                Text("태그 관리")
+                                    .customFont(weight: 500, size: 12, lineHeight: 18, style: .medium)
+                                Image("tagArrow.right")
+                                Spacer()
+                            }
+                            .padding(.leading, 20)
+                        }
+                        .padding(.bottom, 20)
                     }
                     
                     HomeArticleList(viewModel: .init(modelContainer: modelContainer))
