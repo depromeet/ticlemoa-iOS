@@ -187,7 +187,6 @@ extension String{
         let font = UIFont.systemFont(ofSize: 16)
         let attributes = [NSAttributedString.Key.font: font]
         let size = (self as NSString).size(withAttributes: attributes)
-        print("DEBUG: \(size.width)")
         // 24 : leading trailing default padding value
         return size.width + 24
     }

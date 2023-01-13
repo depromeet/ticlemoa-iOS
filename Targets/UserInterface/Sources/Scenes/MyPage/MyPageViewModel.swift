@@ -16,7 +16,7 @@ final class MyPageViewModel: ObservableObject {
     @Published var isLoggedIn: LoginUser? = nil
     @Published var nickName: String?
     @Published var email: String?
-    @Published var profileImageURL: URL?
+    @Published var profileImageUrl: URL?
     @Published var isMailViewPresented: Bool = false
     @Published var isMailViewAlertPresented: Bool = false
     @Published var mailResult: Result<MFMailComposeResult, Error>? = nil
@@ -30,7 +30,7 @@ final class MyPageViewModel: ObservableObject {
     }
     
     func updateProfile() {
-        profileImageURL = userProfileImageURL
+        profileImageUrl = userProfileImageURL
     }
     
     func accountDeletionConfirmButtonTouched() {

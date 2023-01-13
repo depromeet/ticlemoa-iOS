@@ -97,13 +97,13 @@ extension HomeArticleListModel {
 extension Article {
     
     var dateParsed: Date {
-        return createdAt.dateParsed()
+        DateFormatter.formatter.date(from: createdAt) ?? Date()
     }
     
     var month: String {
         let year = dateParsed.formatted(.dateTime.year())
         let month = dateParsed.formatted(.dateTime.month(.twoDigits))
-        return year + "." + month
+        return year + " " + month
     }
     
 }

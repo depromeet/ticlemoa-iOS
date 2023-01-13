@@ -74,6 +74,7 @@ struct AddingLinkView: View {
             Spacer()
             AddingButton
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .hideKeyboard()
         .padding(.horizontal, 20)
         .navigationBarHidden(true)
