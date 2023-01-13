@@ -137,7 +137,7 @@ private extension HomeView {
                 Spacer()
             }
             .onTapGesture {
-                guard viewModel.homeRows.count > 0 else { return }
+                guard viewModel.homeRows.count > 1 else { return }
                 withAnimation { isFolding.toggle() }
             }
         }
@@ -168,6 +168,7 @@ extension String{
         let attributes = [NSAttributedString.Key.font: font]
         let size = (self as NSString).size(withAttributes: attributes)
         print("DEBUG: \(size.width)")
-        return size.width
+        // 24 : leading trailing default padding value
+        return size.width + 24
     }
 }
