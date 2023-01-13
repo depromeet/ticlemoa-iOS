@@ -31,6 +31,7 @@ struct ArticleRow: View {
                     Image("home_article_placeholder")
                 })
                 .frame(width: 88, height: 88)
+                .clipShape(RoundedRectangle(cornerRadius: 4))
                 .padding(.leading, 20)
                 .padding(.trailing, 12)
             VStack(spacing: 12) {
