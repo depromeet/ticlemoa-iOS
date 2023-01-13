@@ -13,6 +13,7 @@ import Combine
 final class HomeViewModel: ObservableObject {
     @ObservedObject var modelContainer: ModelContainer
     @Published var tags: [Tag] = []
+    @Published var isTagManagingViewPresented: Bool = false
     @Published var selectedTag: Tag? {
         didSet {
             Task {
