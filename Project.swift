@@ -7,10 +7,10 @@ let localHelper = LocalHelper(name: "MyPlugin")
 
 // MARK: - Project String Data
 enum Ticlemoa: String {
-    static let projectName = "DepromeetTiclemoa"
-    static let productName = "DepromeetTiclemoa"
-    static let organizationName = "depromeet"
-    static let bundleId = "com.depromeet"
+    static let projectName = "Ticlemoa"
+    static let productName = "Ticlemoa"
+    static let organizationName = "nyongnyong"
+    static let bundleId = "com.nyongnyong"
     static let deploymentTarget = DeploymentTarget
         .iOS(targetVersion: "15.0", devices: [.iphone])
     
