@@ -40,6 +40,7 @@ private extension HomeView {
                             LazyHStack(spacing: 10) {
                                 ForEach(viewModel.tags.indices, id: \.self) { index in
                                     Text(viewModel.tags[index].tagName)
+                                        .customFont(weight: 700, size: 14, lineHeight: 21)
                                         .foregroundColor(viewModel.tags[index].id == (viewModel.selectedTag?.id ?? 0) ? .grey1 : .grey4)
                                         .padding(.vertical, 8)
                                         .padding(.horizontal, 12)
@@ -56,7 +57,28 @@ private extension HomeView {
                             .frame(height: 60)
                         }
                     } else { /// 펼쳐져 있을 경우 tagView
-                        
+                        HStack(spacing: 0) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                ForEach(viewModel.rows, id: \.self) { rows in
+                                    HStack(spacing: 10) {
+                                        ForEach(rows) { tag in
+                                            Text(tag.tagName)
+                                                .customFont(weight: 700, size: 14, lineHeight: 21)
+                                                .foregroundColor(tag.id == (viewModel.selectedTag?.id as? Int ?? 0) ? .grey1 : .grey4)
+                                                .padding(.vertical, 8)
+                                                .padding(.horizontal, 12)
+                                                .background {
+                                                    RoundedRectangle(cornerRadius: 4)
+                                                        .foregroundColor(tag.id == (viewModel.selectedTag?.id ?? 0) ? .ticlemoaBlack : .grey2)
+                                                }
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.leading, 20)
+                            Spacer()
+                        }
+                        .padding(.vertical, 12)
                     }
                     /// folding button
                     ZStack {
@@ -131,9 +153,9 @@ extension UIScreen{
 
 extension String{
     func getSize() -> CGFloat{
-        let font = UIFont.systemFont(ofSize: 16)
+        let font = UIFont(name: "Pretendard-bold", size: 14)
         let attributes = [NSAttributedString.Key.font: font]
-        let size = (self as NSString).size(withAttributes: attributes)
+        let size = (self as NSString).size(withAttributes: attributes as [NSAttributedString.Key : Any])
         return size.width
     }
 }
