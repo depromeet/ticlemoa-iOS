@@ -34,7 +34,7 @@ private extension HomeView {
             .frame(height: 56)
             
             VStack(spacing: 0) {
-                ZStack {
+                ZStack(alignment: .top) {
                     if isFolding { /// 접혀 있을 경우 일직선 배열의 tagView
                         ScrollView(.horizontal, showsIndicators: false) {
                             LazyHStack(spacing: 10) {
@@ -81,7 +81,7 @@ private extension HomeView {
                         .padding(.vertical, 12)
                     }
                     /// folding button
-                    ZStack {
+                    if isFolding { /// 접혀 있는 경우 gradient 표시
                         HStack {
                             Spacer()
                             Rectangle().fill(
@@ -89,24 +89,26 @@ private extension HomeView {
                             )
                             .frame(width: 102, height: 37)
                         }
-                        
-                        HStack {
-                            Spacer()
-                            Button {
-                                withAnimation {
-                                    isFolding.toggle()
-                                }
-                            } label: {
-                                Group {
-                                    isFolding ? Image("arrow.down") : Image("arrow.up")
-                                }
-                                .padding(.trailing, 26.1)
+                        .padding(.top, 10)
+                    }
+                    HStack {
+                        Spacer()
+                        Button {
+                            withAnimation {
+                                isFolding.toggle()
                             }
+                        } label: {
+                            Group {
+                                isFolding ? Image("arrow.down") : Image("arrow.up")
+                            }
+                            .padding(.trailing, 26.1)
                         }
                     }
+                    .frame(height: 37)
+                    .padding(.top, 10)
                 }
                 
-                /// 잡햐쟈
+                /// tagManagingView
                 if !isFolding {
                     NavigationLink(isActive: $viewModel.isTagManagingViewPresented) {
                         TagManagingView()
